@@ -1,0 +1,127 @@
+\newcommand{\versionnumber}{0.1}
+\newcommand{\doctitle}{KBS ESA3 \\ Plan van Aanpak \\ Smart Markers}
+\newcommand{\doctitleshort}{PvA ESA3 -- PvA}
+\newcommand{\docauthor}{
+  \renewcommand{\arraystretch}{0.5}
+  \begin{tabular}{l l}
+	Jerko Lenstra & {\mdseries(S10xxxxx)} \\
+  Rick de Bondt & {\mdseries(S10xxxxx)} \\
+  Marthijn Tijmes & {\mdseries(S1063534)} \\
+  \end{tabular}
+}
+
+\newcommand{\doctitlepage}{%
+  \thispagestyle{empty}
+
+  \parbox[t]{1.0\linewidth}{
+    \fontsize{40pt}{60pt}\selectfont
+    \vspace*{1.5cm}
+    \doctitle{} 
+    \vspace*{1.0cm}
+    \fontsize{20pt}{40pt}\selectfont
+    \\hbo-ICT, Windesheim
+    \\Docent: Gido Hakvoort
+    \vspace*{1.0cm}
+    \\Versie \versionnumber{}
+    \vspace*{1.5cm}
+  }
+
+  % \ThisCenterWallPaper{0.75}{res/code-image.png}
+  \vfill
+
+  {\centering \large
+    \hfill \today
+    \hfill \docauthor{}}
+
+  \normalcolor{}
+
+  \newpage
+}
+
+\providecommand{\doctitle}{Title}
+\providecommand{\docauthor}{Author}
+\providecommand{\doctype}{scrartcl}
+\providecommand{\doctitlepage}{TitlePage}
+
+\documentclass[12pt,a4paper,titlepage,parskip=full]{\doctype}
+
+\usepackage[dutch]{babel}
+\usepackage{blindtext}
+\usepackage{fixltx2e}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{wallpaper}
+
+% Input and output encoding ---------------------------------------------------
+\usepackage{iftex}
+\ifPDFTeX
+   \usepackage[utf8]{inputenc}
+   \usepackage[T1]{fontenc}
+   \usepackage{lmodern}
+\else
+   \ifXeTeX
+     \usepackage{xltxtra}
+   \else
+     \usepackage{luatextra}
+   \fi
+   \defaultfontfeatures{Ligatures=TeX}
+\fi
+
+% Math
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathtools}
+
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\bag}{\langle}{\rangle}
+\DeclarePairedDelimiter{\set}{\{}{\}}
+
+% Misc
+\usepackage[shortlabels]{enumitem}
+
+% Display
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\usepackage{tabularx}
+\setlength{\headheight}{24pt}
+
+\pagestyle{fancy}
+
+\title{\doctitle}
+\author{\docauthor}
+\date{\today}
+
+\lhead{\doctitleshort}
+\rhead{\today, v\versionnumber}
+\cfoot{\thepage\ /~\pageref{LastPage}}
+%\lfoot{\docauthor}
+
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+\numberwithin{table}{section}
+
+\usepackage{changepage}
+
+%Other settings
+\lstset{basicstyle=\ttfamily}
+
+\begin{document}
+\doctitlepage{}
+
+\tableofcontents
+\thispagestyle{empty}
+\newpage
+
+\clearpage
+\setcounter{page}{1}
+\addtocontents{toc}{\protect\thispagestyle{empty}}
+\newpage
+
+test
+
+\end{document}
