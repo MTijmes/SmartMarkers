@@ -5,53 +5,43 @@ hem/haar opgeleverde producten. Deze kunnen in overeenstemming met andere
 teamleden als kwalitatief onvoldoende worden beschouwd. In dit geval is de
 persoon verantwoordelijk voor het wijzigen van het product om de
 kwaliteitseisen te behalen. Om te helpen de kwaliteit van de code te waarborgen
-wordt gebruikt gemaakt van Travis CI. Deze dienst voert automatisch tests uit
-op de code en controleert of de code geen syntaxfouten bevat.
+wordt gebruikt gemaakt van unit testing.
 
 \subsection{Versiebeheer}
 \label{sec:versiebeheer}
 
 Het versiebeheer is geregeld met een Git repository gehost op GitHub.
-Verder wordt er gebruik gemaakt van Travis CI.
 
 \subsection{Git}
-\subsubsection{Branches}
-Om samen te werken aan een project in een Git repository is het nodig om
-gebruik te maken van branches. Er mag in principe niet gepusht worden
-naar een master branch, dit kan slechts in overleg. Er moet namelijk altijd een
-werkende versie staan op de master branch. Om alsnog een versie te hebben
-waar iedereen aan kan werken, wordt gebruik gemaakt van een dev branch.
-Er mag alleen naar deze branch gepusht worden als de featurebranch volledig
-werkend is. Bij het implementeren van een nieuwe feature wordt een branch gemaakt
-van de meest recente versie van de dev branch.
+\subsubsection{Forks and branches}
+Om samen te werken aan een project in een Git repository wordt er gebruik
+gemaakt van forks and branches. Middels pull requests naar de develop branch
+wordt de code gestaged. Wanneer de develop branch voldoende is getest wordt
+deze naar de master branch gepusht. Er moet namelijk altijd een werkende versie
+staan op de master branch.
 
 \subsubsection{Pull requests}
-Wanneer het werk aan een taak klaar is zet degene die de taak heeft uitgevoerd
-een pull request open voor de bijbehorende branch. In deze pull request kunnen
-de andere projectleden alle veranderingen inzien en zonodig commentaar geven om
-de kwaliteit van de code te waarborgen. Als meerdere personen het eens zijn
-met de veranderingen en alle Travis CI checks groen licht geven kan de branch
-gemerged worden naar de dev branch.
-Aan het einde van de sprint wordt er gezamelijk gekeken naar alle code en indien
-alles werkt zal de dev branch gemerged worden met de master branch.
+Wanneer het werk aan een taak klaar is, en de code getest is, zet degene die de
+taak heeft uitgevoerd een pull request open. In deze pull request kunnen de andere
+projectleden alle veranderingen inzien en zonodig commentaar geven om de kwaliteit
+van de code te waarborgen.
+Aan het einde van de sprint wordt er gezamelijk gekeken naar alle code
+en indien alles werkt zal de dev branch gemerged worden met de master branch.
 
-\subsection{Travis CI}
-Travis CI is een continuous integration service die geïntegreerd kan worden in
-een GitHub repository. Hiervan wordt gebruik gemaakt om te controleren of het
-project nog gebuild kan worden. Indien er iets misgaat in deze check is het
-niet toegestaan om de branch te mergen.
+\subsection{Unit testing}
+In de eerste week van het project wordt er kort onderzoek gedaan naar mogelijke
+unit testing frameworks, zoals Check, CUnit etc.
 
 \subsection{Code stijl}
 Om nette code op te kunnen leveren is er een code stijl opgezet voor zowel 
 de code als de commit messages.
 
-
 \subsubsection{Commits}
 \begin{itemize}
-    \item Voor elke grote taak zal er een aparte branch worden aangemaakt. Deze 
-          aparte branch is een kopie van de \texttt{dev} of \texttt{doc} branch.
     \item Er moet duidelijk worden aangegeven per commit wat er is aangepast / 
-          toegevoegd. Dit gebeurt in de samenvatting.
+          toegevoegd.
+    \item De stijl van commits is als volgt: in het Engels en in de tegenwoordige
+          tijd.
 \end{itemize}
 
 \subsubsection{Code}
@@ -60,162 +50,28 @@ de code als de commit messages.
 \begin{itemize}
   \item Alle files moeten eindigen met een newline.
   \item Namen moeten overeenkomen met de naamgevingen genoemd in 
-        \texttt{NamingConventions.txt}.
+        \texttt{naming_conventions.txt}.
 \end{itemize}
 
 \textbf{C}
 \begin{itemize}
   \item Bij inspringen (\texttt{TAB} wordt er gebruik gemaakt van 4 spaties.
-  \item De volgende code wordt gebruikt om te voorkomen dat header files dubbel
-        geïncludeerd worden:
+  \item Inclusion guards worden gebruikt om te voorkomen dat header files dubbel
+        geïncludeerd worden. Hier een voorbeeld:
         \begin{lstlisting}[language=C,frame=single]
           #ifndef FILE_NAME_H
           #define FILE_NAME_H
 
-          ...contents...
+          ...content...
 
           #endif /* FILE_NAME_H */
         \end{lstlisting}
   \item Waar mogelijk worden \texttt{enums} gebruikt in plaats van \texttt{defines}.
-  \item Er worden standaard variabele types vanuit uCOS-II.
-  \item \texttt{typedef} wordt gebruikt om relevante type namen te definiëren.
+  \item Er worden standaard variabele types vanuit \texttt{<stdint.h>}.
   \item Bij pointers wordt de ster direct voor de variabele naam geplaatst
         bij gebruik van een pointer.
-  \item Variabele namen zijn gelijk aan de naamgeving van types.
-  \item Gebruik \texttt{typedef struct ... struct\_name\_t} voor alle structs.
-  \item Gebruik \texttt{typedef enum ... enum\_name\_t} voor alle enums.
   \item Gebruik \texttt{/* ... */} om meerdere lijnen als comment te zetten,
         \texttt{//} wordt gebruikt om enkele lijnen als comment te zetten.
   \item Als er nog specifieke zaken moeten gebeuren in een bepaald stuk code wordt
         dit aangegeven met \texttt{/* TODO: ... */}.
-\end{itemize}        
-% \subsubsection{Commits}
-% \begin{itemize}
-%   \item Work in feature branches. Development should happen on branches split
-%   off from the \texttt{dev} branch, documentation on branches split off from
-%   the \texttt{doc} branch
-
-%   \item Rebase your feature branch onto \texttt{dev} or \texttt{doc}
-%   regularly
-
-%   \item Make commits of logical units, keeping separate changes separate. Use
-%   \texttt{git add -p}
-
-%   \item Review your changes before committing. Use \texttt{git add -p}
-
-%   \item Make sure that each individual commit doesn't break anything
-
-%   \item Make sure your commit messages are in the proper format, as described
-%   here:
-%   Capitalized, short (50 chars or less) summary
-
-%   More detailed explanatory text, if necessary.  Wrap it to about 72
-%   characters or so.  In some contexts, the first line is treated as the
-%   subject of an email and the rest of the text as the body.  The blank
-%   line separating the summary from the body is critical (unless you omit
-%   the body entirely); tools like rebase can get confused if you run the
-%   two together.
-
-%   Write your commit message in the imperative: `Fix bug' and not `Fixed
-%   bug' or `Fixes bug'.  This convention matches up with commit messages
-%   generated by commands like git merge and git revert.
-
-%   Further paragraphs come after blank lines.
-
-%   - Bullet points are okay, too
-
-%   - Typically a hyphen or asterisk is used for the bullet, followed by a
-%     single space, with blank lines in between, but conventions vary here
-
-%   - Use a hanging indent
-% \end{itemize}
-
-% \subsubsection{Code}
-% \textbf{General}
-
-% \begin{itemize}
-%   \item Never introduce trailing whitespace
-%   \item Make sure all files end with a newline
-%   \item Make sure no line is longer than 79 characters
-%   \item Use conventions specified in \texttt{NamingConventions.txt} for all file names
-% \end{itemize}
-
-% \textbf{C}
-% \begin{itemize}
-%   \item Use four spaces for indentation
-
-%   \item Use a guard of the following form in all header (.h) files: (in this
-%   example, the file is called file-name.h)
-
-%   \begin{lstlisting}[language=C,frame=single]
-%   #ifndef FILE_NAME_H
-%   #define FILE_NAME_H
-
-%   ...contents...
-
-%   #endif /* FILE_NAME_H */
-%   \end{lstlisting}
-
-%   \item Use \texttt{enums} instead of \texttt{\#define}s when the things you're 
-%   defining are 'enumerable'
-
-%   \item Use standard variable types in uCOS-II for c files.
-  
-%   \item Use \texttt{typedef} to define relevant type names if the actual type
-%   is an implementation detail
-  
-%   \item The asterisk for pointers goes directly before the name:
-%   \texttt{player\_t *player}
-  
-%   \item Use variable name conventions for types
-
-%   \item Use \texttt{typedef struct {...} struct\_name\_t} for all struct
-%   definitions
-  
-%   \item Use \texttt{typedef enum {...} enum\_name\_t} for all enum definitions
-  
-%   \item Use \texttt{/* ... */} for multiple line comments and single line
-%   non-in-line comments, use \texttt{//} for single line in-line comments
-
-%   \item Start every multiple line comment with an asterisk:
-
-%   \begin{lstlisting}[language=C,frame=single]
-%   /*
-%    * This is a
-%    * multiple line comment.
-%    * And another line
-%    */
-
-%    // This is a single line comment
-%   \end{lstlisting}
-  
-%   \item Use \texttt{/* TODO: thing */} for comments specifying things you have
-%   postponed
-  
-%   \item Mark sections of a file using \texttt{/* Section name --- */} comments,
-%   extending to the maximum line length
-% \end{itemize}
-
-% \subsection{Definition of done}
-% Om de kwaliteit van het eindproduct te waarborgen is er een Definition of Done
-% opgesteld, dit is een korte checklist die voor elke feature moet worden doorlopen
-% om te kijken of deze feature voldoende is uitgewerkt en aan alle eisen voldoet.
-
-% Definition of done voor documentatie:
-% \begin{itemize}
-% 	\item De tekst is gecontroleerd op inhoud en spelling
-% 	\item De algemene lay-out is op alle documentatie toegepast
-% 	\item Indien nodig is de versiegeschiedenis bijgewerkt
-% \end{itemize}
-
-% Definition of done voor code:
-% \begin{itemize}
-% 	\item De code is door Travis CI goedgekeurd
-% 	\item De code is gereviewd door de rest van het projectteam
-% \end{itemize}
-% •	Het functioneel ontwerp is bijgewerkt
-% •	Het technisch ontwerp is bijgewerkt
-% •	Succesvol door het testplan heen gekomen
-% •	Het testplan is bijgewerkt met de resultaten
-% •	Het onderdeel is gereviewd door de rest van het projectteam
-%  
+\end{itemize}
