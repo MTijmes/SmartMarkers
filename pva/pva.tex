@@ -1,4 +1,4 @@
-\newcommand{\versionnumber}{0.1}
+\newcommand{\versionnumber}{0.2}
 \newcommand{\doctitle}{KBS ESA3 \\ Plan van Aanpak \\ Smart Markers}
 \newcommand{\doctitleshort}{PvA ESA3 -- PvA}
 \newcommand{\docauthor}{
@@ -106,6 +106,15 @@
 \numberwithin{table}{section}
 
 \usepackage{changepage}
+
+% Document-wide white space
+\usepackage{titlesec}
+\titlespacing{\section}{0pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
+\titlespacing{\subsection}{0pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
+\titlespacing{\subsubsection}{0pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
+
+\usepackage{enumitem}
+\setitemize{noitemsep,topsep=0pt,parsep=0pt,partopsep=0pt}
 
 %Other settings
 \lstset{basicstyle=\ttfamily}
