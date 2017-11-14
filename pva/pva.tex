@@ -1,6 +1,6 @@
 \newcommand{\versionnumber}{0.2}
 \newcommand{\doctitle}{KBS ESA3 \\ Plan van Aanpak \\ Smart Markers}
-\newcommand{\doctitleshort}{PvA ESA3 -- PvA}
+\newcommand{\doctitleshort}{PvA - Smart Markers}
 \newcommand{\docauthor}{
   \renewcommand{\arraystretch}{0.5}
   \begin{tabular}{l l}
@@ -47,12 +47,13 @@
 
 \usepackage[dutch]{babel}
 \usepackage{blindtext}
-\usepackage{fixltx2e}
 \usepackage{float}
 \usepackage{hyperref}
 \usepackage{graphicx}
 \usepackage{listings}
 \usepackage{wallpaper}
+\usepackage[headsepline,footsepline,manualmark]{scrlayer-scrpage}
+
 
 % Input and output encoding ---------------------------------------------------
 \usepackage{iftex}
@@ -86,20 +87,16 @@
 
 % Display
 \usepackage{lastpage}
-\usepackage{fancyhdr}
 \usepackage{tabularx}
 \setlength{\headheight}{24pt}
-
-\pagestyle{fancy}
 
 \title{\doctitle}
 \author{\docauthor}
 \date{\today}
 
-\lhead{\doctitleshort}
-\rhead{\today, v\versionnumber}
-\cfoot{\thepage\ /~\pageref{LastPage}}
-%\lfoot{\docauthor}
+\ihead{\upshape{\doctitleshort}}
+\ohead{\upshape{\today, v\versionnumber}}
+\cfoot{\upshape{\thepage\ /~\pageref{LastPage}}}
 
 \numberwithin{equation}{section}
 \numberwithin{figure}{section}
@@ -107,17 +104,20 @@
 
 \usepackage{changepage}
 
-% Document-wide white space
-\usepackage{titlesec}
-\titlespacing{\section}{0pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
-\titlespacing{\subsection}{0pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
-\titlespacing{\subsubsection}{0pt}{12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
-
 \usepackage{enumitem}
 \setitemize{noitemsep,topsep=0pt,parsep=0pt,partopsep=0pt}
 
 %Other settings
 \lstset{basicstyle=\ttfamily}
+
+\RedeclareSectionCommand[beforeskip=1\baselineskip,
+                         afterskip=.25\baselineskip]{section}
+
+\RedeclareSectionCommand[beforeskip=.25\baselineskip,
+                         afterskip=.25\baselineskip]{subsection}
+
+\RedeclareSectionCommand[beforeskip=.25\baselineskip,
+                         afterskip=.25\baselineskip]{subsubsection}
 
 \begin{document}
 \doctitlepage{}
