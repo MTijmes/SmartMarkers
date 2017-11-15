@@ -1,4 +1,3 @@
-%TODO add extra text here, this is not finished yet
 \section{Opdracht}
 \label{sec:opdracht}
 Smart Markers
@@ -13,19 +12,25 @@ uiteenlopen.
 Aangezien er voor dit project een relatief korte tijdsduur in beslag genomen
 kan worden, is het van groot belang om duidelijk af te bakenen wat er in deze
 tijd gerealiseerd gaat worden.
-Het project omvat slechts het opleveren van een \textit{Smart Marker} prototype. 
-Deze zal zeker nog niet de uiteindelijke compactheid hebben en ook slechts in 
+Het project omvat slechts het opleveren van een prototype \textit{Smart Marker},
+deze zal zeker nog niet de uiteindelijke compactheid hebben en ook slechts in 
 kleine hoeveelheid opgeleverd worden.
 
 \subsubsection{Binnen de scope}
 \begin{itemize}
-    \item LoRa onderzoeken
-    \item GPS-(correctie)technieken onderzoeken
+    \item LoRa radio module gebruik onderzoeken
+    \item LoRa mesh netwerk onderzoeken en realiseren
+    \item GPS-module gebruik onderzoeken
+    \item GPS-(correctie)technieken toepassen
+    \item Systeem documentatie ontwikkelen
 \end{itemize}
 
 \subsubsection{Buiten de scope}
 \begin{itemize}
+    \item Verschillende GPS-(correctie)technieken onderzoeken
     \item Doorontwikkeld product opleveren
+    \item Mesh netwerk op ware schaal testen
+    \item Afmetingen van het prototype optimaliseren
 \end{itemize}
 
 \subsection{Voorwaarden voor succes}
@@ -34,14 +39,14 @@ en programmeertalen benodigd. Hieronder staat de verzameling van verschillende
 aspecten waarvan kennis benodigd is:
 \subsubsection{Hardware}
 \begin{itemize}
-    \item STM32L0 microcontroller
-    \item LoRa radio module
-%TODO Specify GPS module
-    \item u-blox GPS-module
+    \item STM32 NUCLEO-L073RZ development board
+    \item RF-LORA-868-SO radio module
+    \item u-blox EVK-7P GPS-module
 \end{itemize}
 \subsubsection{Technieken}
 \begin{itemize}
     \item GPS
+    \item DGPS
     \item LoRa
     \item Mesh networking
 \end{itemize}
