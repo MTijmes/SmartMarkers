@@ -5,7 +5,7 @@ Binnen dit project wordt gebruik gemaakt van de Scrum methode. Dit houdt
 in dat er wordt gewerkt in sprints, deze sprints zijn elk twee
 weken lang, wat inhoudt dat er in totaal vier sprints zullen zijn. Als
 Scrum board wordt er gebruik gemaakt van de issueboard functionaliteit
-in GitHub. Voor de documentatie wordt gebruik gemaakt van Latex aangezien
+in GitHub. Voor de documentatie wordt gebruik gemaakt van \LaTeX, aangezien 
 in het verleden is gebleken dat dit eenvoudig werkt en erg overzichtelijk is.
 
 \subsection{Planning}
@@ -15,6 +15,22 @@ gemaakt.
 
 Op 18 januari 2018 wordt het project tijdens de \textit{Winnovation} expositie
 tentoongesteld.
+\begin{center}
+    \begin{ganttchart}[vgrid={draw=none,draw=none}]{1}{10}
+        \gantttitle{KBS ESA3}{10} \\
+        \gantttitlelist{1,...,10}{1} \\
+        % \ganttgroup{Group 1}{1}{7} \\
+        \ganttbar{Sprint 1}{1}{2} \\
+        \ganttlinkedbar{Sprint 2}{3}{4} \ganttnewline
+        \ganttlinkedbar{Sprint 3}{5}{6} \ganttnewline
+        \ganttlinkedbar{Sprint 4}{7}{8} \ganttnewline
+        \ganttmilestone{Assessment}{9} \ganttnewline
+        \ganttmilestone{Winnovation}{10} \ganttnewline
+        \ganttlink{elem2}{elem3}
+        \ganttlink{elem3}{elem4}
+        \ganttlink{elem4}{elem5}
+    \end{ganttchart}
+\end{center}
 
 \subsection{Activiteiten en producten}
 Er moeten een aantal taken en verslagen worden voltooid in de komende
