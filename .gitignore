@@ -205,3 +205,6 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+# Vim latex-plugin?
+*.latexmain
