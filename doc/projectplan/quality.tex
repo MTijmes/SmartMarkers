@@ -1,0 +1,77 @@
+\section{Kwaliteit}
+Bij de start van het project worden codestandaarden opgesteld. Om de kwaliteit
+van het project te waarborgen is iedere deelnemer verantwoordelijk voor de door
+hem/haar opgeleverde producten. Deze kunnen in overeenstemming met andere
+teamleden als kwalitatief onvoldoende worden beschouwd. In dit geval is de
+persoon verantwoordelijk voor het wijzigen van het product om de kwaliteitseisen 
+te behalen. Om de kwaliteit van de code te waarborgen wordt gebruikt gemaakt van 
+unittesting.
+
+\subsection{Versiebeheer}
+\label{sec:versiebeheer}
+
+Het versiebeheer is geregeld met een Git repository gehost op GitHub.
+
+\subsection{Git}
+\subsubsection{Forks and branches}
+Om samen te werken aan een project in een Git repository wordt er gebruik
+gemaakt van forks and branches. Middels pull requests naar de develop branch
+wordt de code gestaged. Wanneer de develop branch voldoende is getest wordt
+deze naar de master branch gepusht. Er moet namelijk altijd een werkende versie
+staan op de master branch.
+
+\subsubsection{Pull requests}
+Wanneer het werk aan een taak klaar is, en de code getest is, zet degene die de
+taak heeft uitgevoerd een pull request open. In deze pull request kunnen de andere
+projectleden alle veranderingen inzien en zonodig commentaar geven om de kwaliteit
+van de code te waarborgen.
+Aan het einde van de sprint wordt er gezamenlijk gekeken naar alle code
+en indien alles werkt zal de dev branch gemerged worden met de master branch.
+
+\subsection{Unittesting}
+In de eerste week van het project wordt er kort onderzoek gedaan naar mogelijke
+unit testing frameworks, zoals Check, CUnit etc.
+
+\subsection{Codestijl}
+Om nette code op te kunnen leveren is er een codestijl opgezet voor zowel 
+de code als de commit messages.
+
+\subsubsection{Commits}
+\begin{itemize}
+    \item Er moet duidelijk worden aangegeven per commit wat er is aangepast / 
+          toegevoegd.
+    \item De stijl van commits is als volgt: in het Engels en in de tegenwoordige
+          tijd.
+\end{itemize}
+
+\subsubsection{Code}
+\textbf{Algemeen}
+
+\begin{itemize}
+  \item Alle files moeten eindigen met een newline.
+  \item Namen moeten overeenkomen met de naamgevingen genoemd in 
+      \texttt{naming\_conventions.txt}.
+\end{itemize}
+
+\textbf{C}
+\begin{itemize}
+  \item Bij inspringen (\texttt{TAB}) wordt er gebruik gemaakt van 4 spaties.
+  \item Inclusion guards worden gebruikt om te voorkomen dat header files dubbel
+        geïncludeerd worden. Hier een voorbeeld:
+        \begin{lstlisting}[language=C,frame=single]
+          #ifndef FILE_NAME_H
+          #define FILE_NAME_H
+
+          ...content...
+
+          #endif /* FILE_NAME_H */
+        \end{lstlisting}
+  \item Waar mogelijk worden \texttt{enums} gebruikt in plaats van \texttt{defines}.
+  \item Er worden standaard variabele types vanuit \texttt{<stdint.h>}.
+  \item Bij pointers wordt de ster direct voor de variabele naam geplaatst
+        bij het gebruik van een pointer.
+  \item Gebruik \texttt{/* ... */} om meerdere lijnen als comment te zetten,
+        \texttt{//} wordt gebruikt om enkele lijnen als comment te zetten.
+  \item Als er nog specifieke zaken moeten gebeuren in een bepaald stuk code wordt
+        dit aangegeven met \texttt{/* TODO: ... */}.
+\end{itemize}
