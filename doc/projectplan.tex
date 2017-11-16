@@ -1,4 +1,11 @@
 \newcommand{\versionnumber}{0.3}
+\newcommand{\docversion}{
+  \renewcommand{\arraystretch}{0.5}
+  \begin{tabular}[b]{l}
+  Versie \versionnumber{}\\
+  \today \\
+  \end{tabular}
+}
 \newcommand{\doctitle}{KBS ESA3 \\ Plan van Aanpak \\ Smart Markers}
 \newcommand{\doctitleshort}{PvA - Smart Markers}
 \newcommand{\docauthor}{
@@ -15,22 +22,18 @@
 
   \parbox[t]{1.0\linewidth}{
     \fontsize{40pt}{60pt}\selectfont
-    \vspace*{1.5cm}
-    \doctitle{} 
-    \vspace*{1.0cm}
+    \doctitle{}
     \fontsize{20pt}{40pt}\selectfont
     \\hbo-ICT, Windesheim
     \\Docent: Gido Hakvoort
-    \vspace*{1.0cm}
-    \\Versie \versionnumber{}
-    \vspace*{1.5cm}
   }
 
-  % \ThisCenterWallPaper{0.75}{res/code-image.png}
+  \setlength{\wpYoffset}{-1.8cm}
+  \ThisCenterWallPaper{0.75}{projectplan/windesheim_kadaster.png}
   \vfill
 
   {\centering \large
-    \hfill \today
+    \hfill \docversion{}
     \hfill \docauthor{}}
 
   \normalcolor{}
