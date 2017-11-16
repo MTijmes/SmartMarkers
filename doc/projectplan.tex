@@ -91,7 +91,7 @@
 \usepackage[natbib,style=apa,citestyle=authoryear]{biblatex}
 \DeclareLanguageMapping{dutch}{dutch-apa}
 \defbibheading{bibliography}[\bibname]{\section{#1}}
-\addbibresource{bibliography.bib}
+\addbibresource{projectplan/bibliography.bib}
 
 % Display
 \usepackage{lastpage}
@@ -139,22 +139,22 @@
 \addtocontents{toc}{\protect\thispagestyle{empty}}
 
 \newpage
-\input{versiebeheer}
+\input{projectplan/versionmanagement}
 
 \newpage
-\input{inleiding}
+\input{projectplan/introduction}
 
 \newpage
-\input{opdracht}
+\input{projectplan/assignment}
 
 \newpage
-\input{kwaliteit}
+\input{projectplan/quality}
 
 \newpage
-\input{organisatie}
+\input{projectplan/organisation}
 
 \newpage
-\input{methode}
+\input{projectplan/planning}
 
 \newpage
 \printbibliography
