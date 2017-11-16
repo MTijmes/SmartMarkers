@@ -1,4 +1,4 @@
-\newcommand{\versionnumber}{0.2.1}
+\newcommand{\versionnumber}{0.3}
 \newcommand{\doctitle}{KBS ESA3 \\ Plan van Aanpak \\ Smart Markers}
 \newcommand{\doctitleshort}{PvA - Smart Markers}
 \newcommand{\docauthor}{
@@ -10,7 +10,7 @@
   \end{tabular}
 }
 
-\newcommand{\doctitlepage}{%
+\newcommand{\doctitlepage}{
   \thispagestyle{empty}
 
   \parbox[t]{1.0\linewidth}{
@@ -86,6 +86,13 @@
 \usepackage[shortlabels]{enumitem}
 \usepackage{pgfgantt}
 
+% Bibliography
+\usepackage{csquotes}
+\usepackage[natbib,style=apa,citestyle=authoryear]{biblatex}
+\DeclareLanguageMapping{dutch}{dutch-apa}
+\defbibheading{bibliography}[\bibname]{\section{#1}}
+\addbibresource{bibliography.bib}
+
 % Display
 \usepackage{lastpage}
 \usepackage{tabularx}
@@ -148,5 +155,8 @@
 
 \newpage
 \input{methode}
+
+\newpage
+\printbibliography
 
 \end{document}
