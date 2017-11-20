@@ -1,0 +1,8 @@
+*.bin
+*.hex
+*.map
+*.elf
+*.o
+
+# Platform-specific makefiles
+tools.mk
