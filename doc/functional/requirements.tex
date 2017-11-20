@@ -1,0 +1,47 @@
+% Pad with two zeroes
+\newcommand\padzeroes[1]{\ifnum #1 < 10 0\fi\ifnum #1 < 100 0\fi #1}
+
+% This stuff does automatic user story numbering
+\newcommand{\ustorylbl}{SMRK}
+\newcounter{storynr}
+\newcommand{\story}{\subsubsection{\ustorylbl-\padzeroes{\arabic{storynr}}}}
+\stepcounter{storynr}
+
+\section{Eisen}
+\subsection{User Stories}
+%\subsubsection{\story}
+\story
+Als gebruiker wil ik de locatie van een paaltje kunnen zien via een kaart
+\stepcounter{storynr}
+
+\story
+Als basisstation wil ik de locatie van de verschillende paaltjes kunnen 
+ontvangen (te technisch?)
+\stepcounter{storynr}
+
+\story
+Als gebruiker wil ik het ID van een paaltje kunnen zien in een overzicht?
+\stepcounter{storynr}
+
+\story
+Als gebruiker wil ik van alle verschillende paaltjes de locatie kunnen zien
+op een kaart
+\stepcounter{storynr}
+
+\story
+Als gebruiker wil ik kunnen zien dat een paaltje aanstaat
+\stepcounter{storynr}
+
+\story
+Als gebruiker wil ik kunnen zien dat een paaltje verbonden is met het (mesh)
+netwerk
+\stepcounter{storynr}
+
+\subsection{Milestones}
+\begin{itemize}
+    \item Een prototype van een enkel paaltje dat zijn locatie kan bepalen
+    \item Een tweede paaltje dat met het eerste paaltje kan communiceren
+    \item Vijf paaltjes die met elkaar kunnen communiceren
+    \item Een weergave van de locatie van de verschillende paaltjes op een kaart
+\end{itemize}
+\subsection{Definition of Done}
