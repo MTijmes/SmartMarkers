@@ -208,3 +208,4 @@ $RECYCLE.BIN/
 
 # Vim latex-plugin?
 *.latexmain
+*.swp
