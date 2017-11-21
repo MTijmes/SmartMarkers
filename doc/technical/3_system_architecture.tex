@@ -1,0 +1,43 @@
+\section{Systeemarchitectuur}
+De architectuur van Smart Markers is een netwerk waarin GPS nodes onderling communiceren middels LoRa, om tot op een meter nauwkeurig locatiegegevens te kunnen verzamelen. Deze data wordt vervolgens naar de gateway verstuurd om opgeslagen te worden in een database.
+
+\subsection{Architectuur}
+Het Smart Markers netwerk is een mesh netwerk waarin nodes onderling communiceren.
+% TODO: Welke protocollen? Welke data?
+
+\subsection{Hardware}
+\paragraph{STM32 microcontroller} \hfill \break
+Als brein van de Smart Marker is er gekozen voor een \texttt{STM32 NUCLEO-L073RZ development board}, omdat het board:
+\begin{itemize}
+    \item beschikt over een ARM Cortex M0+ 32 bit processor;
+    \item beschikt over voldoende geheugen voor de Smart Marker applicatie;
+    \item weinig energie verbruikt;
+    \item zich leent voor prototyping;
+    \item een veelgebruikte en bekende Architectuur heeft;
+\end{itemize}
+
+\paragraph{LoRa radio} \hfill \break
+De LoRa radio bevindt zich op het RF-LORA-868-SO board. De SX1272 LoRa radio wordt voornamelijk gebruikt voor end-devices, omdat het een half-duplex radio is.
+
+\paragraph{Locatiebepaling} \hfill \break
+u-blox EVK-7P GPS-module
+    SPI interface
+% TODO: Meer onderzoeken. Welke data?
+
+\subsection{Software}
+\begin{itemize}
+    \item GNU ARM embedded toolchain
+    \item ST-Link programmer
+    \item Git
+    \item LaTeX
+\end{itemize}
+
+\subsection{Communicatie}
+Beschrijving van de manier(en) van communicatie tussen verschillende
+deelsystemen. Ook een beschrijving van interfaces op deelsystemen.
+
+\subsection{Gegevensopslag}
+Beschrijving van de manier(en) van gegevensopslag.
+
+\subsection{Overzicht}
+Een totaaloverzicht (afbeelding) van de systeemarchitectuur.
