@@ -128,10 +128,22 @@
                          afterskip=.25\baselineskip]{section}
 
 \RedeclareSectionCommand[beforeskip=.25\baselineskip,
-                         afterskip=.25\baselineskip]{subsection}
+                         afterskip=0\baselineskip]{subsection}
 
 \RedeclareSectionCommand[beforeskip=.25\baselineskip,
-                         afterskip=.25\baselineskip]{subsubsection}
+                         afterskip=0\baselineskip]{subsubsection}
+
+\RedeclareSectionCommand[beforeskip=.125\baselineskip,
+                         afterskip=0\baselineskip]{paragraph}
+
+\let\subsectionnl\subsection
+\renewcommand{\subsection}[1]{\subsectionnl{#1} \hfill \break}
+
+\let\subsubsectionnl\subsubsection
+\renewcommand{\subsubsection}[1]{\subsubsectionnl{#1} \hfill \break}
+
+\let\paragraphnl\paragraph
+\renewcommand{\paragraph}[1]{\paragraphnl{#1} \hfill \break}
 
 \begin{document}
 \doctitlepage{}
