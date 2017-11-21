@@ -1,43 +1,51 @@
 \section{Systeemarchitectuur}
-De architectuur van Smart Markers is een netwerk waarin GPS nodes onderling communiceren middels LoRa, om tot op een meter nauwkeurig locatiegegevens te kunnen verzamelen. Deze data wordt vervolgens naar de gateway verstuurd om opgeslagen te worden in een database.
+De architectuur van het Smart Markers systeem is een netwerk van GPS-nodes die communiceren met de gateway middels LoRa om tot op een meter nauwkeurig locatiegegevens te registreren. De end-nodes verzamelen de GPS-data en versturen deze naar de gateway. De gateway, ookwel het referentie- of basisstation, berekent een GPS-correctie en voert deze uit op de data van de end-nodes.
 
 \subsection{Architectuur}
-Het Smart Markers netwerk is een mesh netwerk waarin nodes onderling communiceren.
+In hoofdstuk \ref{subsec:overzicht} is een schematische weergave van de Smart Markers architectuur.
 % TODO: Welke protocollen? Welke data?
 
 \subsection{Hardware}
-\paragraph{STM32 microcontroller} \hfill \break
+In de volgende paragrafen staan beschrijvingen van de gebruikte hardware.
+\paragraph{STM32 microcontroller}
 Als brein van de Smart Marker is er gekozen voor een \texttt{STM32 NUCLEO-L073RZ development board}, omdat het board:
 \begin{itemize}
     \item beschikt over een ARM Cortex M0+ 32 bit processor;
     \item beschikt over voldoende geheugen voor de Smart Marker applicatie;
     \item weinig energie verbruikt;
     \item zich leent voor prototyping;
-    \item een veelgebruikte en bekende Architectuur heeft;
+    \item een veelgebruikte en bekende architectuur heeft;
 \end{itemize}
 
-\paragraph{LoRa radio} \hfill \break
+\paragraph{LoRa radio}
 De LoRa radio bevindt zich op het RF-LORA-868-SO board. De SX1272 LoRa radio wordt voornamelijk gebruikt voor end-devices, omdat het een half-duplex radio is.
+% TODO: Links naar LoRa docs
 
-\paragraph{Locatiebepaling} \hfill \break
-u-blox EVK-7P GPS-module
-    SPI interface
+\paragraph{Locatiebepaling}
+Voor de locatiebepaling worden u-blox EVK-7P GPS-modules gebruikt, omdat de opdrachtgever al in bezit was van deze GPS-modules.
 % TODO: Meer onderzoeken. Welke data?
 
 \subsection{Software}
+Tijdens het project wordt er gebruik gemaakt van softwarepakketten ter ondersteuning. Hieronder staat een korte opsomming van tools en technieken die tijdens het project worden gebruikt:
 \begin{itemize}
-    \item GNU ARM embedded toolchain
-    \item ST-Link programmer
-    \item Git
-    \item LaTeX
+    \item GNU ARM embedded toolchain;
+    \item Makefiles;
+    \item ST-Link programmer;
+    \item Git;
+    \item \LaTeX;
 \end{itemize}
 
 \subsection{Communicatie}
-Beschrijving van de manier(en) van communicatie tussen verschillende
-deelsystemen. Ook een beschrijving van interfaces op deelsystemen.
+Als communicatie techniek is er gekozen voor LoRa, omdat de opdrachtgever met één meting een heel gebied wilt kunnen registreren. De LoRa modulatietechniek leent zich ervoor om in deze use-case gebruikt te worden, vanwege de lange communicatie-afstand en het lage energieverbruik.
+% TODO: Bron toevoegen vergelijking communicatie technieken/protocollen
+
+Er is overwogen om een LoRa mesh netwerk op te zetten, echter is dat achterwege gelaten vanwege de korte tijdsduur van het project. Uit het onderzoek van Kai-Hsiang Ke et al. is gebleken dat de packet delivery ratio (PDR) van hun labopstelling aanzienlijk is verbeterd door gebruik te maken van een mesh netwerk.
+% Bron: http://mx.nthu.edu.tw/~huclee/paper/2017%20IPSN%20LORA%20MESH%2020170124.pdf
 
 \subsection{Gegevensopslag}
 Beschrijving van de manier(en) van gegevensopslag.
+% TODO: Uitzoeken wat de data throughput is.
 
+\label{subsec:overzicht}
 \subsection{Overzicht}
 Een totaaloverzicht (afbeelding) van de systeemarchitectuur.
