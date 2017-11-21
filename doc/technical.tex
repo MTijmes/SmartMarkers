@@ -7,8 +7,8 @@
   \today \\
   \end{tabular}
 }
-\newcommand{\doctitle}{KBS ESA3 \\ Functioneel Ontwerp \\ Smart Markers}
-\newcommand{\doctitleshort}{FRD - Smart Markers}
+\newcommand{\doctitle}{KBS ESA3 \\ Technisch Ontwerp \\ Smart Markers}
+\newcommand{\doctitleshort}{TO - Smart Markers}
 \newcommand{\docauthor}{
   \renewcommand{\arraystretch}{0.5}
   \begin{tabular}{l l}
@@ -30,7 +30,7 @@
   }
 
   \setlength{\wpYoffset}{-1.8cm}
-  \ThisCenterWallPaper{0.75}{functional/windesheim_kadaster.png}
+  \ThisCenterWallPaper{0.75}{projectplan/windesheim_kadaster.png}
   \vfill
 
   {
@@ -97,7 +97,7 @@
 \usepackage[natbib,style=apa,citestyle=authoryear]{biblatex}
 \DeclareLanguageMapping{dutch}{dutch-apa}
 \defbibheading{bibliography}[\bibname]{\section{#1}}
-\addbibresource{functional/bibliography.bib}
+\addbibresource{projectplan/bibliography.bib}
 
 % Display
 \usepackage{lastpage}
@@ -157,19 +157,25 @@
 \addtocontents{toc}{\protect\thispagestyle{empty}}
 
 \newpage
-\input{functional/versionmanagement}
+\input{technical/1_versionmanagement}
 
 \newpage
-\input{functional/introduction}
+\input{technical/2_introduction}
 
 \newpage
-\input{functional/requirements}
+\input{technical/3_system_architecture}
 
 \newpage
-\input{functional/resources}
+\input{technical/4_data_model}
 
 \newpage
-\input{functional/risks}
+\input{technical/5_object_model}
+
+\newpage
+\input{technical/6_user_interface}
+
+\newpage
+\input{technical/7_processes}
 
 \newpage
 \printbibliography
