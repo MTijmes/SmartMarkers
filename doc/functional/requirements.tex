@@ -2,46 +2,61 @@
 \newcommand\padzeroes[1]{\ifnum #1 < 10 0\fi\ifnum #1 < 100 0\fi #1}
 
 % This stuff does automatic user story numbering
-\newcommand{\ustorylbl}{SMRK}
+\newcommand{\ustorylbl}{FREQ}
 \newcounter{storynr}
 \newcommand{\story}{\subsubsection{\ustorylbl-\padzeroes{\arabic{storynr}}}}
 \stepcounter{storynr}
 
 \section{Eisen}
 \subsection{User Stories}
-%\subsubsection{\story}
 \story
-Als gebruiker wil ik de locatie van een paaltje kunnen zien via een kaart
+Als Kadaster medewerker wil ik de locatie van de SmartMarkers kunnen zien via
+een kaart.
 \stepcounter{storynr}
 
 \story
-Als basisstation wil ik de locatie van de verschillende paaltjes kunnen 
-ontvangen (te technisch?)
+Als Kadaster medewerker wil ik de SmartMarkers kunnen identificeren.
 \stepcounter{storynr}
 
 \story
-Als gebruiker wil ik het ID van een paaltje kunnen zien in een overzicht?
+Als Kadaster medewerker wil ik kadastrale registratie kunnen doen,
+met behulp van de SmartMarkers kaart.
 \stepcounter{storynr}
 
 \story
-Als gebruiker wil ik van alle verschillende paaltjes de locatie kunnen zien
-op een kaart
+Als SmartMarker plaatser wil ik kunnen zien dat een SmartMarker aanstaat.
 \stepcounter{storynr}
 
 \story
-Als gebruiker wil ik kunnen zien dat een paaltje aanstaat
+Als SmartMarker plaatser wil ik kunnen zien dat een SmartMarker verbonden
+is met het netwerk.
 \stepcounter{storynr}
 
 \story
-Als gebruiker wil ik kunnen zien dat een paaltje verbonden is met het (mesh)
-netwerk
+Als SmartMarker plaatser wil ik geen systeem instellingen hoeven aan te passen.
 \stepcounter{storynr}
 
+\story
+Als SmartMarker plaatser wil ik weinig onderhoud hoeven te doen aan de
+SmartMarker (Batterij duur).
+\stepcounter{storynr}
+
+\newpage
 \subsection{Milestones}
 \begin{itemize}
-    \item Een prototype van een enkel paaltje dat zijn locatie kan bepalen
-    \item Een tweede paaltje dat met het eerste paaltje kan communiceren
-    \item Vijf paaltjes die met elkaar kunnen communiceren
-    \item Een weergave van de locatie van de verschillende paaltjes op een kaart
+    \item Een prototype van een enkel SmartMarker dat zijn locatie kan bepalen
+    \item Een tweede SmartMarker dat met het eerste SmartMarker kan communiceren
+    \item Vijf SmartMarkers die met elkaar kunnen communiceren
+    \item Een weergave van de locatie van de verschillende SmartMarkers op
+          een kaart
 \end{itemize}
 \subsection{Definition of Done}
+Iets is pas klaar als:
+\begin{itemize}
+    \item De code geschreven is volgens de code standaard die in het plan
+        van aanpak beschreven is.
+    \item De code volledig is getest volgens ons testplan.
+    \item De code ook unittests heeft waar het nodig is.
+    \item De documentatie klopt met de code
+    \item De code is gereviewd door tenminste één projectgenoot
+\end{itemize}
