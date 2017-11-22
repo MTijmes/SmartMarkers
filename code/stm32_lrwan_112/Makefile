@@ -5,9 +5,11 @@ include tools.mk
 PROJECT = STM32_LRWAN_112
 
 # List all C defines here
-#DEFS += -DDEBUG
-DEFS = -DSTM32L0 -DSTM32L073xx
+DEFS  = -DSTM32L0 -DSTM32L073xx
+DEFS += -DDEBUG
+DEFS += -DTRACE
 DEFS += -DUSE_STM32L0XX_NUCLEO
+DEFS += -DLOW_POWER_DISABLE
 DEFS += -DREGION_EU868
 
 # Debug level
@@ -33,7 +35,9 @@ BIN  = $(CP) -O binary -S
 # List of source files
 SRC  = ./src/main.c
 SRC += ./src/system_syscalls.c
-SRC += ./src/system_stm32l0xx.c
+#SRC += ./src/system_stm32l0xx.c
+SRC += ./drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/system_stm32l0xx.c
+
 
 SRC += ./src/bsp.c
 SRC += ./src/debug.c
@@ -61,6 +65,7 @@ SRC += ./drivers/STM32L0xx_HAL_Driver/src/stm32l0xx_hal_uart.c
 
 SRC += ./drivers/BSP/STM32L0xx_Nucleo/stm32l0xx_nucleo.c
 SRC += ./drivers/BSP/sx1272mb2das/sx1272mb2das.c
+SRC += ./drivers/BSP/Components/sx1272/sx1272.c
 
 SRC += ./middlewares/lora/core/lora.c
 SRC += ./middlewares/lora/crypto/aes.c
@@ -68,6 +73,7 @@ SRC += ./middlewares/lora/crypto/cmac.c
 SRC += ./middlewares/lora/Mac/LoRaMac.c
 SRC += ./middlewares/lora/Mac/LoRaMacCrypto.c
 SRC += ./middlewares/lora/Mac/Region/Region.c
+SRC += ./middlewares/lora/Mac/Region/RegionCommon.c
 SRC += ./middlewares/lora/Mac/Region/RegionEU868.c
 SRC += ./middlewares/lora/Utilities/delay.c
 SRC += ./middlewares/lora/Utilities/low_power.c
@@ -79,8 +85,8 @@ STARTUP = ./startup/startup_stm32l073xx.s
 
 # List all include directories here
 INCDIRS  = ./inc
-INCDIRS += ./drivers/CMSIS/core
-INCDIRS += ./drivers/CMSIS/device
+INCDIRS += ./drivers/CMSIS/Include
+INCDIRS += ./drivers/CMSIS/Device/ST/STM32L0xx/Include
 INCDIRS += ./drivers/STM32L0xx_HAL_Driver/inc
 INCDIRS += ./drivers/BSP/STM32L0xx_Nucleo
 INCDIRS += ./drivers/BSP/sx1272mb2das
