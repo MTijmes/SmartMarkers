@@ -70,15 +70,15 @@ SRC += ./drivers/BSP/Components/sx1272/sx1272.c
 SRC += ./middlewares/lora/core/lora.c
 SRC += ./middlewares/lora/crypto/aes.c
 SRC += ./middlewares/lora/crypto/cmac.c
-SRC += ./middlewares/lora/Mac/LoRaMac.c
-SRC += ./middlewares/lora/Mac/LoRaMacCrypto.c
-SRC += ./middlewares/lora/Mac/Region/Region.c
-SRC += ./middlewares/lora/Mac/Region/RegionCommon.c
-SRC += ./middlewares/lora/Mac/Region/RegionEU868.c
-SRC += ./middlewares/lora/Utilities/delay.c
-SRC += ./middlewares/lora/Utilities/low_power.c
-SRC += ./middlewares/lora/Utilities/timeServer.c
-SRC += ./middlewares/lora/Utilities/utilities.c
+SRC += ./middlewares/lora/mac/LoRaMac.c
+SRC += ./middlewares/lora/mac/LoRaMacCrypto.c
+SRC += ./middlewares/lora/mac/region/Region.c
+SRC += ./middlewares/lora/mac/region/RegionCommon.c
+SRC += ./middlewares/lora/mac/region/RegionEU868.c
+SRC += ./middlewares/lora/utilities/delay.c
+SRC += ./middlewares/lora/utilities/low_power.c
+SRC += ./middlewares/lora/utilities/timeServer.c
+SRC += ./middlewares/lora/utilities/utilities.c
 
 # List assembly startup source file here
 STARTUP = ./startup/startup_stm32l073xx.s
