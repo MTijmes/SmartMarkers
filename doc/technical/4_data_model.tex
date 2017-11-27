@@ -1,5 +1,35 @@
 \section{Gegevensmodel}
 \subsection{Data format}
 \subsection{Database}
+\label{sec:database}
+
+De verstuurde data zal worden bijgehouden in een SQL-database. Tijdens het testen
+zal dit op een extern gehoste server zijn.
+Wanneer er een eigen LoRa gateway met de markers gebruikt wordt zal deze database
+een lokaal, offline, systeem zijn. De data zal dan naar een centrale database
+worden verstuurd wanneer er een goede internetverbinding is.
+
+De tabel met de meetpunten zal de volgende kolommen bevatten:
+\begin{itemize}
+    \item Meetpunt ID
+    \item Marker nummer
+    \item Latitude
+    \item Longitude
+    \item Tijdstip van registratie
+\end{itemize}
+
+Verder zal er een tabel zijn met de percelen, deze bevat de kolommen:
+\begin{itemize}
+    \item Perceel ID
+    \item Perceelnummer
+\end{itemize}
+
+Om de percelen en meetpunten aan elkaar te koppelen zal er een koppeltabel komen:
+\begin{itemize}
+    \item Perceel ID
+    \item Volgnummer
+    \item Meetpunt ID
+\end{itemize}
+
 \subsection{Bestanden}
 \subsubsection{Code}

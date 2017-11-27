@@ -25,6 +25,12 @@ De LoRa radio bevindt zich op het RF-LORA-868-SO board. De SX1272 LoRa radio wor
 Voor de locatiebepaling worden u-blox EVK-7P GPS-modules gebruikt, omdat de opdrachtgever al in bezit was van deze GPS-modules.
 % TODO: Meer onderzoeken. Welke data?
 
+\paragraph{Stroomvoorziening}
+Als energiebron gebruiken we twee 18650 cellen, welke extern opgeladen worden.
+Om te voorkomen dat deze te ver ontladen worden zal hier een bescherming voor
+ingebouwd worden. Voorlopig zullen de cellen extern geladen worden, in een meer
+definitieve versie zal het laden geïntegreerd kunnen worden.
+
 \subsection{Software}
 Tijdens het project wordt er gebruik gemaakt van softwarepakketten ter ondersteuning. Hieronder staat een korte opsomming van tools en technieken die tijdens het project worden gebruikt:
 \begin{itemize}
@@ -43,7 +49,8 @@ Er is overwogen om een LoRa mesh netwerk op te zetten, echter is dat achterwege 
 % Bron: http://mx.nthu.edu.tw/~huclee/paper/2017%20IPSN%20LORA%20MESH%2020170124.pdf
 
 \subsection{Gegevensopslag}
-Beschrijving van de manier(en) van gegevensopslag.
+De verzamelde data uit de meetpunten zal worden opgeslagen in een SQL-database.
+Zie ook hoofdstuk \ref{sec:database}.
 % TODO: Uitzoeken wat de data throughput is.
 
 \label{subsec:overzicht}
