@@ -1,3 +1,6 @@
+# Device-specific header files
+inc/Commissioning.h
+
 *.bin
 *.hex
 *.map

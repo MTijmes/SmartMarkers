@@ -1,12 +1,12 @@
 \section{Systeemarchitectuur}
-De architectuur van het Smart Markers systeem is een netwerk van GPS-nodes die communiceren met de gateway middels LoRa om tot op een meter nauwkeurig locatiegegevens te registreren. De end-nodes verzamelen de GPS-data en versturen deze naar de gateway. De gateway, ookwel het referentie- of basisstation, berekent een GPS-correctie en voert deze uit op de data van de end-nodes.
+Dit hoofdstuk beschrijft de architectuur van het Smart Markers systeem.
 
 \subsection{Architectuur}
-In hoofdstuk \ref{subsec:overzicht} is een schematische weergave van de Smart Markers architectuur.
-% TODO: Welke protocollen? Welke data?
+De netwerkarchitectuur heeft een stertopologie, waarin de LoRa gateway centraal staat. De GPS-nodes, die om de gateway en over een gebied zijn verspreid, sturen GPS-data naar de gateway. Van één van de GPS-nodes is de positie nauwkeurig opgemeten, deze node functioneert als referentiestation en stuurt GPS-correctiedata naar de gateway. De gateway stuurt deze data door naar een applicatieserver, waar de GPS-data en de GPS-correctiedata worden gebruikt om de GPS-data tot op een meter nauwkeurig te krijgen.
+
+In hoofdstuk \ref{subsec:overzicht} staat een schematisch overzicht van de Smart Markers architectuur.
 
 \subsection{Hardware}
-In de volgende paragrafen staan beschrijvingen van de gebruikte hardware.
 \paragraph{STM32 microcontroller}
 Als brein van de Smart Marker is er gekozen voor een \texttt{STM32 NUCLEO-L073RZ development board}, omdat het board:
 \begin{itemize}
@@ -21,8 +21,10 @@ Als brein van de Smart Marker is er gekozen voor een \texttt{STM32 NUCLEO-L073RZ
 De LoRa radio bevindt zich op het RF-LORA-868-SO board. De SX1272 LoRa radio wordt voornamelijk gebruikt voor end-devices, omdat het een half-duplex radio is.
 % TODO: Links naar LoRa docs
 
-\paragraph{Locatiebepaling}
-Voor de locatiebepaling worden u-blox EVK-7P GPS-modules gebruikt, omdat de opdrachtgever al in bezit was van deze GPS-modules.
+\paragraph{GPS-modules}
+Voor de locatiebepaling worden u-blox EVK-7P GPS-modules gebruikt, omdat Kadaster deze heeft aangeboden voor gebruik tijdens dit project. GPS-modules zijn relatief duur, dus qua budget komt het goed uit dat Kadaster deze modules ter beschikking kan stellen.
+
+Deze GPS-modules worden uitgelezen over de SPI bus, met een maximale snelheid van 1Mb/s. Er zijn twee protocollen voor de representatie van de output data: het UBX protocol voor binaire representatie en het NMEA protocol voor ASCII representatie.
 % TODO: Meer onderzoeken. Welke data?
 
 \paragraph{Stroomvoorziening}
@@ -45,8 +47,7 @@ Tijdens het project wordt er gebruik gemaakt van softwarepakketten ter ondersteu
 Als communicatie techniek is er gekozen voor LoRa, omdat de opdrachtgever met één meting een heel gebied wilt kunnen registreren. De LoRa modulatietechniek leent zich ervoor om in deze use-case gebruikt te worden, vanwege de lange communicatie-afstand en het lage energieverbruik.
 % TODO: Bron toevoegen vergelijking communicatie technieken/protocollen
 
-Er is overwogen om een LoRa mesh netwerk op te zetten, echter is dat achterwege gelaten vanwege de korte tijdsduur van het project. Uit het onderzoek van Kai-Hsiang Ke et al. is gebleken dat de packet delivery ratio (PDR) van hun labopstelling aanzienlijk is verbeterd door gebruik te maken van een mesh netwerk.
-% Bron: http://mx.nthu.edu.tw/~huclee/paper/2017%20IPSN%20LORA%20MESH%2020170124.pdf
+Er is overwogen om een LoRa mesh netwerk op te zetten, echter is er besloten om te kiezen voor een simpelere implementatie, vanwege de korte tijdsduur van het project en een gebrek aan kennis over mesh netwerken. Uit het onderzoek van \citep{AIM_HI_LORA_WMN} is gebleken dat de packet delivery ratio (PDR) in hun labopstelling aanzienlijk betere resultaten had in een mesh netwerk, ten opzichte van een stertopologie.
 
 \subsection{Gegevensopslag}
 De verzamelde data uit de meetpunten zal worden opgeslagen in een SQL-database.

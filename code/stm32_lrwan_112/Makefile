@@ -34,7 +34,7 @@ BIN  = $(CP) -O binary -S
 
 # List of source files
 SRC  = ./src/main.c
-SRC += ./src/system_syscalls.c
+#SRC += ./src/system_syscalls.c
 #SRC += ./src/system_stm32l0xx.c
 SRC += ./drivers/CMSIS/Device/ST/STM32L0xx/Source/Templates/system_stm32l0xx.c
 
@@ -117,7 +117,7 @@ LIB     = $(patsubst %,-l%, $(LIBS))
 COMMONFLAGS = -mcpu=$(MCU) -mthumb -mfloat-abi=soft
 ASFLAGS = $(COMMONFLAGS) $(DEBUG)
 CPFLAGS = $(COMMONFLAGS) $(OPT) $(DEFS) $(DEBUG) -Wall -fmessage-length=0 -ffunction-sections
-LDFLAGS = $(COMMONFLAGS) -T$(LINKER_SCRIPT) -Wl,-Map=$(PROJECT).map -Wl,--gc-sections $(LIBDIR) $(LIB)
+LDFLAGS = $(COMMONFLAGS) -T$(LINKER_SCRIPT) -Wl,-Map=$(PROJECT).map -Wl,--gc-sections $(LIBDIR) $(LIB) --specs=rdimon.specs
 
 #
 # Makefile Rules
