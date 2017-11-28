@@ -45,15 +45,13 @@ Tijdens het project wordt er gebruik gemaakt van softwarepakketten ter ondersteu
 
 \subsection{Communicatie}
 Als communicatie techniek is er gekozen voor LoRa, omdat de opdrachtgever met één meting een heel gebied wilt kunnen registreren. De LoRa modulatietechniek leent zich ervoor om in deze use-case gebruikt te worden, vanwege de lange communicatie-afstand en het lage energieverbruik.
-% TODO: Bron toevoegen vergelijking communicatie technieken/protocollen
 
-Er is overwogen om een LoRa mesh netwerk op te zetten, echter is er besloten om te kiezen voor een simpelere implementatie, vanwege de korte tijdsduur van het project en een gebrek aan kennis over mesh netwerken. Uit het onderzoek van \citep{AIM_HI_LORA_WMN} is gebleken dat de packet delivery ratio (PDR) in hun labopstelling aanzienlijk betere resultaten had in een mesh netwerk, ten opzichte van een stertopologie.
+Er is overwogen om een LoRa mesh netwerk op te zetten, echter is er besloten om te kiezen voor een simpelere implementatie, vanwege de korte tijdsduur van het project en een gebrek aan kennis over mesh netwerken. Uit het onderzoek van \citep{AIM_HI_LORA_WMN} is gebleken dat de packet delivery ratio (PDR) in hun labopstelling aanzienlijk betere resultaten had in een mesh netwerk (, ten opzichte van een stertopologie.
 
 \subsection{Gegevensopslag}
 De verzamelde data uit de meetpunten zal worden opgeslagen in een SQL-database.
 Zie ook hoofdstuk \ref{sec:database}.
-% TODO: Uitzoeken wat de data throughput is.
 
 \label{subsec:overzicht}
 \subsection{Overzicht}
-Een totaaloverzicht (afbeelding) van de systeemarchitectuur.
+\includegraphics[width=0.9\linewidth]{technical/system_architecture_overview.pdf}
