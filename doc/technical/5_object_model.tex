@@ -1,50 +1,39 @@
-\section{Object Model}
-\subsection{Object Model Diagram}
-\subsection{Objecten}
-\subsubsection{Object A}
-\paragraph{Methodes}
+\section{Klassendiagram}
+\subsection{Overzicht}
+
+\includegraphics[width=0.9\linewidth]{technical/class_diagram.pdf}
+
+\subsection{Klassen}
+\subsubsection{Node}
+\paragraph{Attributen}
+De Node klasse heeft een uniek ID. Met een boolean type kan worden aangegeven of de Node een referentiestation is. De gps\_data bevat de locatiegegevens, en de payload bevat de gefilterde gps\_data.
+
 \paragraph{Functies}
-\paragraph{Eigenschappen}
-\paragraph{Enumeraties}
+\begin{itemize}
+    \item \texttt{init\_hardware()} initialiseert de hardware/peripherals.
+    \item \texttt{init\_lora()} initialiseert de LoRaWAN netwerk stack.
+    \item \texttt{init\_gps()} initialiseert de GPS module.
+    \item \texttt{gps\_acquire()} zoekt naar satellieten.
+    \item \texttt{gps\_measure(struct gps\_data)} schrijft een GPS-meting weg in een gps\_data struct.
+    \item \texttt{lora\_register(id, ref\_station)} registreert de Node in het netwerk.
+    \item \texttt{lora\_data\_prepare(struct gps\_data)} verpakt gps\_data in een payload struct, om via het LoRa netwerk verstuurd te worden.
+    \item \texttt{lora\_data\_send(struct payload)} verstuurt de payload.
+    \item \texttt{sleep(sec)} zet het device in slaapmodus voor
+\end{itemize}
 
-% Demo:
-\begin{SaveVerbatim}{toto}
-Je suis une note
-qui concerne la
-relation d'import
-\end{SaveVerbatim}
+\subsubsection{Referentiestation}
+Het referentiestation is een Node waarvan de \texttt{ref\_station} \texttt{true} is. De positie van dit referentiestation is met hoge nauwkeurigheid vastgelegd, om middels DGPS een correctie uit te kunnen voeren.
 
-\begin{center}
-\begin{tikzpicture}
-\begin{umlpackage}{p}
+Het referentiestation stuurt DGPS-data.
 
-\begin{umlpackage}{sp1}
-\umlclass[template=T]{A}{
-  n : uint \\ t : float
-}{}
-\umlclass[y=-3]{B}{
-  d : double
-}{
-  \umlvirt{setB(b : B) : void} \\ getB() : B}
-\end{umlpackage}
-\begin{umlpackage}[x=10,y=-6]{sp2}
-\umlinterface{C}{
-  n : uint \\ s : string
-}{}
-\end{umlpackage}
-\umlclass[x=2,y=-10]{D}{
-  n : uint
-  }{}
-\umlsimpleinterface{E}
-\end{umlpackage}
+\subsubsection{Gateway}
+De gateway ontvangt data van alle Nodes en stuurt de data door naar een applicatieserver, waar het vervolgens in een database wordt weggeschreven.
 
-\umlassoc[geometry=-|-, arg1=tata, mult1=*, pos1=0.1, align1=right, arg2=toto, mult2=1, pos2=2.9, align2=left]{C}{B}
-\umlunicompo[geometry=-|, arg=titi, mult=*, pos=1.7, stereo=vector]{D}{C}
-\umlimport[geometry=|-, anchors=90 and 50, name=import]{sp2}{sp1}
-\umlaggreg[arg=tutu, mult=1, pos=0.8, angle1=30, angle2=60, loopsize=2cm]{D}{D}
-\umlinherit[geometry=-|]{D}{B}
-\umlnote[x=2.5,y=-6, width=3cm]{B}{Je suis une note qui concerne la classe B}
-\umlnote[x=7.5,y=-2]{import-2}{\UseVerbatim{toto}}
-\end{tikzpicture}
+\subsubsection{Database}
+De database bevat de GPS-gegevens waar een correctie op is uitgevoerd. Deze data wordt gebruikt voor de weergave in een Google API.
 
-\end{center}
+\subsubsection{GPS-data}
+Het GPS-data struct bevat een (talker) ID van de GPS-module, tijd in UTC-format, en de locatiegegevens in latitude, longitude en altitude.
+
+\subsubsection{DGPS-data}
+Het DGPS-data struct ziet er hetzelfde uit als GPS-data, met een aanvulling van foutcorrectie attributen.
