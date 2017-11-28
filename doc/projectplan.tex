@@ -1,7 +1,7 @@
 \newcommand{\versionnumber}{1.0}
 \newcommand{\docversion}{
   \renewcommand{\arraystretch}{0.5}
-  \setlength{\tabcolsep}{0pt}  
+  \setlength{\tabcolsep}{0pt}
   \begin{tabular}[b]{l}
   Versie \versionnumber{}\\
   \today \\
@@ -49,12 +49,12 @@
 \providecommand{\doctype}{scrartcl}
 \providecommand{\doctitlepage}{TitlePage}
 
-\documentclass[12pt,a4paper,titlepage,parskip=full]{\doctype}
+\documentclass[12pt,a4paper,titlepage,parskip=half]{\doctype}
 
 \usepackage[dutch]{babel}
 \usepackage{blindtext}
 \usepackage{float}
-\usepackage{hyperref}
+\usepackage[hidelinks]{hyperref}
 \usepackage{graphicx}
 \usepackage{listings}
 \usepackage{wallpaper}
@@ -132,6 +132,9 @@
 
 \RedeclareSectionCommand[beforeskip=.25\baselineskip,
                          afterskip=.25\baselineskip]{subsubsection}
+
+\RedeclareSectionCommand[beforeskip=.25\baselineskip,
+                         afterskip=.25\baselineskip]{paragraph}
 
 \begin{document}
 \doctitlepage{}

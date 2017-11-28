@@ -1,0 +1,11 @@
+# Device-specific header files
+inc/Commissioning.h
+
+*.bin
+*.hex
+*.map
+*.elf
+*.o
+
+# Platform-specific makefiles
+tools.mk

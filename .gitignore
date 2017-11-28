@@ -208,3 +208,7 @@ $RECYCLE.BIN/
 
 # Vim latex-plugin?
 *.latexmain
+*.swp
+
+# Visual paradigm
+*.vpp.*

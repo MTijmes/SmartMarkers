@@ -1,0 +1,23 @@
+Sprint 1
+    Functioneel ontwerp afmaken
+    Technisch ontwerp afmaken
+    LoRa 868MHz antennas maken
+    LoRa modules solderen
+    LoRa firmware onderzoeken
+    LoRa firmware porten naar Nucleo
+    LoRa dataformat bedenken
+    GPS module gebruik onderzoeken
+    GPS data uitlezen op Nucleo
+    GPS firmware schrijven voor Nucleo
+    Data-aggregatie systeem uitzoeken
+    Dataweergave onderzoeken
+
+Backlog
+    Low-power onderzoeken
+    GPS nauwkeurigheid uitzoeken (DGPS)
+    Database maken
+    LoRa data versturen
+    LoRa node-to-node communicatie
+    ...
+    LoRa gateway advies
+    433MHz advies
