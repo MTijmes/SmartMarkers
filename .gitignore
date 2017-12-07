@@ -212,3 +212,6 @@ $RECYCLE.BIN/
 
 # Visual paradigm
 *.vpp.*
+
+# VSCode
+.vscode/

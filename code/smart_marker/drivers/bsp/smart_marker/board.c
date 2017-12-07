@@ -3,6 +3,7 @@
 
 #include <board.h>
 #include <uart.h>
+#include <i2c.h>
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -20,7 +21,7 @@ board_sysclk_config(void)
     LL_RCC_PLL_Disable();
     /* Set new latency */
     LL_FLASH_SetLatency(LL_FLASH_LATENCY_1);
-
+    LL_PWR_SetRegulVoltageScaling(LL_PWR_REGU_VOLTAGE_SCALE1);
     /* HSE configuration and activation */
     LL_RCC_HSE_EnableCSS();
     LL_RCC_HSE_EnableBypass();
@@ -28,7 +29,9 @@ board_sysclk_config(void)
     while(LL_RCC_HSE_IsReady() != 1);
 
     /* Main PLL configuration and activation */
-    LL_RCC_PLL_ConfigDomain_SYS(LL_RCC_PLLSOURCE_HSE, LL_RCC_PLL_MUL_8, LL_RCC_PLL_DIV_2);
+    LL_RCC_PLL_ConfigDomain_SYS(LL_RCC_PLLSOURCE_HSE,
+                                LL_RCC_PLL_MUL_8,
+                                LL_RCC_PLL_DIV_2);
 
     LL_RCC_PLL_Enable();
     while(LL_RCC_PLL_IsReady() != 1);
@@ -47,6 +50,7 @@ board_sysclk_config(void)
     /* Set systick to 1ms in using frequency set to 32MHz */
     LL_Init1msTick(32000000);
 
+    LL_SYSTICK_SetClkSource(LL_SYSTICK_CLKSOURCE_HCLK);
     /* Update CMSIS variable (which can be updated also through SystemCoreClockUpdate function) */
     LL_SetSystemCoreClock(32000000);
 }
@@ -108,11 +112,18 @@ void
 board_init(void)
 {
     if (!board_is_initialized) {
+
+        LL_IOP_GRP1_EnableClock(LL_IOP_GRP1_PERIPH_GPIOB);
+        LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_SYSCFG);
+        LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_PWR);
+        NVIC_SetPriority(SVC_IRQn,     2);
+        NVIC_SetPriority(PendSV_IRQn,  0);
+        NVIC_SetPriority(SysTick_IRQn, 0);
         board_sysclk_config();
 
         uart_init();
         // spi_init();
-        // i2c_init();
+        i2c_init(i2c_receive_buffer, RECEIVE_SIZE);
         // rtc_init();
 
         board_is_initialized = true;
