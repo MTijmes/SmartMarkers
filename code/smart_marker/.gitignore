@@ -1,0 +1,10 @@
+*.bin
+*.hex
+*.map
+*.elf
+*.o
+
+# Platform-specific
+tools.mk
+*.sublime-project
+*.sublime-workspace
