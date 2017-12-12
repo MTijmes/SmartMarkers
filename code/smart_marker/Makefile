@@ -7,6 +7,7 @@ PROJECT = smart_marker
 # List all C defines here
 DEFS  = -DSTM32L0
 DEFS += -DSTM32L073xx
+DEFS += -DUSE_FULL_LL_DRIVER
 #DEFS += -DDEBUG
 
 # Debug level
@@ -38,6 +39,7 @@ SRC += ./src/system_stm32l0xx.c
 # BSP source files
 SRC += ./drivers/bsp/smart_marker/board.c
 SRC += ./drivers/bsp/smart_marker/uart.c
+SRC += ./drivers/bsp/smart_marker/i2c.c
 
 # LL source files
 SRC += ./drivers/stm32l0xx_hal/src/stm32l0xx_ll_rcc.c
@@ -46,6 +48,7 @@ SRC += ./drivers/stm32l0xx_hal/src/stm32l0xx_ll_gpio.c
 SRC += ./drivers/stm32l0xx_hal/src/stm32l0xx_ll_exti.c
 SRC += ./drivers/stm32l0xx_hal/src/stm32l0xx_ll_usart.c
 SRC += ./drivers/stm32l0xx_hal/src/stm32l0xx_ll_pwr.c
+SRC += ./drivers/stm32l0xx_hal/src/stm32l0xx_ll_i2c.c
 
 # List all include directories here
 INCDIRS  = ./inc
