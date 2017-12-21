@@ -1,13 +1,21 @@
 /* Includes ------------------------------------------------------------------*/
+#include <stm32l0xx_ll_bus.h>
+#include <stm32l0xx_ll_gpio.h>
+#include <stm32l0xx_ll_rcc.h>
+#include <stm32l0xx_ll_usart.h>
+
 #include <board.h>
 #include <uart.h>
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 #define USARTx                          USART1
-#define USARTx_CLK_ENABLE()             LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_USART1)
-#define USARTx_CLK_SOURCE()             LL_RCC_SetUSARTClockSource(LL_RCC_USART1_CLKSOURCE_PCLK2)
-#define USARTx_GPIO_CLK_ENABLE()        LL_IOP_GRP1_EnableClock(LL_IOP_GRP1_PERIPH_GPIOA)
+#define USARTx_CLK_ENABLE()             LL_APB2_GRP1_EnableClock(              \
+                                            LL_APB2_GRP1_PERIPH_USART1)
+#define USARTx_CLK_SOURCE()             LL_RCC_SetUSARTClockSource(            \
+                                            LL_RCC_USART1_CLKSOURCE_PCLK2)
+#define USARTx_GPIO_CLK_ENABLE()        LL_IOP_GRP1_EnableClock(               \
+                                            LL_IOP_GRP1_PERIPH_GPIOA)
 
 #define USARTx_TX_PIN                   LL_GPIO_PIN_9
 #define USARTx_TX_GPIO_PORT             GPIOA
