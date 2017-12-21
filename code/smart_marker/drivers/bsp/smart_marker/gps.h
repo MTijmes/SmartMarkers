@@ -1,22 +1,21 @@
-#ifndef BOARD_H
-#define BOARD_H
+#ifndef GPS_H
+#define GPS_H
 
 /* Includes ------------------------------------------------------------------*/
-#include <stdint.h>
+#include <stddef.h>
 
 /* Public types --------------------------------------------------------------*/
+struct gps_data {
+    uint8_t *buf;
+    size_t size;
+};
+
 /* Public constants ----------------------------------------------------------*/
 /* Public macro --------------------------------------------------------------*/
 /* Public functions --------------------------------------------------------- */
-void board_error_handler(void);
-void board_irq_enable(void);
-void board_irq_disable(void);
-void board_init(void);
-void board_deinit(void);
-void board_sleep(void);
+void gps_init(struct gps_data *gps_data);
+void gps_start(void);
+void gps_stop(void);
+void gps_read(struct gps_data *gps_data);
 
-void board_delay_ms(uint32_t ms);
-void board_get_unique_id(uint8_t *id);
-uint32_t board_get_random_seed(void);
-
-#endif /* BOARD_H */
+#endif /* GPS_H */

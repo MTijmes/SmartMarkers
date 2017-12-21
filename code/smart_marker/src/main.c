@@ -1,5 +1,8 @@
 /* Includes ------------------------------------------------------------------*/
 #include <board.h>
+#include <gps.h>
+#include <lora.h>
+
 #include <uart.h>
 #include <string.h>
 #include <stdio.h>
@@ -8,21 +11,22 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
-#define SLAVE_ADDRESS 0x42 << 1
+#define SLAVE_ADDRESS (0x42 << 1)
 #define MARKER_ID 0
+
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-uint8_t readytosend;
 uint8_t output[80];
 
 /* Private functions ---------------------------------------------------------*/
 int
 main(void)
 {
-    board_init();
+    // struct gps_data gps_data;
 
-    // lora_init();
-    // gps_init();
+    board_init();
+    // gps_init(&gps_data);
+    lora_init();
 
     set_message(SLAVE_ADDRESS, GGA, 0);
     set_message(SLAVE_ADDRESS, GNS, 2);
@@ -33,6 +37,15 @@ main(void)
     while (1) {
         i2c_receive_nmea(SLAVE_ADDRESS);
         parse_data(MARKER_ID, output);
+
+        if (lora_network_is_joined()) {
+            // lora_prepare_frame(gps_data.buf, gps_data.size);
+            lora_send_frame();
+        } else {
+            lora_join();
+        }
+
+        board_sleep();
     }
 }
 
