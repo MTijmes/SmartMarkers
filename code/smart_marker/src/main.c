@@ -49,21 +49,41 @@ main(void)
     payload[0] = 0xF0;              //NMEA class id
     payload[1] = 0x0D;              //GNS message id
     payload[2] = 2;                 //I2C
+    payload[3] = 0;                 //UART1
+    payload[4] = 0;             //USB
+    payload[5] = 0;             //SPI
+    payload[6] = 0;             //Reserved I/O
+    payload[7] = 0;             //Reserved I/O
     set_rate(ubx_message,&payload);
 
     payload[0] = 0xF0;                  //NMEA class id
     payload[1] = 0x04;                  //RMC message id
     payload[2] = 0;                     //I2C
+    payload[3] = 0;                 //UART1
+    payload[4] = 0;             //USB
+    payload[5] = 0;             //SPI
+    payload[6] = 0;             //Reserved I/O
+    payload[7] = 0;             //Reserved I/O
     set_rate(ubx_message,&payload);
 
     payload[0] = 0xF0;                  //NMEA class id
     payload[1] = 0x01;                  //GLL message id
     payload[2] = 0;                     //I2C
+    payload[3] = 0;                 //UART1
+    payload[4] = 0;             //USB
+    payload[5] = 0;             //SPI
+    payload[6] = 0;             //Reserved I/O
+    payload[7] = 0;             //Reserved I/O
     set_rate(ubx_message,&payload);
 
     payload[0] = 0xF0;                  //NMEA class id
     payload[1] = 0x05;                  //VTG message id
     payload[2] = 0;                     //I2C
+    payload[3] = 0;                 //UART1
+    payload[4] = 0;             //USB
+    payload[5] = 0;             //SPI
+    payload[6] = 0;             //Reserved I/O
+    payload[7] = 0;             //Reserved I/O
     set_rate(ubx_message,&payload);
 
     while (1) {
@@ -87,7 +107,9 @@ void
 set_rate(char *ubx_message, char *payload)
 {
     fill_ubx_message(ubx_message,0x06,0x01,8,payload);
-    i2c_start_write(SLAVE_ADDRESS,16);
+    // Ublox likes to send 255 + ACK from time to time so we set transmit to 17
+    i2c_start_write(SLAVE_ADDRESS,17);
+
     i2c_write(SLAVE_ADDRESS,ubx_message,16);
     // Ask for a new piece of data
     LL_I2C_ClearFlag_STOP(I2C2);
@@ -101,25 +123,32 @@ set_rate(char *ubx_message, char *payload)
     // Transmit address to i2c device
     LL_I2C_TransmitData8(I2C2, 0xFF);
     while(LL_I2C_IsActiveFlag_BUSY(I2C2)) {}
-    LL_I2C_HandleTransfer(I2C2,
-                          SLAVE_ADDRESS,
+    LL_I2C_HandleTransfer(I2C2,SLAVE_ADDRESS,
                           LL_I2C_ADDRSLAVE_7BIT,
-                          10,
+                          1,
                           LL_I2C_MODE_AUTOEND,
                           LL_I2C_GENERATE_START_READ);
     int i = 0;
-    while(!LL_I2C_IsActiveFlag_STOP(I2C2)) {
-
+    char c;
+    char flag = 0;
+    while(!LL_I2C_IsActiveFlag_RXNE(I2C2)) {}
+    while(i<10) {
         if(LL_I2C_IsActiveFlag_RXNE(I2C2)) {
-            ubx_message[i] = LL_I2C_ReceiveData8(I2C2);
-            i++;
-        } else if(LL_I2C_IsActiveFlag_TC(I2C2)) {
-            LL_I2C_GenerateStopCondition(I2C2);
-        } else if(LL_I2C_IsActiveFlag_NACK(I2C2)) {
-            LL_I2C_GenerateStopCondition(I2C2);
+            c = LL_I2C_ReceiveData8(I2C2);
+            if(c == 0xb5) {
+                flag = 1;
+            }
+            if(c != 255 && flag == 1) {
+                i++;
+            }
+        }
+        if(LL_I2C_IsActiveFlag_STOP(I2C2)) {
+            i2c_continue_receiving(SLAVE_ADDRESS);
         }
     }
+
     LL_I2C_ClearFlag_STOP(I2C2);
+    while(LL_I2C_IsActiveFlag_BUSY(I2C2)) {}
 }
 void
 parse_data(uint8_t *output)

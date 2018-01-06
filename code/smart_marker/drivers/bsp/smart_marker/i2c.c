@@ -147,16 +147,17 @@ i2c_write(uint32_t slave_address, uint8_t *message, uint8_t size)
 {
     int i = 0;
     LL_I2C_ClearFlag_STOP(I2C2);
-    while(LL_I2C_IsActiveFlag_BUSY(I2C2)) {}
-    while(!LL_I2C_IsActiveFlag_STOP(I2C2)) {
-        if(LL_I2C_IsActiveFlag_TXIS(I2C2)) {
-            LL_I2C_TransmitData8(I2C2, (*message++));
-            i++;
+    while(i < size) {
+        while(!LL_I2C_IsActiveFlag_STOP(I2C2)) {
+            if(LL_I2C_IsActiveFlag_TXIS(I2C2)) {
+                LL_I2C_TransmitData8(I2C2, message[i]);
+                i++;
+            } else if(LL_I2C_IsActiveFlag_TC(I2C2)) {
+                LL_I2C_GenerateStopCondition(I2C2);
+            }
         }
-        else if(LL_I2C_IsActiveFlag_TC(I2C2))
-        {
-            LL_I2C_GenerateStopCondition(I2C2);
-        }
+        int i = 0;
+        i2c_start_write(slave_address, size);
     }
     LL_I2C_GenerateStopCondition(I2C2);
 }
