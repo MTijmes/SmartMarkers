@@ -1,5 +1,13 @@
 /* Includes ------------------------------------------------------------------*/
+#include <stdint.h>
 #include <stdbool.h>
+
+#include <stm32l0xx_ll_bus.h>
+#include <stm32l0xx_ll_cortex.h>
+#include <stm32l0xx_ll_pwr.h>
+#include <stm32l0xx_ll_rcc.h>
+#include <stm32l0xx_ll_system.h>
+#include <stm32l0xx_ll_utils.h>
 
 #include <board.h>
 #include <uart.h>
@@ -7,11 +15,18 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
+#define         ID1                                 (0x1FF80050)
+#define         ID2                                 (0x1FF80054)
+#define         ID3                                 (0x1FF80064)
+
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 static bool board_is_initialized = false;
 
-static uint8_t irq_nest_level = 0;
+static uint8_t board_irq_nest_level = 0;
+
+/* Global variables ----------------------------------------------------------*/
+extern uint8_t i2c_rx_buf[];
 
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
@@ -95,8 +110,8 @@ board_error_handler(void)
 void
 board_irq_enable(void)
 {
-    irq_nest_level--;
-    if (irq_nest_level == 0) {
+    board_irq_nest_level--;
+    if (board_irq_nest_level == 0) {
         __enable_irq();
     }
 }
@@ -105,29 +120,59 @@ void
 board_irq_disable(void)
 {
     __disable_irq();
-    irq_nest_level++;
+    board_irq_nest_level++;
 }
 
 void
 board_init(void)
 {
     if (!board_is_initialized) {
-
         LL_IOP_GRP1_EnableClock(LL_IOP_GRP1_PERIPH_GPIOB);
         LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_SYSCFG);
         LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_PWR);
         NVIC_SetPriority(SVC_IRQn,     2);
         NVIC_SetPriority(PendSV_IRQn,  0);
         NVIC_SetPriority(SysTick_IRQn, 0);
+
         board_sysclk_config();
 
         uart_init();
         // spi_init();
-        i2c_init(i2c_receive_buffer, RECEIVE_SIZE);
+        i2c_init();
         // rtc_init();
 
         board_is_initialized = true;
     } else {
         board_sysclk_reconfig();
     }
+}
+
+void
+board_delay_ms(uint32_t ms)
+{
+    LL_mDelay(ms);
+}
+
+void
+board_get_unique_id(uint8_t *id)
+{
+    id[7] = ((*(uint32_t*)ID1)+ (*(uint32_t*)ID3)) >> 24;
+    id[6] = ((*(uint32_t*)ID1)+ (*(uint32_t*)ID3)) >> 16;
+    id[5] = ((*(uint32_t*)ID1)+ (*(uint32_t*)ID3)) >> 8;
+    id[4] = ((*(uint32_t*)ID1)+ (*(uint32_t*)ID3));
+    id[3] = ((*(uint32_t*)ID2)) >> 24;
+    id[2] = ((*(uint32_t*)ID2)) >> 16;
+    id[1] = ((*(uint32_t*)ID2)) >> 8;
+    id[0] = ((*(uint32_t*)ID2));
+}
+
+uint32_t
+board_get_random_seed(void)
+{
+    return ((*(uint32_t*)ID1) ^ (*(uint32_t*)ID2) ^ (*(uint32_t*)ID3));
+}
+
+void
+board_sleep(void)
+{
 }

@@ -215,3 +215,4 @@ $RECYCLE.BIN/
 
 # VSCode
 .vscode/
+uncrustify.cfg

@@ -8,6 +8,7 @@ PROJECT = smart_marker
 DEFS  = -DSTM32L0
 DEFS += -DSTM32L073xx
 DEFS += -DUSE_FULL_LL_DRIVER
+DEFS += -DREGION_EU868
 #DEFS += -DDEBUG
 
 # Debug level
@@ -40,8 +41,15 @@ SRC += ./src/ublox.c
 
 # BSP source files
 SRC += ./drivers/bsp/smart_marker/board.c
-SRC += ./drivers/bsp/smart_marker/uart.c
+SRC += ./drivers/bsp/smart_marker/gps.c
 SRC += ./drivers/bsp/smart_marker/i2c.c
+SRC += ./drivers/bsp/smart_marker/lora.c
+SRC += ./drivers/bsp/smart_marker/rtc.c
+SRC += ./drivers/bsp/smart_marker/spi.c
+SRC += ./drivers/bsp/smart_marker/sx1272-board.c
+SRC += ./drivers/bsp/smart_marker/uart.c
+
+SRC += ./drivers/bsp/smart_marker/utilities.c
 
 # LL source files
 SRC += ./drivers/stm32l0xx_hal/src/stm32l0xx_ll_rcc.c
@@ -52,12 +60,31 @@ SRC += ./drivers/stm32l0xx_hal/src/stm32l0xx_ll_usart.c
 SRC += ./drivers/stm32l0xx_hal/src/stm32l0xx_ll_pwr.c
 SRC += ./drivers/stm32l0xx_hal/src/stm32l0xx_ll_i2c.c
 
+# LoRaMac source files
+SRC += ./lora/mac/LoRaMac.c
+SRC += ./lora/mac/LoRaMacCrypto.c
+SRC += ./lora/mac/region/Region.c
+SRC += ./lora/mac/region/RegionCommon.c
+SRC += ./lora/mac/region/RegionEU868.c
+SRC += ./lora/radio/sx1272/sx1272.c
+SRC += ./lora/system/timer.c
+SRC += ./lora/system/crypto/aes.c
+SRC += ./lora/system/crypto/cmac.c
+
 # List all include directories here
 INCDIRS  = ./inc
 INCDIRS += ./drivers/bsp/smart_marker
 INCDIRS += ./drivers/cmsis/include
 INCDIRS += ./drivers/cmsis/device/st/stm32l0xx/include
 INCDIRS += ./drivers/stm32l0xx_hal/inc
+
+# LoRaMac includes
+INCDIRS += ./lora/mac
+INCDIRS += ./lora/mac/region
+INCDIRS += ./lora/radio
+INCDIRS += ./lora/radio/sx1272
+INCDIRS += ./lora/system
+INCDIRS += ./lora/system/crypto
 
 # List the user directory to look for the libraries here
 LIBDIRS +=

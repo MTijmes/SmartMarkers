@@ -1,8 +1,14 @@
-// Includes --------------------------------------------------------------------
-#include "i2c.h"
+/* Includes ------------------------------------------------------------------*/
 #include <stdint.h>
 
-// Defines ---------------------------------------------------------------------
+#include <stm32l0xx_ll_bus.h>
+#include <stm32l0xx_ll_gpio.h>
+#include <stm32l0xx_ll_i2c.h>
+
+#include <i2c.h>
+
+/* Private typedef -----------------------------------------------------------*/
+/* Private define ------------------------------------------------------------*/
 // Timing register: @400kHz, 32Mhz clock, rise time = 100ns, fall time = 10ns
 #define I2C_TIMING 0x00601135
 
@@ -11,23 +17,12 @@ uint8_t *receiveBuffer;
 __IO uint8_t receiveIndex = 0;
 uint8_t size;
 
-/**
- * @brief  This function configures I2C2 in Master mode.
- * @note   This function is used to :
- *         -1- Enables GPIO clock and configures the I2C2 pins.
- *         -2- Enable the I2C2 peripheral clock and I2C2 clock source.
- *         -3- Configure NVIC for I2C2.
- *         -4- Configure I2C2 functional parameters.
- *         -5- Enable I2C2.
- *         -6- Enable I2C2 transfer complete/error interrupts.
- * @note   Peripheral configuration is minimal configuration from reset values.
- *         Thus, some useless LL unitary functions calls below are provided as
- *         commented examples - setting is default configuration from reset.
- * @param  None
- * @retval None
- */
+/* Global variables ----------------------------------------------------------*/
+/* Private function prototypes -----------------------------------------------*/
+/* Private functions ---------------------------------------------------------*/
+/* Public functions ----------------------------------------------------------*/
 void
-i2c_init(uint8_t *buf, uint8_t buffersize)
+i2c_init(void)
 {
     // Enable the peripheral clock of GPIOC
     LL_I2C_InitTypeDef I2C_InitStruct;
@@ -57,7 +52,7 @@ i2c_init(uint8_t *buf, uint8_t buffersize)
 
     // I2C init
     I2C_InitStruct.PeripheralMode = LL_I2C_MODE_I2C;
-    I2C_InitStruct.Timing = 0x00601B28;
+    I2C_InitStruct.Timing = I2C_TIMING;
     I2C_InitStruct.AnalogFilter = LL_I2C_ANALOGFILTER_ENABLE;
     I2C_InitStruct.DigitalFilter = 0;
     I2C_InitStruct.OwnAddress1 = 0;
@@ -70,23 +65,21 @@ i2c_init(uint8_t *buf, uint8_t buffersize)
     LL_I2C_DisableOwnAddress2(I2C2);
     LL_I2C_DisableGeneralCall(I2C2);
     LL_I2C_EnableClockStretching(I2C2);
-
-    receiveBuffer= buf;
-    size = buffersize;
 }
 
 void
-i2c_set_receive_address(uint32_t slave_address, uint8_t address)
+i2c_set_receive_address(uint32_t slave_addr, uint8_t reg_addr)
 {
     // Request write to i2c device
     LL_I2C_HandleTransfer(I2C2,
-                          slave_address,
+                          slave_addr,
                           LL_I2C_ADDRSLAVE_7BIT,
                           1,
                           LL_I2C_MODE_AUTOEND,
                           LL_I2C_GENERATE_START_WRITE);
-    // Transmit address to i2c device
-    LL_I2C_TransmitData8(I2C2, address);
+
+    // Transmit register's address to i2c device
+    LL_I2C_TransmitData8(I2C2, reg_addr);
 }
 
 void
