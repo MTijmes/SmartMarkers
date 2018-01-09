@@ -5,6 +5,9 @@
 #include <board.h>
 #include <lora.h>
 #include <lora-commissioning.h>
+#include <LoRaMac.h>
+#include <Region.h>
+#include <timer.h>
 #include <utilities.h>
 
 /* Private typedef -----------------------------------------------------------*/
@@ -203,7 +206,6 @@ lora_mlme_confirm(MlmeConfirm_t *mlme_confirm)
                 // Check DemodMargin
                 // Check NbGateways
                 /* TODO: add compliance test back */
-
             }
             break;
         }
@@ -390,6 +392,7 @@ lora_join(void)
     mib_req.Param.IsNetworkJoined = true;
     LoRaMacMibSetRequestConfirm(&mib_req);
 #endif
+
     lora_network_joined = true;
 }
 

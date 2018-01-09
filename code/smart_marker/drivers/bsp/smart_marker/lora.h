@@ -6,10 +6,6 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#include <timer.h>
-#include <LoRaMac.h>
-#include <Region.h>
-
 /* Public types --------------------------------------------------------------*/
 /* Public define -------------------------------------------------------------*/
 /* Public constants ----------------------------------------------------------*/
