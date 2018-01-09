@@ -10,7 +10,7 @@
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 // Timing register: @400kHz, 32Mhz clock, rise time = 100ns, fall time = 10ns
-#define I2C_TIMING 0x00601135
+#define I2C_TIMING 0x00601B28
 
 // Private variables -----------------------------------------------------------
 uint8_t *receiveBuffer;
@@ -22,7 +22,7 @@ uint8_t size;
 /* Private functions ---------------------------------------------------------*/
 /* Public functions ----------------------------------------------------------*/
 void
-i2c_init(void)
+i2c_init(uint8_t *buf, uint8_t buffersize)
 {
     // Enable the peripheral clock of GPIOC
     LL_I2C_InitTypeDef I2C_InitStruct;
@@ -65,6 +65,9 @@ i2c_init(void)
     LL_I2C_DisableOwnAddress2(I2C2);
     LL_I2C_DisableGeneralCall(I2C2);
     LL_I2C_EnableClockStretching(I2C2);
+
+    receiveBuffer= buf;
+    size = buffersize;
 }
 
 void

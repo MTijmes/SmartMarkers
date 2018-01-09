@@ -138,7 +138,7 @@ board_init(void)
 
         uart_init();
         // spi_init();
-        i2c_init();
+        i2c_init(i2c_receive_buffer, I2C_RECEIVE_SIZE);
         // rtc_init();
 
         board_is_initialized = true;

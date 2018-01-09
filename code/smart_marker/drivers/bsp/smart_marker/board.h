@@ -5,7 +5,9 @@
 #include <stdint.h>
 
 /* Public types --------------------------------------------------------------*/
+
 /* Public constants ----------------------------------------------------------*/
+#define I2C_RECEIVE_SIZE 255
 #define RADIO_RESET_PORT        GPIOB
 #define RADIO_RESET_PIN         LL_GPIO_PIN_9
 
@@ -53,7 +55,11 @@
 #define RADIO_ANT_TX_PORT       GPIOA
 #define RADIO_ANT_TX_PIN        LL_GPIO_PIN_9
 
+#define I2C_RECEIVE_SIZE 255
+
 /* Public macro --------------------------------------------------------------*/
+uint8_t i2c_receive_buffer[I2C_RECEIVE_SIZE];
+
 /* Public functions --------------------------------------------------------- */
 void board_error_handler(void);
 void board_irq_enable(void);
