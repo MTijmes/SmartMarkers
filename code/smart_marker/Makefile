@@ -32,9 +32,11 @@ HEX  = $(CP) -O ihex
 BIN  = $(CP) -O binary -S
 
 # List of source files
-SRC  = ./src/main.c
+SRC = ./src/syscalls.c
+SRC += ./src/main.c
 SRC += ./src/stm32l0xx_it.c
 SRC += ./src/system_stm32l0xx.c
+SRC += ./src/ublox.c
 
 # BSP source files
 SRC += ./drivers/bsp/smart_marker/board.c

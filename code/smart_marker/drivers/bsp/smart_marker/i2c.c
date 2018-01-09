@@ -7,8 +7,8 @@
 #define I2C_TIMING 0x00601135
 
 // Private variables -----------------------------------------------------------
-__IO uint8_t receiveIndex = 0;
 uint8_t *receiveBuffer;
+__IO uint8_t receiveIndex = 0;
 uint8_t size;
 
 /**
@@ -90,29 +90,6 @@ i2c_set_receive_address(uint32_t slave_address, uint8_t address)
 }
 
 void
-i2c_receive_string(uint32_t slave_address)
-{
-    uint8_t temp = 0;
-    receiveIndex = 0;
-    while (temp != '\n') {
-        while (LL_I2C_IsActiveFlag_RXNE(I2C2)) {
-            temp = LL_I2C_ReceiveData8(I2C2);
-            if (temp != 255) {
-                receiveBuffer[receiveIndex++] = temp;
-                if (receiveIndex > size) {
-                    receiveIndex = 0;
-                }
-            }
-        }
-        if (LL_I2C_IsActiveFlag_STOP(I2C2)) {
-            LL_I2C_ClearFlag_STOP(I2C2);
-            i2c_continue_receiving(slave_address);
-        }
-    }
-    LL_I2C_ClearFlag_STOP(I2C2);
-}
-
-void
 i2c_continue_receiving(uint32_t slave_address)
 {
     // Ask for a new piece of data
@@ -132,5 +109,37 @@ i2c_error_callback(void)
 }
 
 void
-assert_failed(uint8_t* file, uint32_t line)
+i2c_start_write(uint32_t slave_address,uint8_t numbytes)
+{
+    LL_I2C_HandleTransfer(I2C2,
+                          slave_address,
+                          LL_I2C_ADDRSLAVE_7BIT,
+                          numbytes,
+                          LL_I2C_MODE_AUTOEND,
+                          LL_I2C_GENERATE_START_WRITE);
+}
+
+void
+i2c_write(uint32_t slave_address, uint8_t *message, uint8_t size)
+{
+    int i = 0;
+    LL_I2C_ClearFlag_STOP(I2C2);
+    while(i < size) {
+        while(!LL_I2C_IsActiveFlag_STOP(I2C2)) {
+            if(LL_I2C_IsActiveFlag_TXIS(I2C2)) {
+                LL_I2C_TransmitData8(I2C2, message[i]);
+                i++;
+            } else if(LL_I2C_IsActiveFlag_TC(I2C2)) {
+                LL_I2C_GenerateStopCondition(I2C2);
+                break;
+            }
+        }
+        LL_I2C_ClearFlag_STOP(I2C2);
+        i2c_start_write(slave_address, size);
+    }
+    LL_I2C_GenerateStopCondition(I2C2);
+}
+
+void
+assert_failed(uint8_t *file, uint32_t line)
 {}

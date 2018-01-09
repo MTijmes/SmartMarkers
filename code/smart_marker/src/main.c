@@ -1,14 +1,20 @@
 /* Includes ------------------------------------------------------------------*/
 #include <board.h>
 #include <uart.h>
-#include <i2c.h>
+#include <string.h>
+#include <stdio.h>
+#include <definitions.h>
+#include <ublox.h>
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 #define SLAVE_ADDRESS 0x42 << 1
+#define MARKER_ID 0
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-/* Private function prototypes -----------------------------------------------*/
+uint8_t readytosend;
+uint8_t output[80];
+
 /* Private functions ---------------------------------------------------------*/
 int
 main(void)
@@ -18,16 +24,15 @@ main(void)
     // lora_init();
     // gps_init();
 
-    uint8_t test_byte = 0;
-    uint8_t something = 0;
+    set_message(SLAVE_ADDRESS, GGA, 0);
+    set_message(SLAVE_ADDRESS, GNS, 2);
+    set_message(SLAVE_ADDRESS, RMC, 0);
+    set_message(SLAVE_ADDRESS, GLL, 0);
+    set_message(SLAVE_ADDRESS, VTG, 0);
 
     while (1) {
-        // uart_put_buffer("Hello, world!\r\n", 16);
-        // uart_put_char('c');
-        //if (uart_get_char(&test_byte)) {
-        //    uart_put_char(test_byte);
-        // }
-        i2c_set_receive_address(SLAVE_ADDRESS, 0xFF);
-        i2c_receive_string(SLAVE_ADDRESS);
+        i2c_receive_nmea(SLAVE_ADDRESS);
+        parse_data(MARKER_ID, output);
     }
 }
+
