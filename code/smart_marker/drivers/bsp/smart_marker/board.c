@@ -12,13 +12,14 @@
 #include <board.h>
 #include <i2c.h>
 #include <spi.h>
-#include <rtc.h>
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 #define ID1             (*(uint32_t*)0x1FF80050)
 #define ID2             (*(uint32_t*)0x1FF80054)
 #define ID3             (*(uint32_t*)0x1FF80064)
+
+#define I2C_RECEIVE_SIZE    255
 
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
@@ -30,7 +31,7 @@ static bool board_is_initialized;
 static uint8_t board_irq_nest_level;
 
 /* Global variables ----------------------------------------------------------*/
-extern uint8_t i2c_receive_buffer[];
+uint8_t i2c_receive_buffer[I2C_RECEIVE_SIZE];
 
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
@@ -150,7 +151,6 @@ board_init(void)
 
         i2c_init(i2c_receive_buffer, I2C_RECEIVE_SIZE);
         spi_init();
-        rtc_init();
 
         board_is_initialized = true;
     } else {
