@@ -1,12 +1,7 @@
-/* Includes ------------------------------------------------------------------*/
 #include <stm32l0xx_ll_i2c.h>
 
 #include <ublox.h>
 
-/* Private typedef -----------------------------------------------------------*/
-/* Private define ------------------------------------------------------------*/
-/* Private macro -------------------------------------------------------------*/
-/* Private variables ---------------------------------------------------------*/
 char strdelim[80][12];
 
 /* Global variables ----------------------------------------------------------*/
@@ -161,7 +156,7 @@ i2c_receive_nmea(uint32_t slave_address)
                 if(flag == 2) {
                     i2c_receive_buffer[receiveIndex++] = temp;
                 }
-                if (receiveIndex >= I2C_RECEIVE_SIZE) {
+                if (receiveIndex > I2C_RECEIVE_SIZE) {
                     receiveIndex = 0;
                 }
             }
