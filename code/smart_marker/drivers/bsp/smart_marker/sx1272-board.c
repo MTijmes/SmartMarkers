@@ -79,8 +79,6 @@ SX1272IoInit(void)
 void
 SX1272IoIrqInit(DioIrqHandler **irqHandlers)
 {
-    (void)irqHandlers;
-
     /* TODO: fix EXTI source */
     LL_EXTI_InitTypeDef exti_init;
 
