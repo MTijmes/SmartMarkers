@@ -1,4 +1,7 @@
+#include <stm32l0xx_ll_i2c.h>
+
 #include <ublox.h>
+
 char strdelim[80][12];
 char* strtok_single(char *str, char const *delims);
 void set_rate(uint32_t slave_address, uint8_t *payload);
@@ -49,7 +52,7 @@ i2c_receive_nmea(uint32_t slave_address)
                 if(flag == 2) {
                     i2c_receive_buffer[receiveIndex++] = temp;
                 }
-                if (receiveIndex > RECEIVE_SIZE) {
+                if (receiveIndex > I2C_RECEIVE_SIZE) {
                     receiveIndex = 0;
                 }
             }
