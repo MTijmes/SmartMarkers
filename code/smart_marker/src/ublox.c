@@ -1,8 +1,18 @@
+/* Includes ------------------------------------------------------------------*/
 #include <stm32l0xx_ll_i2c.h>
 
 #include <ublox.h>
 
+/* Private typedef -----------------------------------------------------------*/
+/* Private define ------------------------------------------------------------*/
+/* Private macro -------------------------------------------------------------*/
+/* Private variables ---------------------------------------------------------*/
 char strdelim[80][12];
+
+/* Global variables ----------------------------------------------------------*/
+extern uint8_t i2c_receive_buffer[];
+
+/* Private function prototypes -----------------------------------------------*/
 char* strtok_single(char *str, char const *delims);
 void set_rate(uint32_t slave_address, uint8_t *payload);
 uint8_t cfg_ack_receive(uint32_t slave_address);
@@ -13,6 +23,8 @@ void fill_ubx_message(uint8_t *ubx_buffer,
                       uint8_t *payload);
 void delimit_string(char *string);
 
+/* Private functions ---------------------------------------------------------*/
+/* Public functions ----------------------------------------------------------*/
 void
 set_rate(uint32_t slave_address, uint8_t *payload)
 {

@@ -13,6 +13,7 @@
 #define I2C_TIMING 0x00601B28
 
 // Private variables -----------------------------------------------------------
+uint8_t i2c_receive_buffer[I2C_RECEIVE_SIZE];
 uint8_t *receiveBuffer;
 __IO uint8_t receiveIndex = 0;
 uint8_t size;

@@ -19,8 +19,6 @@
 #define ID2             (*(uint32_t*)0x1FF80054)
 #define ID3             (*(uint32_t*)0x1FF80064)
 
-#define I2C_RECEIVE_SIZE    255
-
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 /*
@@ -31,7 +29,7 @@ static bool board_is_initialized;
 static uint8_t board_irq_nest_level;
 
 /* Global variables ----------------------------------------------------------*/
-uint8_t i2c_receive_buffer[I2C_RECEIVE_SIZE];
+extern uint8_t i2c_receive_buffer[];
 
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
