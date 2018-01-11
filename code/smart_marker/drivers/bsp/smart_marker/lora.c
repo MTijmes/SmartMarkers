@@ -22,7 +22,6 @@ struct lora_frame {
 #define APP_TX_DUTYCYCLE_RND                        1000
 
 #define LORAWAN_APP_PORT                            1
-#define LORAWAN_APP_DATA_SIZE                       4
 #define LORAWAN_APP_DATA_MAX_SIZE                   242
 
 #define LORAWAN_ADR_ON                              1
@@ -59,10 +58,6 @@ static uint8_t AppSKey[] = LORAWAN_APPSKEY;
 static uint32_t DevAddr = LORAWAN_DEVICE_ADDRESS;
 #endif /* OVER_THE_AIR_ACTIVATION */
 
-static uint8_t AppPort = LORAWAN_APP_PORT;
-static uint8_t AppDataSize = LORAWAN_APP_DATA_SIZE;
-static uint8_t AppData[LORAWAN_APP_DATA_MAX_SIZE];
-
 static TimerEvent_t lora_tx_timer;
 
 static bool lora_cfg_tx_confirmed = false;
@@ -73,6 +68,12 @@ static bool lora_data_prepared = false;
 
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
+static bool
+lora_tx_prepared(void)
+{
+    return lora_network_joined && lora_data_prepared && lora_tx_pending;
+}
+
 static void
 lora_tx_timer_handler(void)
 {
@@ -259,12 +260,6 @@ lora_network_is_joined(void)
     return lora_network_joined;
 }
 
-bool
-lora_tx_prepared(void)
-{
-    return lora_network_joined && lora_data_prepared && lora_tx_pending;
-}
-
 void
 lora_init(void)
 {
@@ -412,9 +407,12 @@ lora_prepare_frame(uint8_t *buf, size_t size)
 void
 lora_send_frame(void)
 {
-    if (lora_tx_prepared()) {
-        lora_tx_pending = lora_transmit();
+    /* TODO: add better dutycycle checks */
+    lora_tx_pending = lora_transmit();
 
-        lora_data_prepared = false;
-    }
+    // if (lora_tx_prepared()) {
+    //     lora_tx_pending = lora_transmit();
+
+    //     lora_data_prepared = false;
+    // }
 }
