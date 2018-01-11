@@ -13,19 +13,77 @@ char strdelim[80][12];
 extern uint8_t i2c_receive_buffer[];
 
 /* Private function prototypes -----------------------------------------------*/
-char* strtok_single(char *str, char const *delims);
-void set_rate(uint32_t slave_address, uint8_t *payload);
-uint8_t cfg_ack_receive(uint32_t slave_address);
-void fill_ubx_message(uint8_t *ubx_buffer,
-                      char    class_id,
-                      char    message_id,
-                      uint8_t length_of_payload,
-                      uint8_t *payload);
-void delimit_string(char *string);
-
 /* Private functions ---------------------------------------------------------*/
-/* Public functions ----------------------------------------------------------*/
-void
+static uint8_t
+cfg_ack_receive(uint32_t slave_address)
+{
+    int i = 0;
+    char c;
+    char message[10];
+    char flag = 0;
+    i2c_set_receive_address(slave_address, 0xFF);
+    while(LL_I2C_IsActiveFlag_BUSY(I2C2)) {}
+    i2c_continue_receiving(slave_address);
+    while(!LL_I2C_IsActiveFlag_RXNE(I2C2)) {} // Wait for something in receive buffer
+    while(i<10) {
+        if(LL_I2C_IsActiveFlag_RXNE(I2C2)) {
+            c = LL_I2C_ReceiveData8(I2C2);
+            if(c == SYNC1) { // Wait for sync char
+                flag = 1;
+            }
+            if(c != 255 && flag == 1) {
+                message[i] = c;
+                i++;
+            }
+        }
+        if(LL_I2C_IsActiveFlag_STOP(I2C2)) {
+            i2c_continue_receiving(slave_address);
+        }
+    }
+    LL_I2C_ClearFlag_STOP(I2C2);
+    if(message[3] == CFGACK) { //Check if ACK or NAK received
+        return 1;
+    }else if(message[3] == CFGNAK) {
+        return 0;
+    }else {
+        //Something is up
+        return 0;
+    }
+}
+
+static void
+fill_ubx_message(uint8_t *ubx_buffer,
+                 char    class_id,
+                 char    message_id,
+                 uint8_t length_of_payload,
+                 uint8_t *payload)
+{
+    uint8_t ck_a, ck_b, n;
+    n = 6 + length_of_payload;
+    ck_a = 0;
+    ck_b = 0;
+    ubx_buffer[0] = SYNC1;
+    ubx_buffer[1] = SYNC2;
+    ubx_buffer[2] = class_id;
+    ubx_buffer[3] = message_id;
+    ubx_buffer[4] = length_of_payload;
+    ubx_buffer[5] = 0;
+    for(int i=0; i<length_of_payload; i++)
+    {
+        ubx_buffer[i+6] = payload[i];
+    }
+    for(int i=2; i<n; i++)
+    {
+        ck_a += ubx_buffer[i];
+        ck_b += ck_a;
+    }
+    ck_a = (ck_a & 0xff);
+    ck_b = (ck_b & 0xff);
+    ubx_buffer[6+length_of_payload] = ck_a;
+    ubx_buffer[7+length_of_payload] = ck_b;
+}
+
+static void
 set_rate(uint32_t slave_address, uint8_t *payload)
 {
     uint8_t ubx_message[32];
@@ -103,7 +161,7 @@ i2c_receive_nmea(uint32_t slave_address)
                 if(flag == 2) {
                     i2c_receive_buffer[receiveIndex++] = temp;
                 }
-                if (receiveIndex > I2C_RECEIVE_SIZE) {
+                if (receiveIndex >= I2C_RECEIVE_SIZE) {
                     receiveIndex = 0;
                 }
             }
@@ -164,36 +222,4 @@ set_message(uint32_t slave_adress, uint8_t message_id, uint8_t rate)
     payload[6] = 0;             //Reserved I/O
     payload[7] = 0;             //Reserved I/O
     set_rate(slave_adress, payload);
-}
-
-void
-fill_ubx_message(uint8_t *ubx_buffer,
-                 char    class_id,
-                 char    message_id,
-                 uint8_t length_of_payload,
-                 uint8_t *payload)
-{
-    uint8_t ck_a, ck_b, n;
-    n = 6 + length_of_payload;
-    ck_a = 0;
-    ck_b = 0;
-    ubx_buffer[0] = SYNC1;
-    ubx_buffer[1] = SYNC2;
-    ubx_buffer[2] = class_id;
-    ubx_buffer[3] = message_id;
-    ubx_buffer[4] = length_of_payload;
-    ubx_buffer[5] = 0;
-    for(int i=0; i<length_of_payload; i++)
-    {
-        ubx_buffer[i+6] = payload[i];
-    }
-    for(int i=2; i<n; i++)
-    {
-        ck_a += ubx_buffer[i];
-        ck_b += ck_a;
-    }
-    ck_a = (ck_a & 0xff);
-    ck_b = (ck_b & 0xff);
-    ubx_buffer[6+length_of_payload] = ck_a;
-    ubx_buffer[7+length_of_payload] = ck_b;
 }
