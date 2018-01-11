@@ -136,7 +136,3 @@ i2c_write(uint32_t slave_address, uint8_t *message, uint8_t size)
     }
     LL_I2C_GenerateStopCondition(I2C2);
 }
-
-void
-assert_failed(uint8_t *file, uint32_t line)
-{}
