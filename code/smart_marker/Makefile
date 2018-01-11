@@ -60,6 +60,7 @@ SRC += ./drivers/stm32l0xx_hal/src/stm32l0xx_ll_usart.c
 SRC += ./drivers/stm32l0xx_hal/src/stm32l0xx_ll_pwr.c
 SRC += ./drivers/stm32l0xx_hal/src/stm32l0xx_ll_i2c.c
 SRC += ./drivers/stm32l0xx_hal/src/stm32l0xx_ll_rtc.c
+SRC += ./drivers/stm32l0xx_hal/src/stm32l0xx_ll_spi.c
 
 # LoRaMac source files
 SRC += ./lora/mac/LoRaMac.c
@@ -109,7 +110,9 @@ LIB     = $(patsubst %,-l%, $(LIBS))
 # Flags
 COMMONFLAGS = -mcpu=$(MCU) -mthumb -mfloat-abi=soft
 ASFLAGS = $(COMMONFLAGS) $(DEBUG)
-CPFLAGS = $(COMMONFLAGS) $(OPT) $(DEFS) $(DEBUG) -Wall -fmessage-length=0 -ffunction-sections
+CFLAGS = $(COMMONFLAGS) $(OPT) $(DEFS) $(DEBUG)
+CFLAGS += -Wall -Wextra -Wmissing-prototypes -Wstrict-prototypes
+CFLAGS += -fmessage-length=0 -ffunction-sections
 LDFLAGS = $(COMMONFLAGS) -T$(LINKER_SCRIPT) -Wl,-Map=$(PROJECT).map -Wl,--gc-sections $(LIBDIR) $(LIB)
 
 #
@@ -120,10 +123,10 @@ all: $(OBJS) $(PROJECT).elf  $(PROJECT).hex $(PROJECT).bin
 	$(TRGT)size $(PROJECT).elf
 
 %.o: %.c
-	$(CC) -c $(CPFLAGS) -I . $(INCDIR) $< -o $@
+	$(CC) -c $(CFLAGS) -I . $(INCDIR) $< -o $@
 
 %.o: %.s
-	$(AS) -c $(ASFLAGS) $< -o $@
+	$(AS) -c $(CFLAGS) $< -o $@
 
 %.elf: $(OBJS)
 	$(CC) $(OBJS) $(LDFLAGS) $(LIBS) -o $@

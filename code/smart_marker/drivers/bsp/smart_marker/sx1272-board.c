@@ -42,46 +42,33 @@ const struct Radio_s Radio = {
 void
 SX1272IoInit(void)
 {
-    LL_GPIO_InitTypeDef GPIO_InitStruct;
+    LL_GPIO_InitTypeDef gpio_init;
 
-    GPIO_InitStruct.Speed       = LL_GPIO_SPEED_FREQ_VERY_HIGH;
-    GPIO_InitStruct.OutputType  = LL_GPIO_OUTPUT_PUSHPULL;
-    GPIO_InitStruct.Pull        = LL_GPIO_PULL_UP;
-    GPIO_InitStruct.Alternate   = LL_GPIO_AF_0;
+    LL_IOP_GRP1_EnableClock(RADIO_DIO_0_CLK);
+    LL_IOP_GRP1_EnableClock(RADIO_DIO_1_CLK);
+    LL_IOP_GRP1_EnableClock(RADIO_DIO_2_CLK);
+    LL_IOP_GRP1_EnableClock(RADIO_DIO_3_CLK);
 
-    // GpioInit(&SX1272.Spi.Nss, RADIO_NSS, PIN_OUTPUT, PIN_PUSH_PULL, PIN_PULL_UP, 1);
-    GPIO_InitStruct.Pin = RADIO_NSS_PIN;
-    GPIO_InitStruct.Mode = LL_GPIO_MODE_OUTPUT;
-    // LL_IOP_GRP1_EnableClock(LL_IOP_GRP1_PERIPH_GPIOA);
-    LL_GPIO_Init(RADIO_NSS_PORT, &GPIO_InitStruct);
-    LL_GPIO_SetOutputPin(RADIO_NSS_PORT, RADIO_NSS_PIN);
+    gpio_init.Speed       = LL_GPIO_SPEED_FREQ_VERY_HIGH;
+    gpio_init.OutputType  = LL_GPIO_OUTPUT_PUSHPULL;
+    gpio_init.Pull        = LL_GPIO_PULL_UP;
+    gpio_init.Mode        = LL_GPIO_MODE_INPUT;
+    gpio_init.Alternate   = LL_GPIO_AF_0;
 
-    // GpioInit(&SX1272.DIO0, RADIO_DIO_0, PIN_INPUT, PIN_PUSH_PULL, PIN_PULL_UP, 0);
-    GPIO_InitStruct.Pin = RADIO_DIO_0_PIN;
-    GPIO_InitStruct.Mode = LL_GPIO_MODE_INPUT;
-    // LL_IOP_GRP1_EnableClock(LL_IOP_GRP1_PERIPH_GPIOA);
-    LL_GPIO_Init(RADIO_DIO_0_PORT, &GPIO_InitStruct);
+    gpio_init.Pin = RADIO_DIO_0_PIN;
+    LL_GPIO_Init(RADIO_DIO_0_PORT, &gpio_init);
     LL_GPIO_ResetOutputPin(RADIO_DIO_0_PORT, RADIO_DIO_0_PIN);
 
-    // GpioInit(&SX1272.DIO1, RADIO_DIO_1, PIN_INPUT, PIN_PUSH_PULL, PIN_PULL_UP, 0);
-    GPIO_InitStruct.Pin = RADIO_DIO_1_PIN;
-    GPIO_InitStruct.Mode = LL_GPIO_MODE_INPUT;
-    // LL_IOP_GRP1_EnableClock(LL_IOP_GRP1_PERIPH_GPIOA);
-    LL_GPIO_Init(RADIO_DIO_1_PORT, &GPIO_InitStruct);
+    gpio_init.Pin = RADIO_DIO_1_PIN;
+    LL_GPIO_Init(RADIO_DIO_1_PORT, &gpio_init);
     LL_GPIO_ResetOutputPin(RADIO_DIO_1_PORT, RADIO_DIO_1_PIN);
 
-    // GpioInit(&SX1272.DIO2, RADIO_DIO_2, PIN_INPUT, PIN_PUSH_PULL, PIN_PULL_UP, 0);
-    GPIO_InitStruct.Pin = RADIO_DIO_2_PIN;
-    GPIO_InitStruct.Mode = LL_GPIO_MODE_INPUT;
-    // LL_IOP_GRP1_EnableClock(LL_IOP_GRP1_PERIPH_GPIOA);
-    LL_GPIO_Init(RADIO_DIO_2_PORT, &GPIO_InitStruct);
+    gpio_init.Pin = RADIO_DIO_2_PIN;
+    LL_GPIO_Init(RADIO_DIO_2_PORT, &gpio_init);
     LL_GPIO_ResetOutputPin(RADIO_DIO_2_PORT, RADIO_DIO_2_PIN);
 
-    // GpioInit(&SX1272.DIO3, RADIO_DIO_3, PIN_INPUT, PIN_PUSH_PULL, PIN_PULL_UP, 0);
-    GPIO_InitStruct.Pin = RADIO_DIO_3_PIN;
-    GPIO_InitStruct.Mode = LL_GPIO_MODE_INPUT;
-    // LL_IOP_GRP1_EnableClock(LL_IOP_GRP1_PERIPH_GPIOA);
-    LL_GPIO_Init(RADIO_DIO_3_PORT, &GPIO_InitStruct);
+    gpio_init.Pin = RADIO_DIO_3_PIN;
+    LL_GPIO_Init(RADIO_DIO_3_PORT, &gpio_init);
     LL_GPIO_ResetOutputPin(RADIO_DIO_3_PORT, RADIO_DIO_3_PIN);
 
     // DIO4 and DIO5 aren't connected.
@@ -92,43 +79,46 @@ SX1272IoInit(void)
 void
 SX1272IoIrqInit(DioIrqHandler **irqHandlers)
 {
-    LL_EXTI_InitTypeDef EXTI_InitStruct;
+    (void)irqHandlers;
 
-    EXTI_InitStruct.LineCommand = ENABLE;
-    EXTI_InitStruct.Mode        = LL_EXTI_MODE_IT;
-    EXTI_InitStruct.Trigger     = LL_EXTI_TRIGGER_RISING;
+    /* TODO: fix EXTI source */
+    LL_EXTI_InitTypeDef exti_init;
+
+    exti_init.LineCommand = ENABLE;
+    exti_init.Mode        = LL_EXTI_MODE_IT;
+    exti_init.Trigger     = LL_EXTI_TRIGGER_RISING;
 
     LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_SYSCFG);
 
     // GpioSetInterrupt(&SX1272.DIO0, IRQ_RISING_EDGE, IRQ_HIGH_PRIORITY, irqHandlers[0]);
     LL_SYSCFG_SetEXTISource(LL_SYSCFG_EXTI_PORTC, LL_SYSCFG_EXTI_LINE13);
 
-    EXTI_InitStruct.Line_0_31   = RADIO_DIO_0_EXTI;
-    LL_EXTI_Init(&EXTI_InitStruct);
+    exti_init.Line_0_31   = RADIO_DIO_0_EXTI;
+    LL_EXTI_Init(&exti_init);
     NVIC_EnableIRQ(RADIO_DIO_0_IRQn);
     NVIC_SetPriority(RADIO_DIO_0_IRQn, 0);
 
     // GpioSetInterrupt(&SX1272.DIO1, IRQ_RISING_EDGE, IRQ_HIGH_PRIORITY, irqHandlers[1]);
     LL_SYSCFG_SetEXTISource(LL_SYSCFG_EXTI_PORTC, LL_SYSCFG_EXTI_LINE13);
 
-    EXTI_InitStruct.Line_0_31   = RADIO_DIO_1_EXTI;
-    LL_EXTI_Init(&EXTI_InitStruct);
+    exti_init.Line_0_31   = RADIO_DIO_1_EXTI;
+    LL_EXTI_Init(&exti_init);
     NVIC_EnableIRQ(RADIO_DIO_1_IRQn);
     NVIC_SetPriority(RADIO_DIO_1_IRQn, 0);
 
     // GpioSetInterrupt(&SX1272.DIO2, IRQ_RISING_EDGE, IRQ_HIGH_PRIORITY, irqHandlers[2]);
     LL_SYSCFG_SetEXTISource(LL_SYSCFG_EXTI_PORTC, LL_SYSCFG_EXTI_LINE13);
 
-    EXTI_InitStruct.Line_0_31   = RADIO_DIO_2_EXTI;
-    LL_EXTI_Init(&EXTI_InitStruct);
+    exti_init.Line_0_31   = RADIO_DIO_2_EXTI;
+    LL_EXTI_Init(&exti_init);
     NVIC_EnableIRQ(RADIO_DIO_2_IRQn);
     NVIC_SetPriority(RADIO_DIO_2_IRQn, 0);
 
     // GpioSetInterrupt(&SX1272.DIO3, IRQ_RISING_EDGE, IRQ_HIGH_PRIORITY, irqHandlers[3]);
     LL_SYSCFG_SetEXTISource(LL_SYSCFG_EXTI_PORTC, LL_SYSCFG_EXTI_LINE13);
 
-    EXTI_InitStruct.Line_0_31   = RADIO_DIO_3_EXTI;
-    LL_EXTI_Init(&EXTI_InitStruct);
+    exti_init.Line_0_31   = RADIO_DIO_3_EXTI;
+    LL_EXTI_Init(&exti_init);
     NVIC_EnableIRQ(RADIO_DIO_3_IRQn);
     NVIC_SetPriority(RADIO_DIO_3_IRQn, 0);
 }
@@ -208,6 +198,8 @@ SX1272SetRfTxPower(int8_t power)
 uint8_t
 SX1272GetPaSelect(uint32_t channel)
 {
+    (void)channel;
+
     // return RF_PACONFIG_PASELECT_RFO;
     return RF_PACONFIG_PASELECT_PABOOST;
 }
@@ -296,6 +288,8 @@ SX1272SetAntSw(uint8_t opMode)
 bool
 SX1272CheckRfFrequency(uint32_t frequency)
 {
+    (void)frequency;
+
     // Implement check. Currently all frequencies are supported
     return true;
 }

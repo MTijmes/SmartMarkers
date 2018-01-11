@@ -13,6 +13,7 @@
 #define I2C_TIMING 0x00601B28
 
 // Private variables -----------------------------------------------------------
+uint8_t i2c_receive_buffer[I2C_RECEIVE_SIZE];
 uint8_t *receiveBuffer;
 __IO uint8_t receiveIndex = 0;
 uint8_t size;
@@ -135,7 +136,3 @@ i2c_write(uint32_t slave_address, uint8_t *message, uint8_t size)
     }
     LL_I2C_GenerateStopCondition(I2C2);
 }
-
-void
-assert_failed(uint8_t *file, uint32_t line)
-{}
