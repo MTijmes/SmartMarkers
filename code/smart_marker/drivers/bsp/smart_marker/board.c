@@ -12,6 +12,7 @@
 #include <board.h>
 #include <i2c.h>
 #include <spi.h>
+#include <rtc.h>
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -149,6 +150,7 @@ board_init(void)
 
         i2c_init(i2c_receive_buffer, I2C_RECEIVE_SIZE);
         spi_init();
+        rtc_init();
 
         board_is_initialized = true;
     } else {
