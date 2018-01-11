@@ -79,6 +79,8 @@ SX1272IoInit(void)
 void
 SX1272IoIrqInit(DioIrqHandler **irqHandlers)
 {
+    (void)irqHandlers;
+
     /* TODO: fix EXTI source */
     LL_EXTI_InitTypeDef exti_init;
 
@@ -196,6 +198,8 @@ SX1272SetRfTxPower(int8_t power)
 uint8_t
 SX1272GetPaSelect(uint32_t channel)
 {
+    (void)channel;
+
     // return RF_PACONFIG_PASELECT_RFO;
     return RF_PACONFIG_PASELECT_PABOOST;
 }
@@ -284,6 +288,8 @@ SX1272SetAntSw(uint8_t opMode)
 bool
 SX1272CheckRfFrequency(uint32_t frequency)
 {
+    (void)frequency;
+
     // Implement check. Currently all frequencies are supported
     return true;
 }
