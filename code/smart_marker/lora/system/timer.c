@@ -362,38 +362,29 @@ void TimerSetValue( TimerEvent_t *obj, uint32_t value )
 
 TimerTime_t TimerGetValue( void )
 {
-    // return RtcGetElapsedAlarmTime();
-    /* TODO: fix */
-    return 0;
+    return RtcGetElapsedAlarmTime();
 }
 
 TimerTime_t TimerGetCurrentTime( void )
 {
-    // return RtcGetTimerValue();
-    /* TODO: fix */
-    return 0;
+    return RtcGetTimerValue();
 }
 
 TimerTime_t TimerGetElapsedTime( TimerTime_t savedTime )
 {
-    // return RtcComputeElapsedTime( savedTime );
-    /* TODO: fix */
-    return 0;
+   return RtcComputeElapsedTime( savedTime );
 }
 
 TimerTime_t TimerGetFutureTime( TimerTime_t eventInFuture )
 {
-    // return RtcComputeFutureEventTime( eventInFuture );
-    /* TODO: fix */
-    return 0;
+    return RtcComputeFutureEventTime( eventInFuture );
 }
 
 static void TimerSetTimeout( TimerEvent_t *obj )
 {
     HasLoopedThroughMain = 0;
-    /* TODO: fix */    
-    // obj->Timestamp = RtcGetAdjustedTimeoutValue( obj->Timestamp );
-    // RtcSetTimeout( obj->Timestamp );
+    obj->Timestamp = RtcGetAdjustedTimeoutValue( obj->Timestamp );
+    RtcSetTimeout( obj->Timestamp );
 }
 
 void TimerLowPowerHandler( void )

@@ -608,39 +608,33 @@ RtcGetCalendar(void)
 {
     uint32_t first_read = 0;
     uint32_t second_read = 0;
-    uint32_t timet;
-    uint32_t datet;
     RtcCalendar_t now;
 
     // Get Time and Date
-    timet = LL_RTC_TS_GetTime(RTC);
-    first_read = LL_RTC_TS_GetSubSecond(RTC);
-    second_read = LL_RTC_TS_GetSubSecond(RTC);
+    first_read = LL_RTC_TIME_GetSubSecond(RTC);
+    second_read = LL_RTC_TIME_GetSubSecond(RTC);
 
     // make sure it is correct due to asynchronous nature of RTC
     while( first_read != second_read ) {
         first_read = second_read;
-        second_read = LL_RTC_TS_GetSubSecond(RTC);
-        timet = LL_RTC_TS_GetTime(RTC);
+        second_read = LL_RTC_TIME_GetSubSecond(RTC);
     }
-
-    datet = LL_RTC_TS_GetDate(RTC);
     now.CalendarTime.Hours =
-        __LL_RTC_CONVERT_BCD2BIN(__LL_RTC_GET_HOUR(timet));
+        __LL_RTC_CONVERT_BCD2BIN(LL_RTC_TIME_GetHour(RTC));
     now.CalendarTime.Minutes =
-        __LL_RTC_CONVERT_BCD2BIN(__LL_RTC_GET_MINUTE(timet));
+        __LL_RTC_CONVERT_BCD2BIN(LL_RTC_TIME_GetMinute(RTC));
     now.CalendarTime.Seconds =
-        __LL_RTC_CONVERT_BCD2BIN(__LL_RTC_GET_SECOND(timet));
+        __LL_RTC_CONVERT_BCD2BIN(LL_RTC_TIME_GetSecond(RTC));
     now.CalendarTime.SubSeconds = second_read;
 
     now.CalendarDate.WeekDay =
-        __LL_RTC_CONVERT_BCD2BIN(__LL_RTC_GET_WEEKDAY(datet));
+        __LL_RTC_CONVERT_BCD2BIN(LL_RTC_DATE_GetWeekDay(RTC));
     now.CalendarDate.Month =
-        __LL_RTC_CONVERT_BCD2BIN(__LL_RTC_GET_MONTH(datet));
+        __LL_RTC_CONVERT_BCD2BIN(LL_RTC_DATE_GetMonth(RTC));
     now.CalendarDate.Day =
-        __LL_RTC_CONVERT_BCD2BIN(__LL_RTC_GET_DAY(datet));
+        __LL_RTC_CONVERT_BCD2BIN(LL_RTC_DATE_GetDay(RTC));
     now.CalendarDate.Year =
-        __LL_RTC_CONVERT_BCD2BIN(__LL_RTC_GET_YEAR(datet));
+        __LL_RTC_CONVERT_BCD2BIN(LL_RTC_DATE_GetYear(RTC));
     return(now);
 }
 
