@@ -49,7 +49,7 @@ i2c_receive_nmea(uint32_t slave_address)
                 if(flag == 2) {
                     i2c_receive_buffer[receiveIndex++] = temp;
                 }
-                if (receiveIndex > RECEIVE_SIZE) {
+                if (receiveIndex > I2C_RECEIVE_SIZE) {
                     receiveIndex = 0;
                 }
             }
