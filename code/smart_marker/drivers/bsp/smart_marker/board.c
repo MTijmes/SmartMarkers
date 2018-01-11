@@ -12,6 +12,7 @@
 #include <board.h>
 #include <uart.h>
 #include <i2c.h>
+#include <rtc.h>
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -42,7 +43,15 @@ board_sysclk_config(void)
     LL_RCC_HSE_EnableBypass();
     LL_RCC_HSE_Enable();
     while(LL_RCC_HSE_IsReady() != 1);
-
+    LL_PWR_EnableBkUpAccess();
+    LL_RCC_ForceBackupDomainReset();
+    LL_RCC_ReleaseBackupDomainReset();
+    LL_RCC_LSE_SetDriveCapability(LL_RCC_LSEDRIVE_LOW);
+    LL_RCC_LSE_Enable();
+    /* Wait till LSE is ready */
+    while(LL_RCC_LSE_IsReady() != 1) {}
+    LL_RCC_SetRTCClockSource(LL_RCC_RTC_CLKSOURCE_LSE);
+    LL_RCC_EnableRTC();
     /* Main PLL configuration and activation */
     LL_RCC_PLL_ConfigDomain_SYS(LL_RCC_PLLSOURCE_HSE,
                                 LL_RCC_PLL_MUL_8,
@@ -136,10 +145,10 @@ board_init(void)
 
         board_sysclk_config();
 
-        uart_init();
+        //uart_init();
         // spi_init();
-        i2c_init(i2c_receive_buffer, I2C_RECEIVE_SIZE);
-        // rtc_init();
+        //i2c_init(i2c_receive_buffer, I2C_RECEIVE_SIZE);
+        rtc_init();
 
         board_is_initialized = true;
     } else {
@@ -156,23 +165,22 @@ board_delay_ms(uint32_t ms)
 void
 board_get_unique_id(uint8_t *id)
 {
-    id[7] = ((*(uint32_t*)ID1)+ (*(uint32_t*)ID3)) >> 24;
-    id[6] = ((*(uint32_t*)ID1)+ (*(uint32_t*)ID3)) >> 16;
-    id[5] = ((*(uint32_t*)ID1)+ (*(uint32_t*)ID3)) >> 8;
-    id[4] = ((*(uint32_t*)ID1)+ (*(uint32_t*)ID3));
-    id[3] = ((*(uint32_t*)ID2)) >> 24;
-    id[2] = ((*(uint32_t*)ID2)) >> 16;
-    id[1] = ((*(uint32_t*)ID2)) >> 8;
-    id[0] = ((*(uint32_t*)ID2));
+    id[7] = ((*(uint32_t *)ID1)+(*(uint32_t *)ID3)) >> 24;
+    id[6] = ((*(uint32_t *)ID1)+(*(uint32_t *)ID3)) >> 16;
+    id[5] = ((*(uint32_t *)ID1)+(*(uint32_t *)ID3)) >> 8;
+    id[4] = ((*(uint32_t *)ID1)+(*(uint32_t *)ID3));
+    id[3] = ((*(uint32_t *)ID2)) >> 24;
+    id[2] = ((*(uint32_t *)ID2)) >> 16;
+    id[1] = ((*(uint32_t *)ID2)) >> 8;
+    id[0] = ((*(uint32_t *)ID2));
 }
 
 uint32_t
 board_get_random_seed(void)
 {
-    return ((*(uint32_t*)ID1) ^ (*(uint32_t*)ID2) ^ (*(uint32_t*)ID3));
+    return ((*(uint32_t *)ID1) ^ (*(uint32_t *)ID2) ^ (*(uint32_t *)ID3));
 }
 
 void
 board_sleep(void)
-{
-}
+{}

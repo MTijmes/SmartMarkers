@@ -7,7 +7,8 @@
 /* Public types --------------------------------------------------------------*/
 
 /* Public constants ----------------------------------------------------------*/
-#define I2C_RECEIVE_SIZE 255
+#define I2C_RECEIVE_SIZE        255
+
 #define RADIO_RESET_PORT        GPIOB
 #define RADIO_RESET_PIN         LL_GPIO_PIN_9
 
@@ -54,8 +55,6 @@
 #define RADIO_ANT_RX_PIN        LL_GPIO_PIN_6
 #define RADIO_ANT_TX_PORT       GPIOA
 #define RADIO_ANT_TX_PIN        LL_GPIO_PIN_9
-
-#define I2C_RECEIVE_SIZE 255
 
 /* Public macro --------------------------------------------------------------*/
 uint8_t i2c_receive_buffer[I2C_RECEIVE_SIZE];

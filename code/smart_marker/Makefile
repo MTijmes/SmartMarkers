@@ -59,6 +59,7 @@ SRC += ./drivers/stm32l0xx_hal/src/stm32l0xx_ll_exti.c
 SRC += ./drivers/stm32l0xx_hal/src/stm32l0xx_ll_usart.c
 SRC += ./drivers/stm32l0xx_hal/src/stm32l0xx_ll_pwr.c
 SRC += ./drivers/stm32l0xx_hal/src/stm32l0xx_ll_i2c.c
+SRC += ./drivers/stm32l0xx_hal/src/stm32l0xx_ll_rtc.c
 
 # LoRaMac source files
 SRC += ./lora/mac/LoRaMac.c
