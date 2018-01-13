@@ -13,39 +13,30 @@ development in mind, meaning the code projects can be built on a wide variety of
 operating systems. Windows, OS X and Linux were used during the development of
 the project.
 
-## GNU Arm Embedded Toolchain
+### [GNU Arm Embedded Toolchain](https://developer.arm.com/open-source/gnu-toolchain/gnu-rm)
 
-[Link](https://developer.arm.com/open-source/gnu-toolchain/gnu-rm)
-
-## STMicroelectronics ST-Link Tools
+### [STMicroelectronics ST-Link Tools](https://www.st.com/en/development-tools/st-link-v2.html)
 
 This utility tool allows for the flashing and debugging of STM32 hardware.
 
-[Official page](https://www.st.com/en/development-tools/st-link-v2.html)
 [GitHub page](https://github.com/texane/stlink)
 
-## KPN LoRaWAN development portal
+### [KPN LoRaWAN development portal](https://loradeveloper.mendixcloud.com/index.html)
 
 To reduce costs we chose to make use of the KPN network, instead of obtaining
 our own gateway. KPN provides the developer with ten LoRaWAN keys.
 
-[Link](https://loradeveloper.mendixcloud.com/index.html)
-
-## Hookbin
+### [Hookbin](https://hookbin.com/)
 
 The KPN portal is too minimalistic to display any useful packet information,
 because of this reason Hookbin was used to quickly inspect the incoming data.
 
-[Link](https://hookbin.com/)
-
-## NooElec NESDR Mini2+
+### [NooElec NESDR Mini2+](http://www.nooelec.com/store/sdr/sdr-receivers/nesdr/nesdr-mini-2-plus.html)
 
 Though not a software tool, like the others in this list, this software-defined
 radio was used to monitor LoRa transmissions. Using an SDR helped us narrow down
 certain problems we were running into when we were expecting to see incoming
 data in our application server.
-
-[Link](http://www.nooelec.com/store/sdr/sdr-receivers/nesdr/nesdr-mini-2-plus.html)
 
 # Hardware used
 
