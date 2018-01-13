@@ -167,10 +167,16 @@ void
 RTC_IRQHandler(void)
 {
     RTC_AlarmIRQHandler();
+
+    LL_RTC_DisableWriteProtection(RTC);
     LL_RTC_ALMA_Disable(RTC);
-    RtcRecoverMcuStatus();
-    RtcComputeWakeUpTime();
-    BlockLowPowerDuringTask(false);
+    LL_RTC_DisableIT_ALRA(RTC);
+    while (LL_RTC_IsActiveFlag_ALRAW(RTC) == 0);
+    LL_RTC_EnableWriteProtection(RTC);
+
+    // RtcRecoverMcuStatus();
+    // RtcComputeWakeUpTime();
+    // BlockLowPowerDuringTask(false);
     TimerIrqHandler();
 }
 

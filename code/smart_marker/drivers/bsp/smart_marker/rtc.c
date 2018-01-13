@@ -332,6 +332,10 @@ RtcStartWakeUpAlarm(uint32_t timeoutValue)
     RtcCalendar_t alarmTimer;
     LL_RTC_AlarmTypeDef al_struct_a;
 
+    LL_RTC_DisableWriteProtection(RTC);
+    LL_RTC_ALMA_Disable(RTC);
+    while (!LL_RTC_IsActiveFlag_ALRAW(RTC));
+
     LL_RTC_DisableIT_ALRA(RTC);
 
     if( timeoutValue <= 3 ) {
@@ -361,8 +365,16 @@ RtcStartWakeUpAlarm(uint32_t timeoutValue)
                      &al_struct_a);
 
     LL_RTC_ALMA_SetSubSecond(RTC, alarmTimer.CalendarTime.SubSeconds);
+
+    LL_RTC_DisableWriteProtection(RTC);
+
+    LL_RTC_ClearFlag_ALRA(RTC);
+    while (!LL_RTC_IsActiveFlag_ALRAW(RTC));
+
     LL_RTC_ALMA_Enable(RTC);
     LL_RTC_EnableIT_ALRA(RTC);
+
+    LL_RTC_EnableWriteProtection(RTC);
 }
 
 static RtcCalendar_t
