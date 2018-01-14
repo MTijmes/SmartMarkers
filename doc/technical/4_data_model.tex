@@ -1,6 +1,9 @@
 \section{Gegevensmodel}
 \subsection{Data format}
-Het dataformaat van de u-blox is NMEA, NMEA is een standaardprotocol voor het
+Het dataformaat van de u-blox is NMEA en UBX.
+
+\subsubsection{NMEA}
+NMEA is een standaardprotocol voor het
 weergeven van GPS-data. Dit ziet er zo uit: \\
 \includegraphics[width=\textwidth]{technical/nmea}
 \\Hierbij is het adres veld in het formaat ``aaccc'', waarbij ``aa'' het
@@ -10,7 +13,7 @@ een ``,''.
 Het belangrijkste deel van dit format zijn de GNS-berichten
 (GNSS-data). Deze berichten zien er als volgt uit:\\
 \texttt{\$GPGNS,091547.00,5114.50897,N,00012.28663,W,AA,10,0.83,111.1,45.6,,,V*71}
-\\\\
+\newpage
 De velden houden in:
 \\\\
 \begin{tabularx}{\textwidth}{| l | l | l | l | X |}
@@ -34,16 +37,46 @@ De velden houden in:
     15            & <CR><LF>      & character        & -                  & Carriage Return                \\ \hline
 \end{tabularx}
 \citep[p. 116]{UBlox8}\\
-Een ander deel van de data die we mogelijk gaan gebruiken is:
-\texttt{\$GPGBS}. \texttt{\$GPGBS} bevat de afwijking van de data bij u-blox
-DGPS-toestellen.
-\citep[p. 111]{UBlox8}
 
 De uiteindelijke data die we gaan gebruiken is:
 ID, Tijd (UTC), Latitude, Longtitude en Altitude
 
-Voor het referentiestation komt hier nog bij:
-error Latitude, error Longtitude en error Altitude
+\newpage
+\subsubsection{UBX}
+Om DGPS-data binnen te krijgen is het UBX-protocol noodzakelijk. Met UBX is het
+mogelijk de ruwe data binnen te krijgen en op te slaan.
+Verder wordt UBX gebruikt om instellingen op de ontvanger te doen.
+
+Om UBX-berichten te kunnen versturen moeten deze op een bepaalde manier zijn
+opgesteld. Dit ziet er als volgt uit:\\
+\includegraphics[width=\textwidth]{technical/ubx}
+\citep[p. 132]{UBlox8}\\
+
+Eerst worden er 2 synchronisatie karakters verstuurd, 0xB5 0x62. Dit is bij
+alle UBX-berichten hetzelfde. Vervolgens wordt het klasse id van het bericht
+verstuurd en het bericht id. Dit is zodat de ontvanger weet met wat voor bericht
+het te maken heeft. Dan wordt de lengte van het bericht verstuurd. Dit wordt
+gedaan in little endian. Vervolgens wordt de payload, het bericht zelf
+verstuurd. Als laatste wordt een checksum verstuurd. De checksum wordt berekend
+vanaf het klasse id tot aan de checksum zelf.
+
+Een belangrijk onderdeel van het instelling van de ontvanger dat wij gaan
+gebruiken is het instellen van de berichten die we binnen krijgen.
+Dat wordt als volgt gedaan:
+\includegraphics[width=\textwidth]{technical/set-rate}
+\citep[p. 171]{UBlox8}\\
+
+De eerste 2 bytes van de payload bestaan uit het klasse id en het bericht id van
+het bericht dat ingesteld moet worden. Vervolgens wordt de rate verstuurd. De
+rate is in dit geval per hoeveel keer de ontvanger GPS-data ontvangt de
+ontvanger het ook moet versturen.
+Hierbij is het eerste byte voor I2C, het tweede byte voor UART, het derde byte
+voor USB en het vierde byte voor SPI. De rest is gereserveerd.
+\citep[p. 11]{UBlox8}\\
+
+Wanneer het bericht goed verzonden is wordt hierop door de receiver een
+acknowledge verstuurd. Deze moet ontvangen worden voordat de receiver weer
+kan verzenden.
 
 \subsection{Database}
 \label{sec:database}
@@ -63,6 +96,7 @@ MariaDB SQL-database.
 
 Het HTTPS certificaat wordt verkregen met een certificaat van Let's Encrypt.org
 
+\newpage
 De tabel met de meetpunten bevat de volgende kolommen:
 \begin{itemize}
     \item Meetpunt ID
