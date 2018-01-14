@@ -48,13 +48,22 @@ error Latitude, error Longtitude en error Altitude
 \subsection{Database}
 \label{sec:database}
 
-De verstuurde data zal worden bijgehouden in een SQL-database. Tijdens het testen
-zal dit op een extern gehoste server zijn.
-Wanneer er een eigen LoRa gateway met de markers gebruikt wordt zal deze database
-een lokaal, offline, systeem zijn. De data zal dan naar een centrale database
-worden verstuurd wanneer er een goede internetverbinding is.
+De Smart Markers versturen hun data naar de KPN LoRa portal.
 
-De tabel met de meetpunten zal de volgende kolommen bevatten:
+Vanuit deze portal is het mogelijk om via een https verbinding, welke dus beveiligd is,
+te versturen naar een eigen API.
+
+Voor dit project komt het binnen in een PHP script, welke de verkregen data samen met het
+moment van ontvangen in een SQL-database zet. Deze database draait op dezelfde server als
+de webserver. De meetpunten worden hierbij in de decimale notatie opgeslagen.
+
+Deze server draait bij één van de projectleden thuis. Deze bestaat uit een virtuele
+machine met daarop CentOS 7. Deze draait de Apache webserver gecombineerd met een
+MariaDB SQL-database.
+
+Het HTTPS certificaat wordt verkregen met een certificaat van Let's Encrypt.org
+
+De tabel met de meetpunten bevat de volgende kolommen:
 \begin{itemize}
     \item Meetpunt ID
     \item Marker nummer
@@ -63,15 +72,20 @@ De tabel met de meetpunten zal de volgende kolommen bevatten:
     \item Tijdstip van registratie
 \end{itemize}
 
-Verder zal er een tabel zijn met de percelen, deze bevat de kolommen:
+De tabel percelen bevat de volgende kolommen:
 \begin{itemize}
     \item Perceel ID
-    \item Perceelnummer
+    \item Perceelnaam
+    \item Tijdstip van creëren
 \end{itemize}
 
-Om de percelen en meetpunten aan elkaar te koppelen zal er een koppeltabel komen:
+Om de percelen en meetpunten aan elkaar te koppelen is er een koppeltabel:
 \begin{itemize}
-    \item Perceel ID
     \item Volgnummer
+    \item Perceel ID
     \item Meetpunt ID
 \end{itemize}
+
+Omdat dit een veel op veel relatie is, een meetpunt kan meerdere percelen begrenzen en
+een perceel heeft meerdere meetpunten, is er een koppeltabel nodig. Deze koppelt het id
+van een perceel aan het ID van de bijbehorende meetpunten.
