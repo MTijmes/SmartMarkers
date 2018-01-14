@@ -1,7 +1,7 @@
 <?php
 require("functions.php");
 
-  if(isset($_GET['trunc'])){                        // Remove existing lots from DB
+  if(isset($_GET['trunc'])){                        // Remove all existing lots from DB
     $mysqli = connectDatabase();
 
     $sql = 'TRUNCATE lots;';
@@ -10,6 +10,20 @@ require("functions.php");
 
     $sql = 'TRUNCATE link_table;';
     $stmt = $mysqli -> prepare($sql);
+    $stmt -> execute();
+  }
+
+  if(isset($_POST['delete'])){                        // Remove selected lot
+    $mysqli = connectDatabase();
+
+    $sql = 'DELETE FROM lots WHERE id = (?);';
+    $stmt = $mysqli -> prepare($sql);
+    $stmt -> bind_param('i', $_POST['delete']);
+    $stmt -> execute();
+
+    $sql = 'DELETE FROM link_table WHERE lot = (?);';
+    $stmt = $mysqli -> prepare($sql);
+    $stmt -> bind_param('i', $_POST['delete']);
     $stmt -> execute();
   }
 
@@ -93,12 +107,13 @@ require("functions.php");
       });
 
       polygonLayer.addListener('click', function(kmlEvent) {
-        var text = kmlEvent.featureData.description;
+        var text = '<form method="POST"><button type="submit" name="delete" value="' + kmlEvent.featureData.name + '">Verwijder perceel</button></form><br>';
+        text += kmlEvent.featureData.description;
         showInContentWindow(text);
       });
 
       kmlLayer.addListener('click', function(kmlEvent) {
-        var text = '<button onclick="addInput(\'dynamicInput\', ' + kmlEvent.featureData.name + ')">Voeg toe aan perceel</button><br>'; // Generate add to list button
+        var text = '<button onclick="addInput(\'dynamicInput\', ' + kmlEvent.featureData.name + ')">Voeg toe aan perceel</button><br>';
         text += kmlEvent.featureData.description;
         showInContentWindow(text);
       });
@@ -113,7 +128,7 @@ require("functions.php");
 
       var newdiv = document.createElement('div');
 
-      newdiv.innerHTML = "Meetpunt " + "<input type='text' value='" + marker + "' name='myInputs[]' readonly>";
+      newdiv.innerHTML = "Meetpunt " + marker + "<input type='hidden' value='" + marker + "' name='myInputs[]' readonly>";
 
       document.getElementById(divName).appendChild(newdiv);
     }

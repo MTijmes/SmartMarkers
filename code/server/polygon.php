@@ -36,6 +36,9 @@
       $kml[] = "\t\t\t\t" . 'Perceel: ' . $res['name'] . '&lt;br&gt;';
       $kml[] = "\t\t\t\t" . 'Created: ' . $res['created'];
       $kml[] = "\t\t\t" . '</description>';
+      $kml[] = "\t\t\t" . '<name>';
+      $kml[] = "\t\t\t" . $lastID;
+      $kml[] = "\t\t\t" . '</name>';
       $kml[] = "\t\t\t" . '<Polygon>';
       $kml[] = "\t\t\t\t" . '<outerBoundaryIs>';
       $kml[] = "\t\t\t\t\t" . '<LinearRing>';

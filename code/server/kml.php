@@ -35,8 +35,9 @@
     $kml[] = "\t\t\t\t" . '#west_campus_style';
     $kml[] = "\t\t\t" . '</styleUrl>';
     $kml[] = "\t\t\t" . '<description>';
-    $kml[] = "\t\t\t\t\t\t" . 'Point: ' . $res['id'] . '&lt;/br&gt;';
-    $kml[] = "\t\t\t\t\t\t" . 'Date: ' . $res['timestamp'] . '&lt;/br&gt;';
+    $kml[] = "\t\t\t\t\t\t" . 'Meetpunt: ' . $res['id'] . '&lt;/br&gt;';
+    $kml[] = "\t\t\t\t\t\t" . 'Tijdstip: ' . $res['timestamp'] . '&lt;/br&gt;';
+    $kml[] = "\t\t\t\t\t\t" . 'Locatie: ' . $res['lat'] . ', ' . $res['lon'] . '&lt;/br&gt;';
     $kml[] = "\t\t\t" . '</description>';
     $kml[] = "\t\t\t" . '<Point>';
     $kml[] = "\t\t\t\t" . '<coordinates>';
