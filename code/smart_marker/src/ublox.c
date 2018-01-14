@@ -14,6 +14,10 @@ extern uint8_t i2c_receive_buffer[];
 
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
+
+
+// Waits until an (not) acknowledged from the receiver is received
+// Then it returns 1 or 0 based on that
 static uint8_t
 cfg_ack_receive(uint32_t slave_address)
 {
@@ -41,7 +45,9 @@ cfg_ack_receive(uint32_t slave_address)
         }
     }
     LL_I2C_ClearFlag_STOP(I2C2);
-    if(message[3] == CFGACK) { //Check if ACK or NAK received
+
+    //Check if ACK or NAK received
+    if(message[3] == CFGACK) { 
         return 1;
     }else if(message[3] == CFGNAK) {
         return 0;
@@ -51,6 +57,7 @@ cfg_ack_receive(uint32_t slave_address)
     }
 }
 
+// Sets a message up to be sent to the receiver
 static void
 fill_ubx_message(uint8_t *ubx_buffer,
                  char    class_id,
@@ -62,6 +69,7 @@ fill_ubx_message(uint8_t *ubx_buffer,
     n = 6 + length_of_payload;
     ck_a = 0;
     ck_b = 0;
+    // Fill message
     ubx_buffer[0] = SYNC1;
     ubx_buffer[1] = SYNC2;
     ubx_buffer[2] = class_id;
@@ -72,6 +80,8 @@ fill_ubx_message(uint8_t *ubx_buffer,
     {
         ubx_buffer[i+6] = payload[i];
     }
+
+    // Calculate checksum
     for(int i=2; i<n; i++)
     {
         ck_a += ubx_buffer[i];
@@ -83,6 +93,8 @@ fill_ubx_message(uint8_t *ubx_buffer,
     ubx_buffer[7+length_of_payload] = ck_b;
 }
 
+// Sets the rate at which a certain message needs to be sent from
+// the receiver
 static void
 set_rate(uint32_t slave_address, uint8_t *payload)
 {
@@ -102,7 +114,7 @@ set_rate(uint32_t slave_address, uint8_t *payload)
     while(LL_I2C_IsActiveFlag_BUSY(I2C2)) {}
 }
 
-//splits a delimited string into tokens
+// Splits a delimited string into tokens
 static char *
 strtok_single(char *str, char const *delims)
 {
@@ -127,6 +139,7 @@ strtok_single(char *str, char const *delims)
     return ret;
 }
 
+// Delimits a string based on commas
 static void
 delimit_string(char *string)
 {
@@ -141,6 +154,8 @@ delimit_string(char *string)
 }
 
 /* Public functions ----------------------------------------------------------*/
+
+// Receives an NMEA string and saves it in the i2c_receive_buffer
 void
 i2c_receive_nmea(uint32_t slave_address)
 {
@@ -174,6 +189,7 @@ i2c_receive_nmea(uint32_t slave_address)
     LL_I2C_ClearFlag_STOP(I2C2);
 }
 
+// Parses NMEA strings and outputs a string which can be sent to the server
 void
 parse_data(uint8_t marker_id, uint8_t *output)
 {
@@ -209,6 +225,7 @@ parse_data(uint8_t marker_id, uint8_t *output)
     #endif
 }
 
+// Fills a message for set rate
 void
 set_message(uint32_t slave_adress, uint8_t message_id, uint8_t rate)
 {
