@@ -1,6 +1,4 @@
 \section{Systeemarchitectuur}
-Dit hoofdstuk beschrijft de architectuur van het Smart Markers systeem.
-
 \subsection{Architectuur}
 De netwerkarchitectuur heeft een stertopologie, waarin de LoRa gateway centraal staat. De GPS-nodes, die om de gateway en over een gebied zijn verspreid, sturen GPS-data naar de gateway. Van één van de GPS-nodes is de positie nauwkeurig opgemeten, deze node functioneert als referentiestation en stuurt GPS-correctiedata naar de gateway. De gateway stuurt deze data door naar een applicatieserver, waar de GPS-data en de GPS-correctiedata worden gebruikt om de GPS-data tot op een meter nauwkeurig te krijgen.
 
@@ -19,13 +17,18 @@ Als brein van de Smart Marker is er gekozen voor een \texttt{STM32 NUCLEO-L073RZ
 
 \paragraph{LoRa radio}
 De LoRa radio bevindt zich op het RF-LORA-868-SO board. De SX1272 LoRa radio wordt voornamelijk gebruikt voor end-devices, omdat het een half-duplex radio is.
-% TODO: Links naar LoRa docs
+
+\paragraph{Software-Defined Radio}
+Om de inzicht te hebben wat er gebeurd op het fysieke medium waarop LoRa zendt,
+is er gebruik gemaakt van een NooElec NESDR Mini 2+. Deze USB-dongle, i.c.m. de
+juiste software (CubicSDR b.v.), biedt de mogelijkheid om een waterval spectrum
+te tonen van het frequentiebereik: 25 - 1750 MHz. De frequenties waar LoRaWAN op
+communiceert valt daarbinnen, dus is het protocol te monitoren op deze SDR.
 
 \paragraph{GPS-modules}
 Voor de locatiebepaling worden u-blox EVK-7P GPS-modules gebruikt, omdat Kadaster deze heeft aangeboden voor gebruik tijdens dit project. GPS-modules zijn relatief duur, dus qua budget komt het goed uit dat Kadaster deze modules ter beschikking kan stellen.
 
-Deze GPS-modules worden uitgelezen over de SPI-bus, met een maximale snelheid van 1Mb/s. Er zijn twee protocollen voor de representatie van de output data: het UBX-protocol voor binaire representatie en het NMEA-protocol voor ASCII representatie.
-% TODO: Meer onderzoeken. Welke data?
+Deze GPS-modules worden uitgelezen over de I2C-bus. Er zijn twee protocollen voor de representatie van de output data: het UBX-protocol voor binaire representatie en het NMEA-protocol voor ASCII representatie.
 
 \paragraph{Stroomvoorziening}
 Als energiebron gebruiken we twee 18650 cellen, welke extern opgeladen worden.
@@ -46,7 +49,7 @@ Tijdens het project wordt er gebruik gemaakt van softwarepakketten ter ondersteu
 \subsection{Communicatie}
 Als communicatie techniek is er gekozen voor LoRa, omdat de opdrachtgever met één meting een heel gebied wilt kunnen registreren. De LoRa modulatietechniek leent zich ervoor om in deze use-case gebruikt te worden, vanwege de lange communicatie-afstand en het lage energieverbruik.
 
-Er is overwogen om een LoRa mesh netwerk op te zetten, echter is er besloten om te kiezen voor een simpelere implementatie, vanwege de korte tijdsduur van het project en een gebrek aan kennis over mesh netwerken. Uit het onderzoek van \citep{AIM_HI_LORA_WMN} is gebleken dat de packet delivery ratio (PDR) in hun labopstelling aanzienlijk betere resultaten had in een mesh netwerk (, ten opzichte van een stertopologie.
+Er is overwogen om een LoRa mesh netwerk op te zetten, echter is er besloten om te kiezen voor een simpelere implementatie, vanwege de korte tijdsduur van het project en een gebrek aan kennis over mesh netwerken. Uit het onderzoek van \citep{AIM_HI_LORA_WMN} is gebleken dat de packet delivery ratio (PDR) in hun labopstelling aanzienlijk betere resultaten had in een mesh netwerk, ten opzichte van een stertopologie.
 
 \subsection{Gegevensopslag}
 De verzamelde data uit de meetpunten zal worden opgeslagen in een SQL-database.
@@ -54,4 +57,4 @@ Zie ook hoofdstuk \ref{sec:database}.
 
 \label{subsec:overzicht}
 \subsection{Overzicht}
-\includegraphics[width=0.9\linewidth]{technical/system_architecture_overview.pdf}
+\includegraphics[width=\textwidth]{technical/system_architecture.png}
