@@ -1,6 +1,22 @@
 \section{Product}
+\subsection{Ontwerp}
+Tijdens de ontwerpfase is er gesproken over een mesh netwerk van GPS-modules, die
+communiceren via LoRa, echter is er relatief vlot besloten om een simpelere
+implementatie uit te werken, in verband met de korte tijdsduur van het project.
+
+Het bijgestelde doel was om een prototype van een systeem te ontwikkelen dat
+locatiegegevens kan meten, registreren in een database en een simpele dataweergave
+te tonen.
+
+\subsection{Status}
 Momenteel kan het prototype de locatie uit de GPS halen middels I2C communicatie
-en deze middels SPI doorgeven aan de LoRa module.
+en deze middels SPI doorgeven aan de LoRa module. De onderstaande foto weergeeft
+een testmeting, die op 1-2m nauwkeurig is.
+
+\begin{center}
+\includegraphics[width=0.5\linewidth]{final_report/measurement0.png}
+\end{center}
+
 Via de KPN Portal komt het binnen bij onze API, waar de binnengekomen berichten
 in de database gelogd worden. Vanaf de KPN naar onze server loopt het verkeer via
 een HTTPS verbinding.
@@ -8,15 +24,19 @@ een HTTPS verbinding.
 De server draait op CentOS7, waarbinnen een Apache webserver en een MariaDB SQL-
 server draaien om de gegevens op te slaan en te verwerken.
 
+\newpage
 Verder is de server in staat om van de meetpunten een kaart te tonen op een
 webpagina. Hierop zijn de meetpunten te selecteren om toe te voegen aan een perceel.
 
+\begin{center}
+\includegraphics[width=0.5\linewidth]{final_report/webpage.png}
+\end{center}
+
+\subsection{Advies}
 In deze ontwikkelfase wordt er nog gebruik gemaakt van het KPN LoRa netwerk, wat
 natuurlijk in de doelgebieden niet beschikbaar is. Daarom zal er daar met een
 eigen gateway en lokale server gewerkt moeten worden om de GPS-data van de Smart
 Markers te verzamelen en verwerken.
-
-% TODO Wat doen de markers nu precies qua locatie en hoe gaat dit in de toekomst?
 
 Daarnaast kan de energievoorziening gerealiseerd worden, op dit moment is het
 prototype alleen in gebruik geweest met een laptop. Te denken valt aan een
@@ -26,4 +46,5 @@ kunnen plaatsen.
 Verder hebben we het met het Kadaster gehad over manieren om de percelen met
 minder handwerk te maken, bijvoorbeeld door het analyseren van sattelietbeelden.
 
-\includegraphics[width=\linewidth]{final_report/All_parts.png}
+\subsection{Systeemoverzicht}
+\includegraphics[width=\linewidth]{final_report/system_architecture.png}
