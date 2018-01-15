@@ -159,6 +159,11 @@ board_init(void)
 }
 
 void
+board_deinit(void)
+{
+}
+
+void
 board_delay_ms(uint32_t ms)
 {
     LL_mDelay(ms);
@@ -184,5 +189,7 @@ board_get_random_seed(void)
 }
 
 void
-board_sleep(void)
-{}
+board_sleep(uint32_t sec)
+{
+    (void)sec;
+}

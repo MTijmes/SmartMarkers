@@ -1,8 +1,5 @@
 \section{Gegevensmodel}
-\subsection{Data format}
-Het dataformaat van de u-blox is NMEA en UBX.
-
-\subsubsection{NMEA}
+\subsection{NMEA}
 NMEA is een standaardprotocol voor het
 weergeven van GPS-data. Dit ziet er zo uit: \\
 \includegraphics[width=\textwidth]{technical/nmea}
@@ -13,9 +10,7 @@ een ``,''.
 Het belangrijkste deel van dit format zijn de GNS-berichten
 (GNSS-data). Deze berichten zien er als volgt uit:\\
 \texttt{\$GPGNS,091547.00,5114.50897,N,00012.28663,W,AA,10,0.83,111.1,45.6,,,V*71}
-\newpage
-De velden houden in:
-\\\\
+
 \begin{tabularx}{\textwidth}{| l | l | l | l | X |}
     \hline
     \textbf{Veld} & \textbf{Naam} & \textbf{Formaat} & \textbf{Voorbeeld} & \textbf{Beschrijving}          \\ \hline
@@ -39,10 +34,10 @@ De velden houden in:
 \citep[p. 116]{UBlox8}\\
 
 De uiteindelijke data die we gaan gebruiken is:
-ID, Tijd (UTC), Latitude, Longtitude en Altitude
+ID, Tijd (UTC), Latitude, en Longtitude.
 
 \newpage
-\subsubsection{UBX}
+\subsection{UBX}
 Om DGPS-data binnen te krijgen is het UBX-protocol noodzakelijk. Met UBX is het
 mogelijk de ruwe data binnen te krijgen en op te slaan.
 Verder wordt UBX gebruikt om instellingen op de ontvanger te doen.
@@ -72,18 +67,16 @@ rate is in dit geval per hoeveel keer de ontvanger GPS-data ontvangt de
 ontvanger het ook moet versturen.
 Hierbij is het eerste byte voor I2C, het tweede byte voor UART, het derde byte
 voor USB en het vierde byte voor SPI. De rest is gereserveerd.
-\citep[p. 11]{UBlox8}\\
+\citep[p. 11]{UBlox8}
 
 Wanneer het bericht goed verzonden is wordt hierop door de receiver een
 acknowledge verstuurd. Deze moet ontvangen worden voordat de receiver weer
 kan verzenden.
 
-\subsection{Database}
-\label{sec:database}
-
+\subsection{Data routing}
 De Smart Markers versturen hun data naar de KPN LoRa portal.
 
-Vanuit deze portal is het mogelijk om via een https verbinding, welke dus beveiligd is,
+Vanuit deze portal is het mogelijk om via een HTTPS verbinding, welke dus beveiligd is,
 te versturen naar een eigen API.
 
 Voor dit project komt het binnen in een PHP script, welke de verkregen data samen met het
@@ -96,29 +89,42 @@ MariaDB SQL-database.
 
 Het HTTPS certificaat wordt verkregen met een certificaat van Let's Encrypt.org
 
-\newpage
-De tabel met de meetpunten bevat de volgende kolommen:
-\begin{itemize}
-    \item Meetpunt ID
-    \item Marker nummer
-    \item Latitude
-    \item Longitude
-    \item Tijdstip van registratie
-\end{itemize}
+\subsection{Database}
+\label{sec:database}
+De tabel met de meetpunten bevat de volgende kolommen:\\
+% \begin{itemize}
+%     \item Meetpunt ID
+%     \item Marker nummer
+%     \item Latitude
+%     \item Longitude
+%     \item Tijdstip van registratie
+% \end{itemize}
+\begin{tabularx}{\textwidth}{| X | X | X | X | X |}
+    \hline
+    \textbf{Meetpunt ID} & \textbf{Marker ID} & \textbf{Latitude} & \textbf{Longitude} & \textbf{Tijdstip} \\ \hline
+\end{tabularx}\\
 
-De tabel percelen bevat de volgende kolommen:
-\begin{itemize}
-    \item Perceel ID
-    \item Perceelnaam
-    \item Tijdstip van creëren
-\end{itemize}
+De tabel percelen bevat de volgende kolommen:\\
+% \begin{itemize}
+%     \item Perceel ID
+%     \item Perceelnaam
+%     \item Tijdstip van creëren
+% \end{itemize}
+\begin{tabularx}{\textwidth}{| X | X | X |}
+    \hline
+    \textbf{Perceel ID} & \textbf{Perceel naam} & \textbf{Tijdstip van creëren} \\ \hline
+\end{tabularx}\\
 
-Om de percelen en meetpunten aan elkaar te koppelen is er een koppeltabel:
-\begin{itemize}
-    \item Volgnummer
-    \item Perceel ID
-    \item Meetpunt ID
-\end{itemize}
+Om de percelen en meetpunten aan elkaar te koppelen is er een koppeltabel:\\
+% \begin{itemize}
+%     \item Volgnummer
+%     \item Perceel ID
+%     \item Meetpunt ID
+% \end{itemize}
+\begin{tabularx}{\textwidth}{| X | X | X |}
+    \hline
+    \textbf{Volgnummer} & \textbf{Perceel ID} & \textbf{Meetpunt ID} \\ \hline
+\end{tabularx}\\
 
 Omdat dit een veel op veel relatie is, een meetpunt kan meerdere percelen begrenzen en
 een perceel heeft meerdere meetpunten, is er een koppeltabel nodig. Deze koppelt het id
