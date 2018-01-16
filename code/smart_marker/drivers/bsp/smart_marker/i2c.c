@@ -71,6 +71,7 @@ i2c_init(uint8_t *buf, uint8_t buffersize)
     size = buffersize;
 }
 
+// Sets the address to receive from
 void
 i2c_set_receive_address(uint32_t slave_addr, uint8_t reg_addr)
 {
@@ -86,6 +87,7 @@ i2c_set_receive_address(uint32_t slave_addr, uint8_t reg_addr)
     LL_I2C_TransmitData8(I2C2, reg_addr);
 }
 
+// Restarts receiving a message
 void
 i2c_continue_receiving(uint32_t slave_address)
 {
@@ -105,6 +107,7 @@ i2c_error_callback(void)
     NVIC_DisableIRQ(I2C2_IRQn);
 }
 
+// Starts a write
 void
 i2c_start_write(uint32_t slave_address,uint8_t numbytes)
 {
@@ -116,6 +119,7 @@ i2c_start_write(uint32_t slave_address,uint8_t numbytes)
                           LL_I2C_GENERATE_START_WRITE);
 }
 
+// Write a message
 void
 i2c_write(uint32_t slave_address, uint8_t *message, uint8_t size)
 {

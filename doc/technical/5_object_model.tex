@@ -1,39 +1,73 @@
 \section{Klassendiagram}
 \subsection{Overzicht}
+\includegraphics[width=0.9\textwidth]{technical/class_diagram.pdf}
 
-\includegraphics[width=0.9\linewidth]{technical/class_diagram.pdf}
+\subsection{Eigen code}
+\subsubsection{Main}
+Dit is het entry point van de C code. Deze file bevat alleen de code die van belang
+is voor de user, dat betekent dat de code zo simpel mogelijk is gehouden.
 
-\subsection{Klassen}
-\subsubsection{Node}
-\paragraph{Attributen}
-De Node klasse heeft een uniek ID. Met een boolean type kan worden aangegeven of de Node een referentiestation is. De gps\_data bevat de locatiegegevens, en de payload bevat de gefilterde gps\_data.
+De user applicatie kijkt of de Smart Marker met een LoRaWAN netwerk verbonden is
+en, zo ja, verstuurt dan de gemeten GPS-data over het netwerk. Wanneer er nog
+geen verbinding is blijft hij proberen om connectie te maken.
 
-\paragraph{Functies}
+\subsubsection{Board}
+In dit interface staan de board ondersteunende functies (b.v. het uitschakelen van
+interrupts) die door heel de programmatuur worden gebruikt.
+
+De user applicatie zal niet werken als \texttt{board\_init()} niet als eerste
+functie wordt aangeroepen.
+
+\subsubsection{UART}
+Deze driver wordt in de user applicatie doorgaans niet gebruikt, maar deze is
+ontwikkeld om het debuggen makkelijker te maken.
+
+\subsubsection{I2C}
+Het I2C interface is ontwikkeld om de GPS-module uit te kunnen lezen. De inkomende
+data wordt in een buffer opgeslagen, die in het \texttt{Ublox} interface wordt
+uitgelezen.
+
+\subsubsection{SPI}
+Het SPI interface is geschreven om de LoRa radio registers te programmeren. Het
+is ook te gebruiken om de GPS-module uit te lezen, echter is dat niet gebruikt in
+deze applicatie.
+
+\subsubsection{RTC}
+De Real-Time Clock wordt gebruikt in het \texttt{Timer} interface, wat door Semtech
+is ontwikkeld. De RTC stelt een interrupt in, zodat het board wakker gemaakt kan
+worden op de gewenste datum of het gewenste tijdstip.
+
+\subsubsection{LoRa}
+Dit interface dient als laag tussen de user applicatie en de \texttt{LoRaMac} ofwel
+de LoRaWAN netwerk stack. Het is geschreven om de werking en instellingen van LoRaWAN
+te abstraheren voor de gebruiker. Zo is het makkelijker om een andere user applicatie
+te schrijven.
+
+\subsubsection{Ublox}
+Het Ublox interface is geschreven specifiek voor de GPS-module die gebruikt is
+tijdens dit project. Het staat de gebruiker toe om instellingen te veranderen in
+de module, zodat b.v. het krijgen van een GPS-fix minder lang duurt, of om de
+frequentie van berichten in te stellen.
+
+\subsection{Gebruikte code}
+Omdat het draait om de code die de studenten hebben geproduceerd, is gebruikte
+code zoveel mogelijk buiten het klassendiagram gehouden.
+
+\subsubsection{LoRaMac van Semtech}
+Semtech, de producent van de LoRa chips, heeft in samenwerking met wat kleinere
+bedrijven een implementatie gemaakt die overeenkomen met de LoRaWAN specificaties.
+Dit project, genaamd LoRaMac, is gebruikt als basis voor de Smart Marker LoRa
+implementatie.
+
+Deze code staat in de directory: \texttt{code/smart\_marker/lora}.
+
+\subsubsection{STM32L0xx CMSIS / low-layer drivers}
+STMicroelectronics, de producent van het development board waarmee gewerkt is,
+heeft een aantal board ondersteunende soft-/firmware pakketten die het makkelijker
+maken om te ontwikkelen met de hardware.
+
+Deze code staan in de directories:
 \begin{itemize}
-    \item \texttt{init\_hardware()} initialiseert de hardware/peripherals.
-    \item \texttt{init\_lora()} initialiseert de LoRaWAN netwerk stack.
-    \item \texttt{init\_gps()} initialiseert de GPS module.
-    \item \texttt{gps\_acquire()} zoekt naar satellieten.
-    \item \texttt{gps\_measure(struct gps\_data)} schrijft een GPS-meting weg in een gps\_data struct.
-    \item \texttt{lora\_register(id, ref\_station)} registreert de Node in het netwerk.
-    \item \texttt{lora\_data\_prepare(struct gps\_data)} verpakt gps\_data in een payload struct, om via het LoRa netwerk verstuurd te worden.
-    \item \texttt{lora\_data\_send(struct payload)} verstuurt de payload.
-    \item \texttt{sleep(sec)} zet het device in slaapmodus voor
+    \item \texttt{code/smart\_marker/bsp/cmsis}
+    \item \texttt{code/smart\_marker/bsp/stm32l0xx\_hal}
 \end{itemize}
-
-\subsubsection{Referentiestation}
-Het referentiestation is een Node waarvan de \texttt{ref\_station} \texttt{true} is. De positie van dit referentiestation is met hoge nauwkeurigheid vastgelegd, om middels DGPS een correctie uit te kunnen voeren.
-
-Het referentiestation stuurt DGPS-data.
-
-\subsubsection{Gateway}
-De gateway ontvangt data van alle Nodes en stuurt de data door naar een applicatieserver, waar het vervolgens in een database wordt weggeschreven.
-
-\subsubsection{Database}
-De database bevat de GPS-gegevens waar een correctie op is uitgevoerd. Deze data wordt gebruikt voor de weergave in een Google API.
-
-\subsubsection{GPS-data}
-Het GPS-data struct bevat een (talker) ID van de GPS-module, tijd in UTC-format, en de locatiegegevens in latitude, longitude en altitude.
-
-\subsubsection{DGPS-data}
-Het DGPS-data struct ziet er hetzelfde uit als GPS-data, met een aanvulling van foutcorrectie attributen.

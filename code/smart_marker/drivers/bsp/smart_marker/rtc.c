@@ -84,6 +84,7 @@ static RtcCalendar_t RtcComputeTimerTimeToAlarmTick(TimerTime_t   timeCounter,
                                                     RtcCalendar_t now);
 static RtcCalendar_t RtcGetCalendar(void);
 
+// Waits until RTC timer is synchronised
 uint32_t
 WaitForSynchro_RTC(void)
 {
@@ -95,6 +96,7 @@ WaitForSynchro_RTC(void)
     return 0;
 }
 
+// Stop initialization
 uint32_t
 Exit_RTC_InitMode(void)
 {
@@ -106,6 +108,7 @@ Exit_RTC_InitMode(void)
     return (0);
 }
 
+// Enter initialization
 uint32_t
 Enter_RTC_InitMode(void)
 {
@@ -175,12 +178,14 @@ rtc_init(void)
     NVIC_EnableIRQ(RTC_IRQn);
 }
 
+// Sets the timeout for the alarm in milliseconds
 void
 RtcSetTimeout(uint32_t timeout)
 {
     RtcStartWakeUpAlarm(RtcConvertMsToTick(timeout));
 }
 
+// Gets the timeout value after a wake up
 TimerTime_t
 RtcGetAdjustedTimeoutValue(uint32_t timeout)
 {
@@ -202,6 +207,7 @@ RtcGetAdjustedTimeoutValue(uint32_t timeout)
     return timeout;
 }
 
+// Gets the value of a timer in milliseconds
 TimerTime_t
 RtcGetTimerValue(void)
 {
@@ -212,6 +218,7 @@ RtcGetTimerValue(void)
     return(RtcConvertTickToMs(retVal));
 }
 
+// Gets how long an alarmtimer has been running in milliseconds
 TimerTime_t
 RtcGetElapsedAlarmTime(void)
 {
@@ -236,6 +243,7 @@ RtcComputeFutureEventTime(TimerTime_t futureEventInTime)
     return(RtcGetTimerValue()+futureEventInTime);
 }
 
+// Gets the elapsed time
 TimerTime_t
 RtcComputeElapsedTime(TimerTime_t eventInTime)
 {
@@ -305,6 +313,7 @@ RtcRecoverMcuStatus(void)
     }
 }
 
+// Computes when the board needs to wake up
 void
 RtcComputeWakeUpTime(void)
 {
@@ -325,6 +334,7 @@ RtcComputeWakeUpTime(void)
     }
 }
 
+// Sets an alarm at timeoutvalue
 static void
 RtcStartWakeUpAlarm(uint32_t timeoutValue)
 {
@@ -377,6 +387,7 @@ RtcStartWakeUpAlarm(uint32_t timeoutValue)
     LL_RTC_EnableWriteProtection(RTC);
 }
 
+// Comverts timer time to alarmticks
 static RtcCalendar_t
 RtcComputeTimerTimeToAlarmTick(TimerTime_t timeCounter, RtcCalendar_t now)
 {

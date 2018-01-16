@@ -79,7 +79,7 @@ uart_receive(uint8_t *data, size_t size)
 }
 
 /* Public functions ----------------------------------------------------------*/
-uint8_t
+void
 uart_get_char(uint8_t *data)
 {
     /* TODO: Add error handling */
@@ -94,7 +94,7 @@ uart_get_char(uint8_t *data)
     return 0;
 }
 
-uint8_t
+void
 uart_put_char(uint8_t data)
 {
     /* TODO: Add error handling */
@@ -102,7 +102,7 @@ uart_put_char(uint8_t data)
     return 0;
 }
 
-uint8_t
+void
 uart_get_buffer(uint8_t *data, size_t size)
 {
     /* TODO: Add error handling */
@@ -110,7 +110,7 @@ uart_get_buffer(uint8_t *data, size_t size)
     return 0;
 }
 
-uint8_t
+void
 uart_put_buffer(uint8_t *data, size_t size)
 {
     /* TODO: Add error handling */
