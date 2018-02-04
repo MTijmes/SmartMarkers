@@ -91,41 +91,16 @@ Het HTTPS certificaat wordt verkregen met een certificaat van Let's Encrypt.org
 
 \subsection{Database}
 \label{sec:database}
-De tabel met de meetpunten bevat de volgende kolommen:\\
-% \begin{itemize}
-%     \item Meetpunt ID
-%     \item Marker nummer
-%     \item Latitude
-%     \item Longitude
-%     \item Tijdstip van registratie
-% \end{itemize}
-\begin{tabularx}{\textwidth}{| X | X | X | X | X |}
-    \hline
-    \textbf{Meetpunt ID} & \textbf{Marker ID} & \textbf{Latitude} & \textbf{Longitude} & \textbf{Tijdstip} \\ \hline
-\end{tabularx}\\
+\includegraphics[width=\textwidth]{technical/erd.png}
 
-De tabel percelen bevat de volgende kolommen:\\
-% \begin{itemize}
-%     \item Perceel ID
-%     \item Perceelnaam
-%     \item Tijdstip van creëren
-% \end{itemize}
-\begin{tabularx}{\textwidth}{| X | X | X |}
-    \hline
-    \textbf{Perceel ID} & \textbf{Perceel naam} & \textbf{Tijdstip van creëren} \\ \hline
-\end{tabularx}\\
+De log tabel bevat geen relaties met de andere tabellen en is ook niet van
+invloed op de werking van het systeem. Deze bestaat enkel voor het makkelijker
+debuggen en controleren van de binnengekomen berichten.
 
-Om de percelen en meetpunten aan elkaar te koppelen is er een koppeltabel:\\
-% \begin{itemize}
-%     \item Volgnummer
-%     \item Perceel ID
-%     \item Meetpunt ID
-% \end{itemize}
-\begin{tabularx}{\textwidth}{| X | X | X |}
-    \hline
-    \textbf{Volgnummer} & \textbf{Perceel ID} & \textbf{Meetpunt ID} \\ \hline
-\end{tabularx}\\
+Meetpunten worden opgeslagen in de measurement tabel, waarna ze via de webpagina
+eventueel toegevoegd kunnen worden aan een perceel. De percelen worden opgeslagen
+in de tabel lot.
 
 Omdat dit een veel op veel relatie is, een meetpunt kan meerdere percelen begrenzen en
-een perceel heeft meerdere meetpunten, is er een koppeltabel nodig. Deze koppelt het id
-van een perceel aan het ID van de bijbehorende meetpunten.
+een perceel heeft meerdere meetpunten, is er een koppeltabel, link\_table, nodig.
+Deze koppelt het id van een perceel aan het ID van de bijbehorende meetpunten.
