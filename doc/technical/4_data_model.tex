@@ -40,6 +40,18 @@ ID, Tijd (UTC), Latitude, en Longtitude.
 \subsection{UBX}
 Om DGPS-data binnen te krijgen is het UBX-protocol noodzakelijk. Met UBX is het
 mogelijk de ruwe data binnen te krijgen en op te slaan.
+
+Deze ruwe data wordt door de ontvanger aangeleverd in een Ublox binary formaat.
+Deze data is dan nog niet te gebruiken om correcties te doen. Eerst moet de data
+geconverteerd worden naar RINEX (Receiver Independent Exchange Format). Dit kan
+gedaan worden met een programma genaamd convbin.
+De informatie die hieruit komt ziet er ongeveer als volgt uit:
+
+\includegraphics[width=\textwidth]{technical/obsfile}
+\citep{rtklibexplorer}\\
+
+Deze informatie kan geïnterpreteerd worden, door een bibliotheek zoals RTKLIB.
+
 Verder wordt UBX gebruikt om instellingen op de ontvanger te doen.
 
 Om UBX-berichten te kunnen versturen moeten deze op een bepaalde manier zijn
