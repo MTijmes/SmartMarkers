@@ -1,10 +1,45 @@
 \section{Hardware}
 
 \subsection{Netwerk}
-In deze ontwikkelfase wordt er nog gebruik gemaakt van het KPN LoRa netwerk, wat
-natuurlijk in de doelgebieden niet beschikbaar is. Daarom zal er daar met een eigen
-gateway en lokale server gewerkt moeten worden om de GPS-data van de Smart Markers
-te verzamelen en verwerken. Een andere optie is het werken met een mesh-netwerk.
+Voor de ontwikkeling van het prototype is er gebruik gemaakt van het landelijk
+dekkende LoRa-netwerk van KPN, maar voor doorontwikkeling en plaatsing in het
+doelgebied is het noodzakelijk om een privaat netwerk te implementeren.
+Zowel het implementeren van een privaat netwerk als het uitvoerig onderzoeken
+ervan viel buiten de scope van dit project. \\
+Tijdens de uitvoering van dit project zijn er bevindingen m.b.t. LoRaWAN
+netwerken gedaan, deze zijn vertaald naar het onderstaande advies:
+
+\paragraph{Vervolgonderzoek: sternetwerk}
+Het netwerk met stertopologie is wat LoRaWAN standaard ondersteunt, dit betekent
+dat er voor deze implementatie veel informatie beschikbaar is. \citep{LRSRV} \\
+Concreet betekent het implementeren van een sternetwerk dat er minder
+ontwikkeltijd benodigd is om het Smart Markers systeem te realiseren.
+
+\paragraph{Vervolgonderzoek: mesh-netwerk}
+Het LoRaWAN protocol ondersteunt geen mesh-netwerken. Echter, uit onderzoek is
+gebleken dat het gebruik van LoRa (lees: de modulatietechniek) in een netwerk
+met mesh-topologie een hogere \textit{packet delivery ratio}
+\citep{AIM_HI_LORA_WMN} heeft dan een netwerk met stertopologie. Over het
+implementeren van LoRa in een mesh-netwerk is weinig informatie beschikbaar,
+waarschijnlijk omdat er doorgaans meer gebruik gemaakt wordt van LoRaWAN en
+vanwege de langere ontwikkeltijd. \\
+Concreet betekent het implementeren van een mesh-netwerk voor hogere robuustheid
+van het netwerk, maar ook dat er (aanzienlijk) meer onderzoek gedaan moet worden
+naar onder andere:
+\begin{itemize}
+    \item het ontwikkelen van een mesh-protocol voor LoRa;
+    \item het oplossen van radio timing issues (asynchrone communicatie zal
+          zorgen voor meer packet collisions);
+    \item of \textit{backhaul} nodes benodigd zijn (lees: nodes rond een gateway
+          of server die veel netwerkverkeer afhandelen);
+\end{itemize}
+
+\paragraph{Advies}
+Om op korte termijn het Smart Markers systeem te realiseren luidt het advies om
+gebruik te maken van LoRaWAN nodes in een sternetwerk opstelling. Als uit de
+ervaring blijkt dat een sternetwerk zorgt voor teveel onvoorspelbaarheid (packet
+collisions of packet loss) is het raadzaam om een robuuster netwerk te
+realiseren d.m.v. het implementeren van een mesh-netwerk.
 
 \subsection{Energievoorziening}
 Op dit moment is het prototype alleen in gebruik geweest met een laptop. Daardoor
