@@ -1,6 +1,10 @@
 \section{Activity Diagram}
+Het onderstaande diagram geeft een globale weergave van de werking van de Smart
+Marker. Er is voor gekozen om het diagram minimalistisch te houden, aangezien
+de volledige werking van het project niet overzichtelijk wordt door het in een
+activity diagram te tonen.
 
-\vspace*{2cm}
+% \vspace*{2cm}
 \begin{center}
 {
     \large
@@ -16,30 +20,32 @@
     \node (n1) [below = of n0] {Board: initialise peripherals and clocks};
     \node (n2) [below = of n1] {LoRa: initialise network stack};
     \node (n3) [below = of n2] {GPS: initialise module};
-    \node (n4) [below = of n3] {GPS: parse location data};
-    \node (n5) [below = of n4] {LoRa: is network joined?};
-    \coordinate[left = 2 of n5] (c0);
-    \coordinate[right = 2 of n5] (c1);
-    \node (n6) [below = 2 of c0] {LoRa: join network};
-    \node (n7) [below = of c1] {LoRa: prepare frame};
-    \coordinate[right = 2 of n7] (c2);
-    \node (n8) [below = of n7] {LoRa: send frame};
-    \coordinate[below = 3.5 of n5] (c3);
-    \node (n9) [below = of c3] {Board: sleep};
+    \node (n4) [below = of n3] {GPS: get location fix};
+    \node (n5) [below = of n4] {GPS: update and parse location data};
+    \node (n6) [below = of n5] {LoRa: is network joined?};
+    \coordinate[left = 2 of n6] (c0);
+    \coordinate[right = 2 of n6] (c1);
+    \node (n7) [below = 2 of c0] {LoRa: join network};
+    \node (n8) [below = 1.5 of c1] {LoRa: prepare frame};
+    \coordinate[right = 2 of n8] (c2);
+    \node (n9) [below = of n8] {LoRa: send frame};
+    \coordinate[below = 6 of n5] (c3);
+    \node (n10) [below = of c3] {Board: sleep};
     % connect the nodes
     \draw[line width=1pt,-{Latex[length=3mm]}] (n0) to[out=270,in=90] (n1);
     \draw[line width=1pt,-{Latex[length=3mm]}] (n1) to[out=270,in=90] (n2);
     \draw[line width=1pt,-{Latex[length=3mm]}] (n2) to[out=270,in=90] (n3);
     \draw[line width=1pt,-{Latex[length=3mm]}] (n3) to[out=270,in=90] (n4);
     \draw[line width=1pt,-{Latex[length=3mm]}] (n4) to[out=270,in=90] (n5);
-    \draw[line width=1pt,-{Latex[length=3mm]}] (n5) to[out=180,in=90]
-        node[draw=none,fill=none,pos=.2,above] {No} (n6);
-    \draw[line width=1pt,-{Latex[length=3mm]}] (n5) to[out=0,in=90]
-        node[draw=none,fill=none,pos=.2,above] {Yes} (n7);
-    \draw[line width=1pt,-{Latex[length=3mm]}] (n6) to[out=270,in=90] (n9);
-    \draw[line width=1pt,-{Latex[length=3mm]}] (n7) to[out=270,in=90] (n8);
-    \draw[line width=1pt,-{Latex[length=3mm]}] (n8) to[out=180,in=90] (n9);
-    \draw[line width=1pt] (n9) to[out=0,in=270]
+    \draw[line width=1pt,-{Latex[length=3mm]}] (n5) to[out=270,in=90] (n6);
+    \draw[line width=1pt,-{Latex[length=3mm]}] (n6) to[out=180,in=90]
+        node[draw=none,fill=none,pos=.2,above] {No} (n7);
+    \draw[line width=1pt,-{Latex[length=3mm]}] (n6) to[out=0,in=90]
+        node[draw=none,fill=none,pos=.2,above] {Yes} (n8);
+    \draw[line width=1pt,-{Latex[length=3mm]}] (n7) to[out=270,in=90] (n10);
+    \draw[line width=1pt,-{Latex[length=3mm]}] (n8) to[out=270,in=90] (n9);
+    \draw[line width=1pt,-{Latex[length=3mm]}] (n9) to[out=180,in=90] (n10);
+    \draw[line width=1pt] (n10) to[out=0,in=270]
         node[draw=none,fill=none,pos=.3,below,yshift=-10pt]
         {[Current time > Sleep time]} (c2);
     \draw[line width=1pt,-{Latex[length=3mm]}] (c2) to[out=90,in=0] (n4);
