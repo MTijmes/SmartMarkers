@@ -1,4 +1,4 @@
-\newcommand{\versionnumber}{1.3}
+\newcommand{\versionnumber}{1.0}
 \newcommand{\docversion}{
   \renewcommand{\arraystretch}{0.5}
   \setlength{\tabcolsep}{0pt}
@@ -7,8 +7,8 @@
   \today \\
   \end{tabular}
 }
-\newcommand{\doctitle}{KBS ESA3 \\ Technisch Ontwerp \\ Smart Markers}
-\newcommand{\doctitleshort}{TO - Smart Markers}
+\newcommand{\doctitle}{KBS ESA3 \\ Advies Rapport \\ Smart Markers}
+\newcommand{\doctitleshort}{AR - Smart Markers}
 \newcommand{\docauthor}{
   \renewcommand{\arraystretch}{0.5}
   \begin{tabular}{l l}
@@ -30,7 +30,7 @@
   }
 
   \setlength{\wpYoffset}{-1.8cm}
-  \ThisCenterWallPaper{0.75}{technical/windesheim_kadaster.png}
+  \ThisCenterWallPaper{0.75}{advice_report/windesheim_kadaster.png}
   \vfill
 
   {
@@ -91,13 +91,14 @@
 % Misc
 \usepackage[shortlabels]{enumitem}
 \usepackage{pgfgantt}
+\usepackage[none]{hyphenat}
 
 % Bibliography
 \usepackage{csquotes}
 \usepackage[natbib,style=apa,citestyle=authoryear]{biblatex}
 \DeclareLanguageMapping{dutch}{dutch-apa}
 \defbibheading{bibliography}[\bibname]{\section{#1}}
-\addbibresource{technical/bibliography.bib}
+\addbibresource{advice_report/bibliography.bib}
 
 % Display
 \usepackage{lastpage}
@@ -125,8 +126,7 @@
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{fancyvrb}
-% \usetikzlibrary{positioning}
-\usetikzlibrary{arrows.meta}
+\usetikzlibrary{positioning}
 \usepackage{tikz-uml}
 
 %Other settings
@@ -156,25 +156,16 @@
 \addtocontents{toc}{\protect\thispagestyle{empty}}
 
 \newpage
-\input{technical/1_versionmanagement}
+\input{advice_report/1_versionmanagement}
 
 \newpage
-\input{technical/2_introduction}
+\input{advice_report/2_introduction}
 
 \newpage
-\input{technical/3_system_architecture}
+\input{advice_report/3_hardware}
 
 \newpage
-\input{technical/4_data_model}
-
-\newpage
-\input{technical/5_object_model}
-
-\newpage
-\input{technical/6_activity_diagram}
-
-\newpage
-\input{technical/7_user_interface}
+\input{advice_report/4_software}
 
 \newpage
 \printbibliography
