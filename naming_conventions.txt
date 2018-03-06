@@ -1,6 +1,0 @@
-# naming_conventions.txt
-This entire project adheres to the naming conventions specified in this file.
-
-## See Barr Group Embedded C Code Standard
-
-## TODO: add personal naming conventions / discuss

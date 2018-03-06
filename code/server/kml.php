@@ -3,7 +3,6 @@
   require("functions.php");
 
   // Opens a connection to a MySQL server
-
   $mysqli = connectDatabase();
 
   $sql = 'SELECT * FROM measurements';
@@ -27,7 +26,6 @@
   $kml[] = "\t\t" . '</Style>';
 
   // Iterate for each point
-
   while ($stmt->fetch()){
     $kml[] = "\t\t" . '<Placemark>';
     $kml[] = "\t\t\t" . '<name>';
@@ -36,14 +34,11 @@
     $kml[] = "\t\t\t" . '<styleUrl>';
     $kml[] = "\t\t\t\t" . '#west_campus_style';
     $kml[] = "\t\t\t" . '</styleUrl>';
-    $kml[] = "\t\t\t" . '<ExtendedData>';
-    $kml[] = "\t\t\t\t" . '<Data name="info">';
-    $kml[] = "\t\t\t\t\t" . '<value>';
-    $kml[] = "\t\t\t\t\t\t" . 'Point: ' . $res['id']. '&lt;/br&gt;';
-    $kml[] = "\t\t\t\t\t\t" . 'Date: ' . $res['timestamp'];
-    $kml[] = "\t\t\t\t\t" . '</value>';
-    $kml[] = "\t\t\t\t" . '</Data>';
-    $kml[] = "\t\t\t" . '</ExtendedData>';
+    $kml[] = "\t\t\t" . '<description>';
+    $kml[] = "\t\t\t\t\t\t" . 'Meetpunt: ' . $res['id'] . '&lt;/br&gt;';
+    $kml[] = "\t\t\t\t\t\t" . 'Tijdstip: ' . $res['timestamp'] . '&lt;/br&gt;';
+    $kml[] = "\t\t\t\t\t\t" . 'Locatie: ' . $res['lat'] . ', ' . $res['lon'] . '&lt;/br&gt;';
+    $kml[] = "\t\t\t" . '</description>';
     $kml[] = "\t\t\t" . '<Point>';
     $kml[] = "\t\t\t\t" . '<coordinates>';
     $kml[] = "\t\t\t\t\t" . $res['lon'] . ',' . $res['lat'] . ',0';
@@ -54,26 +49,10 @@
 
   $kml[] = "\t" . '</Document>';
   $kml[] = '</kml>';
-unset ($res);
 
+  unset ($res);
 
-
-
-
-
-
-
-
-
-
-
-
-
-// while ($row = @mysql_fetch_assoc($result)){
-//   // Add to XML document node
-
-
-$kmlOutput = join("\n", $kml);
-header('Content-type: application/vnd.google-earth.kml+xml');
-echo $kmlOutput;
+  $kmlOutput = join("\n", $kml);
+  header('Content-type: application/vnd.google-earth.kml+xml');
+  echo $kmlOutput;
 ?>

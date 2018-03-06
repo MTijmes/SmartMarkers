@@ -10,23 +10,27 @@
 #include <stm32l0xx_ll_utils.h>
 
 #include <board.h>
-#include <uart.h>
 #include <i2c.h>
+#include <spi.h>
+#include <rtc.h>
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
-#define         ID1                                 (0x1FF80050)
-#define         ID2                                 (0x1FF80054)
-#define         ID3                                 (0x1FF80064)
+#define ID1             (*(uint32_t*)0x1FF80050)
+#define ID2             (*(uint32_t*)0x1FF80054)
+#define ID3             (*(uint32_t*)0x1FF80064)
 
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-static bool board_is_initialized = false;
+/*
+ * Note: static variables are initialised to 0 / false.
+ */
+static bool board_is_initialized;
 
-static uint8_t board_irq_nest_level = 0;
+static uint8_t board_irq_nest_level;
 
 /* Global variables ----------------------------------------------------------*/
-extern uint8_t i2c_rx_buf[];
+extern uint8_t i2c_receive_buffer[];
 
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
@@ -42,7 +46,15 @@ board_sysclk_config(void)
     LL_RCC_HSE_EnableBypass();
     LL_RCC_HSE_Enable();
     while(LL_RCC_HSE_IsReady() != 1);
-
+    LL_PWR_EnableBkUpAccess();
+    LL_RCC_ForceBackupDomainReset();
+    LL_RCC_ReleaseBackupDomainReset();
+    LL_RCC_LSE_SetDriveCapability(LL_RCC_LSEDRIVE_LOW);
+    LL_RCC_LSE_Enable();
+    /* Wait till LSE is ready */
+    while(LL_RCC_LSE_IsReady() != 1) {}
+    LL_RCC_SetRTCClockSource(LL_RCC_RTC_CLKSOURCE_LSE);
+    LL_RCC_EnableRTC();
     /* Main PLL configuration and activation */
     LL_RCC_PLL_ConfigDomain_SYS(LL_RCC_PLLSOURCE_HSE,
                                 LL_RCC_PLL_MUL_8,
@@ -136,15 +148,19 @@ board_init(void)
 
         board_sysclk_config();
 
-        uart_init();
-        // spi_init();
         i2c_init(i2c_receive_buffer, I2C_RECEIVE_SIZE);
-        // rtc_init();
+        spi_init();
+        rtc_init();
 
         board_is_initialized = true;
     } else {
         board_sysclk_reconfig();
     }
+}
+
+void
+board_deinit(void)
+{
 }
 
 void
@@ -156,23 +172,24 @@ board_delay_ms(uint32_t ms)
 void
 board_get_unique_id(uint8_t *id)
 {
-    id[7] = ((*(uint32_t*)ID1)+ (*(uint32_t*)ID3)) >> 24;
-    id[6] = ((*(uint32_t*)ID1)+ (*(uint32_t*)ID3)) >> 16;
-    id[5] = ((*(uint32_t*)ID1)+ (*(uint32_t*)ID3)) >> 8;
-    id[4] = ((*(uint32_t*)ID1)+ (*(uint32_t*)ID3));
-    id[3] = ((*(uint32_t*)ID2)) >> 24;
-    id[2] = ((*(uint32_t*)ID2)) >> 16;
-    id[1] = ((*(uint32_t*)ID2)) >> 8;
-    id[0] = ((*(uint32_t*)ID2));
+    id[7] = (ID1 + ID3) >> 24;
+    id[6] = (ID1 + ID3) >> 16;
+    id[5] = (ID1 + ID3) >> 8;
+    id[4] = (ID1 + ID3);
+    id[3] = ID2 >> 24;
+    id[2] = ID2 >> 16;
+    id[1] = ID2 >> 8;
+    id[0] = ID2;
 }
 
 uint32_t
 board_get_random_seed(void)
 {
-    return ((*(uint32_t*)ID1) ^ (*(uint32_t*)ID2) ^ (*(uint32_t*)ID3));
+    return (ID1 ^ ID2 ^ ID3);
 }
 
 void
-board_sleep(void)
+board_sleep(uint32_t sec)
 {
+    (void)sec;
 }

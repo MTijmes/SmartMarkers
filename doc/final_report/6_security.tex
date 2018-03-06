@@ -1,0 +1,49 @@
+\section{Security}
+\textbf{Het verplaatsen van de marker voordat deze zijn locatie doorgestuurd
+heeft} \newline
+Paul Saers van het Kadaster gaf aan dat dit geen probleem was; hij gaat er
+vanuit dat de markers niet verplaatst worden. Hij verwacht dat de goodwill van
+de lokale bevolking groot genoeg is om de metingen niet te saboteren.
+
+Eventueel is hier wel op te controleren met een bewegingssensor, waardoor
+meetpunten niet verzonden worden of bijvoorbeeld een kenmerk krijgen dat deze
+mogelijk onbetrouwbaar zijn.
+
+\textbf{Het onderscheppen van verzonden gegevens} \newline
+Gezien de Smart Markers naar alle waarschijnlijkheid op een eigen gateway gaan
+werken en het KPN netwerk momenteel alleen gebruikt wordt om te testen, is hier
+nog niet veel aandacht aan besteed.
+
+Wel wordt het verkeer versleuteld naar de portal van KPN gestuurd en via een
+HTTPS verbinding naar de server, wat de veiligheid al een heel stuk waarborgd.
+De server is voorzien van certificaten, op dit moment van Let's Encrypt.org
+
+\textbf{Het inzien van de opgeslagen data} \newline
+Op dit moment draait de database op een vrij te benaderen webserver bij één van
+de projectleden thuis. De Smart Markers zullen naar alle waarschijnlijkheid een
+lokale server bij de gateway hebben om de data op te slaan, welke dan niet vanaf
+het internet te benaderen is.
+
+Wel is het natuurlijk mogelijk om de website af te schermen met een inlog, zodat
+het niet mogelijk is om zomaar de data in te zien. Voor het gemak van het
+project en gezien het feit dat we nu nog geen gevoelige data verwerken hebben we
+hier nog niet voor gekozen.
+
+Daarnaast is de veiligheid van de database te vergroten door enkel vanaf
+localhost (de server zelf), eventueel aangevuld met een whitelist van eigen
+IP-adressen, inloggen toe te staan. Op dit moment is echter inloggen vanaf elke
+locatie mogelijk, gezien de vele plaatsen vanaf waar er gewerkt wordt aan dit
+project. In een productieomgeving is dit zwaar af te raden!
+
+\textbf{Het verlies van opgeslagen data} \newline
+Peter Brouwer van het Kadaster gaf aan dat eigenlijk overal een (goede)
+internetverbinding beschikbaar kan zijn. Het idee was om de lokaal verzamelde
+data, wanneer het eenmaal compleet is, te versturen naar een externe bron.
+Daarnaast kan het natuurlijk ook lokaal dubbel opgeslagen worden of gebackupt
+worden.
+
+\textbf{Onnauwkeurigheid van de meting} \newline
+De GPS-ontvangers zelf hebben een indicatie van hoe nauwkeurig ze zijn. Er kan
+dus worden besloten om nog niet uit te zenden wanneer deze een (grote) afwijking
+heeft. Daarnaast verwachten we dat een langer geplaatste marker, met meerdere
+uitgevoerde metingen, ook een betrouwbaarder gemiddelde zal geven.

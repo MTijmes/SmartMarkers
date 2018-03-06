@@ -1,0 +1,173 @@
+\newcommand{\versionnumber}{1.0}
+\newcommand{\docversion}{
+  \renewcommand{\arraystretch}{0.5}
+  \setlength{\tabcolsep}{0pt}
+  \begin{tabular}[b]{l}
+  Versie \versionnumber{}\\
+  \today \\
+  \end{tabular}
+}
+\newcommand{\doctitle}{KBS ESA3 \\ Advies Rapport \\ Smart Markers}
+\newcommand{\doctitleshort}{AR - Smart Markers}
+\newcommand{\docauthor}{
+  \renewcommand{\arraystretch}{0.5}
+  \begin{tabular}{l l}
+  Jerko Lenstra & {\mdseries(S1080179)} \\
+  Rick de Bondt & {\mdseries(S1078239)} \\
+  Marthijn Tijmes & {\mdseries(S1063534)} \\
+  \end{tabular}
+}
+
+\newcommand{\doctitlepage}{
+  \thispagestyle{empty}
+
+  \parbox[t]{1.0\linewidth}{
+    \fontsize{40pt}{60pt}\selectfont
+    \doctitle{}
+    \fontsize{20pt}{40pt}\selectfont
+    \\hbo-ICT, Windesheim
+    \\Docent: Gido Hakvoort
+  }
+
+  \setlength{\wpYoffset}{-1.8cm}
+  \ThisCenterWallPaper{0.75}{advice_report/windesheim_kadaster.png}
+  \vfill
+
+  {
+   \docversion{}
+   \hspace{185pt}
+   \docauthor{}
+  }
+
+  \normalcolor{}
+
+  \newpage
+}
+
+\providecommand{\doctitle}{Title}
+\providecommand{\docauthor}{Author}
+\providecommand{\doctype}{scrartcl}
+\providecommand{\doctitlepage}{TitlePage}
+
+\documentclass[12pt,a4paper,titlepage,parskip=half]{\doctype}
+
+\usepackage[dutch]{babel}
+\usepackage{blindtext}
+\usepackage{float}
+\usepackage[hidelinks]{hyperref}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{wallpaper}
+\usepackage[headsepline,footsepline,manualmark]{scrlayer-scrpage}
+
+
+% Input and output encoding ---------------------------------------------------
+\usepackage{iftex}
+\ifPDFTeX
+   \usepackage[utf8]{inputenc}
+   \usepackage[T1]{fontenc}
+   \usepackage{lmodern}
+\else
+   \ifXeTeX
+     \usepackage{xltxtra}
+   \else
+     \usepackage{luatextra}
+   \fi
+   \defaultfontfeatures{Ligatures=TeX}
+\fi
+
+% Math
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathtools}
+
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\bag}{\langle}{\rangle}
+\DeclarePairedDelimiter{\set}{\{}{\}}
+
+% Misc
+\usepackage[shortlabels]{enumitem}
+\usepackage{pgfgantt}
+\usepackage[none]{hyphenat}
+
+% Bibliography
+\usepackage{csquotes}
+\usepackage[natbib,style=apa,citestyle=authoryear]{biblatex}
+\DeclareLanguageMapping{dutch}{dutch-apa}
+\defbibheading{bibliography}[\bibname]{\section{#1}}
+\addbibresource{advice_report/bibliography.bib}
+
+% Display
+\usepackage{lastpage}
+\usepackage{tabularx}
+\setlength{\headheight}{24pt}
+
+\title{\doctitle}
+\author{\docauthor}
+\date{\today}
+
+\ihead{\upshape{\doctitleshort}}
+\ohead{\upshape{\today, v\versionnumber}}
+\cfoot{\upshape{\thepage\ /~\pageref{LastPage}}}
+
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+\numberwithin{table}{section}
+
+\usepackage{changepage}
+
+\usepackage{enumitem}
+\setitemize{noitemsep,topsep=0pt,parsep=0pt,partopsep=0pt}
+
+% UML
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{fancyvrb}
+\usetikzlibrary{positioning}
+\usepackage{tikz-uml}
+
+%Other settings
+\lstset{basicstyle=\ttfamily}
+
+\RedeclareSectionCommand[beforeskip=1\baselineskip,
+                         afterskip=.25\baselineskip]{section}
+
+\RedeclareSectionCommand[beforeskip=.25\baselineskip,
+                         afterskip=.25\baselineskip]{subsection}
+
+\RedeclareSectionCommand[beforeskip=.25\baselineskip,
+                         afterskip=.25\baselineskip]{subsubsection}
+
+\RedeclareSectionCommand[beforeskip=.25\baselineskip,
+                         afterskip=.25\baselineskip]{paragraph}
+
+\begin{document}
+\doctitlepage{}
+
+\tableofcontents
+\thispagestyle{empty}
+\newpage
+
+\clearpage
+\setcounter{page}{1}
+\addtocontents{toc}{\protect\thispagestyle{empty}}
+
+\newpage
+\input{advice_report/1_versionmanagement}
+
+\newpage
+\input{advice_report/2_introduction}
+
+\newpage
+\input{advice_report/3_hardware}
+
+\newpage
+\input{advice_report/4_software}
+
+\newpage
+\printbibliography
+
+\end{document}

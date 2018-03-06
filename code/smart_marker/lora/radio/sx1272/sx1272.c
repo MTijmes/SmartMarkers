@@ -15,8 +15,12 @@ Maintainer: Miguel Luis and Gregory Cristian
 #include <math.h>
 #include <string.h>
 
+#include <stm32l0xx_ll_bus.h>
+#include <stm32l0xx_ll_gpio.h>
+
 #include <board.h>
 #include <radio.h>
+#include <spi.h>
 #include <sx1272.h>
 #include <sx1272-board.h>
 #include <timer.h>
@@ -221,7 +225,7 @@ void SX1272Init( RadioEvents_t *events )
     TimerInit( &RxTimeoutTimer, SX1272OnTimeoutIrq );
     TimerInit( &RxTimeoutSyncWord, SX1272OnTimeoutIrq );
 
-    SX1272Reset( );
+    SX1272Reset();
 
     SX1272SetOpMode( RF_OPMODE_SLEEP );
 
@@ -1013,19 +1017,26 @@ int16_t SX1272ReadRssi( RadioModems_t modem )
 
 void SX1272Reset( void )
 {
-    // Set RESET pin to 1
-    /* TODO: fix */
-    // GpioInit( &SX1272.Reset, RADIO_RESET, PIN_OUTPUT, PIN_PUSH_PULL, PIN_NO_PULL, 1 );
+    LL_GPIO_InitTypeDef gpio_init;
 
-    // Wait 1 ms
+    LL_IOP_GRP1_EnableClock(RADIO_RESET_CLK);
+
+    gpio_init.Speed       = LL_GPIO_SPEED_FREQ_VERY_HIGH;
+    gpio_init.OutputType  = LL_GPIO_OUTPUT_PUSHPULL;
+    gpio_init.Pull        = LL_GPIO_PULL_NO;
+
+    gpio_init.Mode = LL_GPIO_MODE_OUTPUT;
+    gpio_init.Pin = RADIO_RESET_PIN;
+    LL_GPIO_Init(RADIO_RESET_PORT, &gpio_init);
+
+    LL_GPIO_SetOutputPin(RADIO_RESET_PORT, RADIO_RESET_PIN);
     board_delay_ms(1);
 
-    // Configure RESET as input
-    /* TODO: fix */
-    // GpioInit( &SX1272.Reset, RADIO_RESET, PIN_INPUT, PIN_PUSH_PULL, PIN_NO_PULL, 1 );
+    LL_GPIO_ResetOutputPin(RADIO_RESET_PORT, RADIO_RESET_PIN);
+    board_delay_ms(10);
 
-    // Wait 6 ms
-    board_delay_ms(6);
+    gpio_init.Mode = LL_GPIO_MODE_INPUT;           // high impedance (hi-z)
+    LL_GPIO_Init(RADIO_RESET_PORT, &gpio_init);
 }
 
 void SX1272SetOpMode( uint8_t opMode )
@@ -1093,45 +1104,12 @@ uint8_t SX1272Read( uint8_t addr )
 
 void SX1272WriteBuffer( uint8_t addr, uint8_t *buffer, uint8_t size )
 {
-    uint8_t i;
-
-    //NSS = 0;
-    /* TODO: fix */
-    // GpioWrite( &SX1272.Spi.Nss, 0 );
-
-    /* TODO: fix */
-    // SpiInOut( &SX1272.Spi, addr | 0x80 );
-    for( i = 0; i < size; i++ )
-    {
-    /* TODO: fix */
-        // SpiInOut( &SX1272.Spi, buffer[i] );
-    }
-
-    //NSS = 1;
-    /* TODO: fix */
-    // GpioWrite( &SX1272.Spi.Nss, 1 );
+    spi_write_buf(addr, buffer, size);
 }
 
 void SX1272ReadBuffer( uint8_t addr, uint8_t *buffer, uint8_t size )
 {
-    uint8_t i;
-
-    //NSS = 0;
-    /* TODO: fix */
-    // GpioWrite( &SX1272.Spi.Nss, 0 );
-
-    /* TODO: fix */
-    // SpiInOut( &SX1272.Spi, addr & 0x7F );
-
-    for( i = 0; i < size; i++ )
-    {
-    /* TODO: fix */
-        // buffer[i] = SpiInOut( &SX1272.Spi, 0 );
-    }
-
-    //NSS = 1;
-    /* TODO: fix */
-    // GpioWrite( &SX1272.Spi.Nss, 1 );
+    spi_read_buf(addr, buffer, size);
 }
 
 void SX1272WriteFifo( uint8_t *buffer, uint8_t size )

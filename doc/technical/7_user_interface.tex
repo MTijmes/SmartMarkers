@@ -1,0 +1,36 @@
+\section{Gebruikersinterface}
+\subsection{Dataweergave}
+Voor het weergeven van de meetpunten is gekozen voor een JavaScript plugin van Google.
+Op deze manier laat zich eenvoudig een Google Maps kaart tonen op de website waarop we de
+meetpunten en percelen eenvoudig kunnen tonen.
+
+Het importeren van de meetpunten wordt gedaan door de meetpunten te exporteren naar een
+KML-bestand, welke de coordinaten en overige gegevens van de punten bevat. Deze worden
+door een PHP-script uit de SQL-database gehaald en vervolgens geprint in het KML-bestand.
+Deze worden vervolgens als pins binnen Google Maps getoond. Om te voorkomen dat er een
+door Google gecachte versie van het KML-bestand getoond wordt, wordt de time() functie van
+php gebruikt om bij elke aanroep een nieuwe URL te creëren.
+
+Door op een pin te klikken wordt de bijbehorende informatie getoond, samen met een 'Voeg
+aan perceel toe' button, om de geselecteerde marker toe te voegen aan een nieuw perceel.
+
+Op de achtergrond maakt een Javascript functie hier een array van, welke samen met de
+ingevoerde naam verzonden wordt naar de server.
+Wanneer er een perceel verzonden wordt, maakt de database hier eerst een perceel ID voor
+aan, vervolgens worden alle meetpunten in de array met het nieuwe perceel ID toevevoegd
+aan de link\_table.
+
+De percelen worden ook verwerkt tot een KML-bestand. Hierin wordt per perceel een nieuwe
+polygoon aangemaakt, waarin op volgorde van aanklikken de meetpunten als hoekpunten
+toegevoegd worden. Dit wordt gedaan door een automatisch verhogend ID veld te hebben in de
+link\_table en hierop ook weer te sorteren.
+
+Wanneer op een polygoon geklikt wordt, toont de website enige informatie over dit perceel.
+Op dit moment de naam en het tijdstip van creëren, maar dit is eenvoudig aan te passen naar
+meer informatie indien gewenst.
+
+
+\subsection{Advies}
+De Google Maps plugin is afhankelijk van internet, dat wil zeggen dat er een actieve
+verbinding moet zijn om het kaartmateriaal te downloaden. Dit kan in het veld een
+probleem zijn.

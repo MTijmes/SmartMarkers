@@ -36,7 +36,7 @@
 /*!
  * Board MCU pins definition
  */
-#define RADIO_RESET                                 PB_9
+#define RADIO_RESET                                 PB_8
 
 #define RADIO_MOSI                                  PA_7
 #define RADIO_MISO                                  PA_6

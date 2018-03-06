@@ -38,6 +38,10 @@
 /* Includes ------------------------------------------------------------------*/
 #include <board.h>
 #include <stm32l0xx_it.h>
+#include <stm32l073xx.h>
+#include <stm32l0xx_ll_rtc.h>
+#include <rtc.h>
+#include <timer.h>
 
 /** @addtogroup STM32L0xx_HAL_Examples
   * @{
@@ -153,6 +157,27 @@ void PendSV_Handler(void)
   */
 void SysTick_Handler(void)
 {
+}
+
+
+/*!
+ * \brief RTC IRQ Handler of the RTC Alarm
+ */
+void
+RTC_IRQHandler(void)
+{
+    RTC_AlarmIRQHandler();
+
+    LL_RTC_DisableWriteProtection(RTC);
+    LL_RTC_ALMA_Disable(RTC);
+    LL_RTC_DisableIT_ALRA(RTC);
+    while (LL_RTC_IsActiveFlag_ALRAW(RTC) == 0);
+    LL_RTC_EnableWriteProtection(RTC);
+
+    // RtcRecoverMcuStatus();
+    // RtcComputeWakeUpTime();
+    // BlockLowPowerDuringTask(false);
+    TimerIrqHandler();
 }
 
 /******************************************************************************/

@@ -1,0 +1,24 @@
+\section{Software}
+
+\subsection{Verbeteren nauwkeurigheid meetpunten}
+In de huidige versie wordt het DGPS-signaal nog niet optimaal gebruikt en verwerkt.
+Om de nauwkeruigheid van de meetpunten te verbeteren zal hier nog meer onderzoek
+naar gedaan moeten worden hoe dit precies toe te passen binnen het prototype.
+
+\subsection{Gegevensopslag}
+Op dit moment worden de gegevens opgeslagen in een SQL-database. Het is echter
+niet onderzocht of dit de meest ideale manier van opslag is. Zowel voor de grootte
+en het type relaties alsmede de koppeling met eventuele bestaande systemen kan
+nog gekeken worden naar een alternatief.
+
+Daarnaast speelt de beveiliging van de opgeslagen data natuurlijk een grote rol.
+Momenteel is er geen beveiliging, gezien we op dit moment alleen nog maar dummy data
+verwerkt hebben. Wanneer er echte meetpunten verwerkt gaan worden is het beveiligen
+hiervan natuurlijk wel belangrijk.
+
+\subsection{Automatiseren aanmaken percelen}
+Tijdens één van de gesprekken met het Kadaster kwam het idee naar voren om
+satellietbeelden te gebruiken om (een deel van de grenzen) automatisch te verwerken.
+Dit is nog helemaal niet onderzocht gezien dit ver van de embedded systems staat.
+Wellicht is dit voor programmeurs met meer ervaring in deze richting nog een
+interessant project.
